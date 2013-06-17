@@ -1,6 +1,7 @@
 import 'dart:html';
 import 'dart:web_gl';
 import 'dart:typed_data';
+import 'package:vector_math/vector_math.dart';
 
 const VertexShaderCode = """
 attribute vec3 aVertexPosition;
@@ -53,7 +54,7 @@ void main() {
   var triangleVertexPositionBuffer = new Triangle(); 
   triangleVertexPositionBuffer.buffer = context.createBuffer();
   context.bindBuffer(ARRAY_BUFFER, triangleVertexPositionBuffer.buffer);
-  var list = [0.0, 1.0, 0.0,
+  var list = [0.0, 1.0, -6.0,
               -1.0, -1.0, 0.0, 
               1.0, -1.0, 0.0];
   Float32List vertices = new Float32List.fromList(list);
@@ -68,14 +69,23 @@ void main() {
   context.viewport(0, 0, canvas.width, canvas.height);
   context.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
   
+  var pMatrix = makePerspectiveMatrix(radians(45.0), canvas.width / canvas.height, 0.1, 100.0);
+  var mvMatrix = new Matrix4.identity();
+  mvMatrix.translate(-1.5, 0.0, -7.0);
+  
   context.bindBuffer(ARRAY_BUFFER, triangleVertexPositionBuffer.buffer);
   context.vertexAttribPointer(vertexPositionAttribute, 
       triangleVertexPositionBuffer.itemSize, FLOAT, false, 0, 0);
-//  setMatrixUniforms();
+  
+  Float32List tmp = new Float32List.fromList(new List.filled(16, 0.0));
+  pMatrix.copyIntoArray(tmp);
+  context.uniformMatrix4fv(pMatrixUniform, false, tmp);
+  mvMatrix.copyIntoArray(tmp);
+  context.uniformMatrix4fv(mvMatrixUniform, false, tmp);
+  
   context.drawArrays(TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
   
 }
-
 
 
 class Triangle {
