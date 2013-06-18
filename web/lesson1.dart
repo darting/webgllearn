@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:vector_math/vector_math.dart';
 
 
-class FirstTriangle {
+class Lesson1 {
   CanvasElement _canvas;
   RenderingContext _gl;
   int _vertexPositionAttribute;
@@ -12,7 +12,7 @@ class FirstTriangle {
   UniformLocation _mvMatrixUniform;
   Triangle _triangleVertexPositionBuffer;
   
-  FirstTriangle(c){
+  Lesson1(c){
     _canvas = c;
     _gl = _canvas.getContext3d(preserveDrawingBuffer: true);
     
