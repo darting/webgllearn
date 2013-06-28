@@ -17,7 +17,7 @@ class Lesson3 {
   VertexBuffer _triangleColor;
   VertexBuffer _square;
   VertexBuffer _squareColor;
-  double _rotationY;
+  double _rotation;
   List _mvMatrixStack;
   double _lastElapsed;
   
@@ -25,7 +25,7 @@ class Lesson3 {
     _canvas = c;
     _gl = _canvas.getContext3d(preserveDrawingBuffer: true);
     
-    _rotationY = 0.0;
+    _rotation = 0.0;
     _mvMatrixStack = [];
     _lastElapsed = 0.0;
     
@@ -139,7 +139,7 @@ class Lesson3 {
   }
   
   void _render(num elapsed) {
-    _rotationY += (5 * (elapsed - _lastElapsed) / 1000.0);
+    _rotation += (5 * (elapsed - _lastElapsed) / 1000.0);
     _lastElapsed = elapsed;
     
     _gl.viewport(0, 0, _canvas.width, _canvas.height);
@@ -151,7 +151,8 @@ class Lesson3 {
     _pushMVMatrix(mvMatrix);
     //triangle
     mvMatrix.translate(-1.5, 0.0, -7.0);
-    mvMatrix.rotateY(_rotationY);
+    mvMatrix.rotateY(_rotation);
+    
     
     _gl.bindBuffer(ARRAY_BUFFER, _triangle.buffer);
     _gl.vertexAttribPointer(_vertexPositionAttribute, _triangle.itemSize, FLOAT, false, 0, 0);
@@ -167,7 +168,7 @@ class Lesson3 {
     _pushMVMatrix(mvMatrix);
     //square
     mvMatrix.translate(-1.5, 0.0, -7.0);
-    mvMatrix.rotateX(_rotationY);
+    mvMatrix.rotateX(_rotation);
     _gl.bindBuffer(ARRAY_BUFFER, _square.buffer);
     _gl.vertexAttribPointer(_vertexPositionAttribute, _square.itemSize, FLOAT, false, 0, 0);
     _gl.bindBuffer(ARRAY_BUFFER, _squareColor.buffer);
