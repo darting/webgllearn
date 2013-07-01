@@ -2,4 +2,6 @@ name: webgllearn
 description: A sample web application
 dependencies:
   browser: any
+  stats: any
+  three: any
   vector_math: any
