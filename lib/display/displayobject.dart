@@ -19,6 +19,7 @@ abstract class DisplayObject {
   Matrix3 localTransform;
   Matrix3 worldTransform;
   RenderGroup renderGroup;
+  WebGLBatch batch;
   
   DisplayObject() {
     position = new Vector2.zero();

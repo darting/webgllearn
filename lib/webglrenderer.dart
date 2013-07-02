@@ -17,20 +17,20 @@ class WebGLRenderer {
     _initShader();
     
     _batchs = [];
-    batch = new WebGLBatch(gl);
+    batch = new WebGLBatch(this);
     gl.disable(DEPTH_TEST);
     gl.disable(CULL_FACE);
     gl.enable(BLEND);
     gl.colorMask(true, true, true, true);
     projectionMatrix = new Matrix4.identity();
     resize(width, height);
-    stageRenderGroup = new RenderGroup(gl);
+    stageRenderGroup = new RenderGroup(this);
   }
   
   getBatch() {
     if(_batchs.length > 0)
       return _batchs.removeLast();
-    return new WebGLBatch(gl);
+    return new WebGLBatch(this);
   }
   
   returnBatch(batch) {
@@ -39,7 +39,15 @@ class WebGLRenderer {
   }
   
   resize(num width, num height) {
-    
+    this.width = width;
+    this.height = height;
+    canvas.width = width;
+    canvas.height = height;
+    gl.viewport(0, 0, width, height);
+    projectionMatrix[0] = 2 / width;
+    projectionMatrix[5] = -2 / height;
+    projectionMatrix[12] = -1.0;
+    projectionMatrix[13] = 1.0;
   }
   
   _initShader() {
@@ -76,4 +84,19 @@ class WebGLRenderer {
     samplerUniform = gl.getUniformLocation(program, "uSampler");
   }
   
+  render(Stage stage) {
+    updateTextures();
+    stage.updateTransform();
+    gl.colorMask(true, true, true, true);
+    gl.viewport(0, 0, width, height);
+    gl.bindFramebuffer(FRAMEBUFFER, null);
+    var backgroundColor = stage.backgroundColor;
+    gl.clearColor(backgroundColor.red, backgroundColor.green, backgroundColor.blue, backgroundColor.alpha);
+    gl.clear(COLOR_BUFFER_BIT);
+    stageRenderGroup.render(projectionMatrix);
+  }
+  
+  updateTextures() {
+    //TODO
+  }
 }
