@@ -4,16 +4,26 @@ import 'dart:html';
 import 'dart:web_gl';
 import 'dart:typed_data';
 import 'dart:async';
+import 'dart:math';
 
 import 'package:vector_math/vector_math.dart';
 import 'package:stats/stats.dart';
 
-part 'displayobject.dart';
+part 'display/displayobject.dart';
+part 'display/displayobjectcontainer.dart';
+part 'display/quad.dart';
+part 'geom/circle.dart';
+part 'geom/point.dart';
+part 'geom/rectangle.dart';
+part 'geom/vector.dart';
+part 'color.dart';
 part 'stage.dart';
 part 'renderers.dart';
-part 'quad.dart';
-part 'color.dart';
 part 'state.dart';
+part 'interactionmanager.dart';
+part 'rendergroup.dart';
+part 'webglrenderer.dart';
+part 'webglbatch.dart';
 
 
 

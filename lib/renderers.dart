@@ -1,14 +1,14 @@
 part of compass;
 
 
-class WebGLRenderer {
+class WebGLRenderer2 {
   RenderingContext context;
   int vertexPositionAttribute, textureCoordAttribute, colorAttribute;
   UniformLocation _mvMatrixUniform, _samplerUniform;
   List<Matrix4> _mvMatrixStack;
   Matrix4 modelViewMatrix;
   
-  WebGLRenderer(CanvasElement canvas) {
+  WebGLRenderer2(CanvasElement canvas) {
     context = canvas.getContext3d(preserveDrawingBuffer: true);
     _mvMatrixStack = [];
     modelViewMatrix = new Matrix4.identity();

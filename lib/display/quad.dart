@@ -12,7 +12,7 @@ class Quad extends DisplayObject {
   }
   
   _init() {
-    var context = stage.renderer.context;
+    var context = stage.renderer.gl;
     vertexBuffer = context.createBuffer();
     context.bindBuffer(ARRAY_BUFFER, vertexBuffer);
     context.bufferData(ARRAY_BUFFER,  new Float32List.fromList([
@@ -44,7 +44,7 @@ class Quad extends DisplayObject {
   
   render() {
     var renderer = stage.renderer;
-    var context = renderer.context;
+    var context = renderer.gl;
     
     context.bindBuffer(ARRAY_BUFFER, vertexBuffer);
     context.vertexAttribPointer(renderer.vertexPositionAttribute, 2, FLOAT, false, 0, 0);
@@ -68,5 +68,9 @@ class Quad extends DisplayObject {
 
   onAddedToStage() {
     _init();
+  }
+
+  updateTransform() {
+    // TODO implement this method
   }
 }

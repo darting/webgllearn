@@ -1,11 +1,15 @@
 part of compass;
 
-class Stage {
+class Stage extends DisplayObjectContainer{
   CanvasElement canvas;
   int width, height;
   List<DisplayObject> children;
   WebGLRenderer renderer;
   Stats stats;
+  
+
+  InteractionManager interactionManager;
+  Color backgroundColor;
   
   Stage(CanvasElement canvas) {
     stats = new Stats();
@@ -13,13 +17,39 @@ class Stage {
     width = canvas.width;
     height = canvas.height;
     children = [];
-    renderer = new WebGLRenderer(canvas);
+    renderer = new WebGLRenderer(width, height, canvas);
+    
+    stage = this;
+    worldTransform = new Matrix3.identity();
+    hitArea = new Rect(0, 0, 100000, 100000);
+    dirty = true;
+    _interactive = true;
+    interactionManager = new InteractionManager(this);
+    worldAlpha = 1.0;
   }
   
-  addChild(DisplayObject child) {
+  updateTransform() {
+    worldAlpha = 1.0;
+    children.forEach((child) => child.updateTransform());
+    if(dirty){
+      dirty = false;
+      interactionManager.dirty = true;
+    }
+    if(_interactive) interactionManager.update();
+  }
+  
+  replaceStage(child) {
+    if(child.dirty) dirty = true;
     child.stage = this;
-    child.onAddedToStage();
-    children.add(child);
+    if(child is DisplayObjectContainer)
+      child.children.forEach((e) => replaceStage(e));
+  }
+  
+  removeStage(child) {
+    if(child.interactive) dirty = true;
+    child.stage = null;
+    if(child is DisplayObjectContainer)
+      child.children.forEach((e) => removeStage(e));
   }
   
   run() {
@@ -31,5 +61,9 @@ class Stage {
     renderer.render(this);
     stats.end();
     run();
+  }
+
+  onAddedToStage() {
+    // TODO implement this method
   }
 }
