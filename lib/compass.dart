@@ -58,42 +58,6 @@ void main(void) {
 
 
 
-getVertexShaderSource(bool hasTexture) {
-  int textureFlags = hasTexture ? 1 : 0;
-  
-  return """
-  #define hasTexture = ${textureFlags}
-  
-  attribute vec2 aVertexPosition;
-  attribute vec2 aTextureCoord;
-  attribute float aColor;
-
-  uniform mat4 uMVMatrix;
-
-  #if hasTexture
-  varying vec2 vTextureCoord;
-  #endif
-
-  varying float vColor;
-
-  void main(void) {
-    gl_Position = uMVMatrix * vec4(aVertexPosition, 1.0, 1.0);
-  
-    #if hasTexture
-    vTextureCoord = aTextureCoord;
-    #endif
-  
-    vColor = aColor;
-  }
-  """;
-}
-
-
-
-
-
-
-
 
 
 
