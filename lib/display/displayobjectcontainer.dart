@@ -1,8 +1,8 @@
 part of compass;
 
 
-abstract class DisplayObjectContainer extends DisplayObject {
-  List<DisplayObject> children;
+abstract class DisplayObjectContainer extends DisplayObject2 {
+  List<DisplayObject2> children;
   
   DisplayObjectContainer() {
     children = [];

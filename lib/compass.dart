@@ -24,27 +24,36 @@ part 'interactionmanager.dart';
 part 'rendergroup.dart';
 part 'webglrenderer.dart';
 part 'webglbatch.dart';
+part 'eventdispatcher.dart';
+part 'displayobject.dart';
+part 'sprite.dart';
+part 'fill.dart';
+part 'layer.dart';
+part 'scene.dart';
+part 'renderbatch.dart';
+part 'renderer.dart';
+part 'director.dart';
+part 'interfaces.dart';
+part 'label.dart';
+
+
+Director director;
 
 
 
-
-
-
-const VERTEX_SHADER_CODE =  """
+const VERTEX_SHADER_COLOR =  """
 attribute vec2 aVertexPosition;
 attribute vec4 aColor;
-
-uniform mat4 uMVMatrix;
 
 varying vec4 vColor;
 
 void main(void) {
-    gl_Position = uMVMatrix * vec4(aVertexPosition, 1.0, 1.0);
+    gl_Position = vec4(aVertexPosition, 1.0, 1.0);
     vColor = aColor;
 }
 """;
 
-const FRAGMENT_SHADER_CODE  = """
+const FRAGMENT_SHADER_COLOR  = """
 precision mediump float;
 
 uniform sampler2D uSampler;
@@ -53,6 +62,32 @@ varying vec4 vColor;
 
 void main(void) {
     gl_FragColor = vColor;
+}
+""";
+
+
+
+const VERTEX_SHADER_TEXTURE =  """
+attribute vec2 aVertexPosition;
+attribute vec2 aTextureCoord;
+
+varying vec2 vTextureCoord;
+
+void main(void) {
+    gl_Position = vec4(aVertexPosition, 1.0, 1.0);
+    vTextureCoord = aTextureCoord;
+}
+""";
+
+const FRAGMENT_SHADER_TEXTURE  = """
+precision mediump float;
+
+uniform sampler2D uSampler;
+
+varying vec2 vTextureCoord;
+
+void main(void) {
+    gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
 }
 """;
 

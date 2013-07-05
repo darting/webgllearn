@@ -25,14 +25,14 @@ class WebGLRenderer2 {
   
   _initShader() {
     Shader vertexShader = context.createShader(VERTEX_SHADER);
-    context.shaderSource(vertexShader, VERTEX_SHADER_CODE);
+    context.shaderSource(vertexShader, VERTEX_SHADER_COLOR);
     context.compileShader(vertexShader);
     if (!context.getShaderParameter(vertexShader, COMPILE_STATUS)) {
       throw "vertex shader error: "+ context.getShaderInfoLog(vertexShader);
     }
     
     Shader fragmentShader = context.createShader(FRAGMENT_SHADER);
-    context.shaderSource(fragmentShader, FRAGMENT_SHADER_CODE);
+    context.shaderSource(fragmentShader, FRAGMENT_SHADER_COLOR);
     context.compileShader(fragmentShader);
     if (!context.getShaderParameter(fragmentShader, COMPILE_STATUS)) {
       throw "fragment shader error: "+ context.getShaderInfoLog(fragmentShader);

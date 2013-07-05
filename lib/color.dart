@@ -1,6 +1,6 @@
 part of compass;
 
-class Color {
+class Color extends Fill {
   static const int AliceBlue = 0xFFF0F8FF;
   static const int AntiqueWhite = 0xFFFAEBD7;
   static const int Aqua = 0xFF00FFFF;
@@ -160,6 +160,12 @@ class Color {
     int r = (color >> 16) & 0xFF;
     int g = (color >>  8) & 0xFF;
     int b = color & 0xFF;
-    return new Color(r, g, b  );
+    return new Color(r, g, b);
+  }
+
+  equals(Fill fill) {
+    if(fill is Color)
+      return fill.alpha == alpha && fill.red == red && fill.green == green && fill.blue == blue;
+    return false;
   }
 }

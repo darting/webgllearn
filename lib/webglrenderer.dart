@@ -52,14 +52,14 @@ class WebGLRenderer {
   
   _initShader() {
     Shader vertexShader = gl.createShader(VERTEX_SHADER);
-    gl.shaderSource(vertexShader, VERTEX_SHADER_CODE);
+    gl.shaderSource(vertexShader, VERTEX_SHADER_COLOR);
     gl.compileShader(vertexShader);
     if (!gl.getShaderParameter(vertexShader, COMPILE_STATUS)) {
       throw "vertex shader error: "+ gl.getShaderInfoLog(vertexShader);
     }
     
     Shader fragmentShader = gl.createShader(FRAGMENT_SHADER);
-    gl.shaderSource(fragmentShader, FRAGMENT_SHADER_CODE);
+    gl.shaderSource(fragmentShader, FRAGMENT_SHADER_COLOR);
     gl.compileShader(fragmentShader);
     if (!gl.getShaderParameter(fragmentShader, COMPILE_STATUS)) {
       throw "fragment shader error: "+ gl.getShaderInfoLog(fragmentShader);

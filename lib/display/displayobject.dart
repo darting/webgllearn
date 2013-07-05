@@ -1,7 +1,7 @@
 part of compass;
 
 
-abstract class DisplayObject {
+abstract class DisplayObject2 {
   Vector2 position;
   Vector2 anchor;
   Vector2 scale;
@@ -21,7 +21,7 @@ abstract class DisplayObject {
   RenderGroup renderGroup;
   WebGLBatch batch;
   
-  DisplayObject() {
+  DisplayObject2() {
     position = new Vector2.zero();
     anchor = new Vector2.zero();
     scale = new Vector2.zero();
