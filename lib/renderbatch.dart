@@ -35,11 +35,12 @@ class RenderBatch implements Dispose {
     // TODO implement this method
   }
   
-  isStateChange(Sprite sprite) {
+  isStateChanged(Sprite sprite) {
     if(_numSprites == 0) return false;
     if(_numSprites + 1 > 8192) return true;
     if(_fill == null) return false;
-    return _fill.equals(sprite.fill);
+    if(_fill is Color && sprite.fill is Color) return false;
+    return !_fill.equals(sprite.fill);
   }
   
   add(Sprite sprite) {

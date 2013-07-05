@@ -1,6 +1,6 @@
 part of compass;
 
-class Quad extends DisplayObject {
+class Quad extends DisplayObject2 {
   Buffer vertexBuffer, indexBuffer, uvBuffer, colorBuffer;
   int blendMode = BLEND;
   int color;

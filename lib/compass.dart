@@ -25,7 +25,7 @@ part 'rendergroup.dart';
 part 'webglrenderer.dart';
 part 'webglbatch.dart';
 part 'eventdispatcher.dart';
-part 'node.dart';
+part 'displayobject.dart';
 part 'sprite.dart';
 part 'fill.dart';
 part 'layer.dart';

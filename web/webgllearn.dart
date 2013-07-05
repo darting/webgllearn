@@ -34,9 +34,9 @@ void main() {
   director.replaceScene(scene);
   
   var rng = new Random();
-  for(var i = 0; i < 30000; i++){
+  for(var i = 0; i < 10000; i++){
     var sprite = new Sprite();
-//    sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+    sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
 //    sprite.fill = new Color(255, 0, 0);
     
 //    sprite.x = 10.0;

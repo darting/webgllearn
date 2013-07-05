@@ -1,6 +1,6 @@
 part of compass;
 
-class Sprite extends Node {
+class Sprite extends DisplayObject {
   Fill fill;
   
   render(Renderer renderer) {

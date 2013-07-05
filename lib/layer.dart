@@ -1,18 +1,18 @@
 part of compass;
 
-class Layer extends Node {
-  List<Node> children;
+class Layer extends DisplayObject {
+  List<DisplayObject> children;
   
   Layer() {
     children = [];
   }
   
-  addChild(Node node) {
+  addChild(DisplayObject node) {
     node.removeFromParent();
     children.add(node);
   }
   
-  removeChild(Node node) {
+  removeChild(DisplayObject node) {
     return children.remove(node);
   }
   

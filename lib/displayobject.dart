@@ -1,13 +1,13 @@
 part of compass;
 
-class Node extends EventDispatcher implements Dispose {
+class DisplayObject extends EventDispatcher implements Dispose {
   Layer parent;
   
   double _x, _y, _width, _height;
   Matrix3 _transform;
   bool _dirty;
   
-  Node() {
+  DisplayObject() {
     x = 0.0;
     y = 0.0;
     width = 0.0;

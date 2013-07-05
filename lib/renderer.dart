@@ -70,7 +70,7 @@ class GLRenderer extends Renderer {
   }
   
   render(Sprite sprite) {
-    if(_batchs[_currentBatchIndex].isStateChange(sprite)){
+    if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
       finishBatch();
     }
     _batchs[_currentBatchIndex].add(sprite);
