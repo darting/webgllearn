@@ -7,28 +7,31 @@ class RenderBatch implements Dispose {
   Fill _fill;
   Matrix3 _modelViewMatrix;
   Buffer vertexBuffer, indexBuffer, uvBuffer, colorBuffer;
-  List<double> verticies, uvs, colors;
-  List<int> indices;
+  Float32List verticies, uvs, colors;
+  Uint16List indices;
   GLRenderer renderer;
   bool dirty;
+  List<Sprite> _sprites;
   
   RenderBatch(this.renderer) {
     _numSprites = 0;
-    verticies = [];
-    uvs = [];
-    colors = [];
-    indices = [];
+    verticies = new Float32List(0);
+    uvs = new Float32List(0);
+    colors = new Float32List(0);
+    indices = new Uint16List(0);
     dirty = false;
+    
+    _sprites = [];
     
     var gl = renderer.gl;
     vertexBuffer = gl.createBuffer();
     colorBuffer = gl.createBuffer();
     indexBuffer = gl.createBuffer();
-    
   }
   
   reset() {
     _numSprites = 0;
+    _sprites.clear();
     _fill = null;
   }
   
@@ -46,40 +49,27 @@ class RenderBatch implements Dispose {
   
   add(Sprite sprite) {
     if(_numSprites == 0) _fill = sprite.fill;
-    if(_numSprites + 1 > verticies.length / 8) expand();
-    growVertexBuffer(sprite);
+    _sprites.add(sprite);
     _numSprites++;
     dirty = true;
   }
   
-  expand() {
-    RenderingContext gl = renderer.gl;
+  refresh() {
+    if(_numSprites != verticies.length / 8){
+      print("grow");
+      growBuffer();
+    }
     
-    final factor = 1;
-    
-    verticies.addAll(new Iterable.generate(8 * factor, (i) => 0.0));
-//    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-//    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(verticies), DYNAMIC_DRAW);
-    
-    colors.addAll(new Iterable.generate(16 * factor, (i) => 0.0));
-//    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-//    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), DYNAMIC_DRAW);
-    
-    final index = _numSprites * 4;
-    final arr = const [0, 1, 2, 0, 2, 3];
-    indices.addAll(new Iterable.generate(6 * factor, (i) => index + arr[i % 6]));
-   
-//    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-//    gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
-    
+    for(var i = 0; i < _numSprites; i++){
+      updateBuffer(i, _sprites[i]);
+    }
   }
   
-  growVertexBuffer(Sprite sprite) {
+  updateBuffer(int no, Sprite sprite) {
     var worldTransform, w0, w1, h0, h1, index;
     var a, b, c, d, tx, ty;
     
-    
-    index = _numSprites * 8;
+    index = no * 8;
     
     worldTransform = sprite.transformationMatrix;
     a = worldTransform[0];
@@ -113,7 +103,7 @@ class RenderBatch implements Dispose {
     
     if(sprite.fill is Color) {
       var color = sprite.fill as Color;
-      var colorIndex = _numSprites * 16;
+      var colorIndex = no * 16;
       for(var i = 0; i < 4; i++){
         colors[colorIndex + i] = color.red / 255.0;
         colors[colorIndex + i + 1] = color.green / 255.0;
@@ -124,39 +114,50 @@ class RenderBatch implements Dispose {
     }
   }
   
+  growBuffer() {
+    final RenderingContext gl = renderer.gl;
+    verticies = new Float32List(_numSprites * 8);
+    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(ARRAY_BUFFER, verticies, DYNAMIC_DRAW);
+    
+    colors = new Float32List(_numSprites * 16);
+    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+    gl.bufferData(ARRAY_BUFFER, colors, DYNAMIC_DRAW);
+    
+    indices = new Uint16List(_numSprites * 6); 
+    for (var i = 0; i < _numSprites; i++){
+      var index2 = i * 6;
+      var index3 = i * 4;
+      indices[index2 + 0] = index3 + 0;
+      indices[index2 + 1] = index3 + 1;
+      indices[index2 + 2] = index3 + 2;
+      indices[index2 + 3] = index3 + 0;
+      indices[index2 + 4] = index3 + 2;
+      indices[index2 + 5] = index3 + 3;
+    };
+    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(ELEMENT_ARRAY_BUFFER, indices, STATIC_DRAW);
+  }
+  
   render() {
     if(_numSprites == 0) return;
+
+    if(dirty){
+      dirty = false;
+      refresh();
+    }
     
     RenderingContext gl = renderer.gl;
     gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA);
-//    if(dirty){
-//      gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);  
-//      gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(verticies), STATIC_DRAW);
-//      
-//      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-//      gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
-//
-//      gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-//      gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
-//      dirty = false;
-//    }
     
     gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-//    gl.bufferSubData(ARRAY_BUFFER, 0, new Float32List.fromList(verticies));
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(verticies), STATIC_DRAW);
+    gl.bufferSubData(ARRAY_BUFFER, 0, verticies);
     gl.vertexAttribPointer(renderer.vertexPositionAttribute, 2, FLOAT, false, 0, 0);
     
-//    gl.bindBuffer(ARRAY_BUFFER, uvBuffer);
-//    gl.vertexAttribPointer(renderer.textureCoordAttribute, 2, FLOAT, false, 0, 0);
-    
     gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-//    gl.bufferSubData(ARRAY_BUFFER, 0, new Float32List.fromList(colors));
-    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
+    gl.bufferSubData(ARRAY_BUFFER, 0, colors);
     gl.vertexAttribPointer(renderer.colorAttribute, 4, FLOAT, false, 0, 0);
 
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
-    
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.drawElements(TRIANGLES, _numSprites * 6, UNSIGNED_SHORT, 0);
   }
