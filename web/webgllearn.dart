@@ -34,11 +34,20 @@ void main() {
   director.replaceScene(scene);
   
   var rng = new Random();
-  for(var i = 0; i < 1000; i++){
+  for(var i = 0; i < 30000; i++){
     var sprite = new Sprite();
-    sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+//    sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+//    sprite.fill = new Color(255, 0, 0);
+    
+//    sprite.x = 10.0;
+//    sprite.y = 10.0;
+//    sprite.width = 50.0;
+//    sprite.height = 50.0;
+    
     sprite.x = rng.nextInt(canvas.width*2).toDouble();
     sprite.y = rng.nextInt(canvas.height*2).toDouble();
+    sprite.width = rng.nextDouble() * 50;
+    sprite.height = rng.nextDouble() * 50;
     scene.addChild(sprite);
   }
   

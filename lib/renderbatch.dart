@@ -19,6 +19,11 @@ class RenderBatch implements Dispose {
     uvs = [];
     colors = [];
     indices = [];
+    
+    vertexBuffer = gl.createBuffer();
+    colorBuffer = gl.createBuffer();
+    indexBuffer = gl.createBuffer();
+    
   }
   
   reset() {
@@ -47,40 +52,28 @@ class RenderBatch implements Dispose {
   expand() {
     RenderingContext gl = renderer.gl;
     
-    final factor = 16;
+    final factor = 1;
+    
     verticies.addAll(new Iterable.generate(8 * factor, (i) => 0.0));
-    if(vertexBuffer == null) {
-      vertexBuffer = gl.createBuffer();
-      gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-      gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(verticies), STATIC_DRAW);
-    }
+    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(verticies), DYNAMIC_DRAW);
     
-    colors.addAll(new Iterable.generate(4 * factor, (i) => 0.0));
-    if(colorBuffer == null) {
-      colorBuffer = gl.createBuffer();
-      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
-    }
+    colors.addAll(new Iterable.generate(16 * factor, (i) => 0.0));
+    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), DYNAMIC_DRAW);
     
+    final index = _numSprites * 4;
     final arr = const [0, 1, 2, 0, 2, 3];
-    indices.addAll(new Iterable.generate(4 * factor, (i) => arr[i % 6]));
+    indices.addAll(new Iterable.generate(6 * factor, (i) => index + arr[i % 6]));
    
-    indexBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
+    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(indices), STATIC_DRAW);
   }
   
   growVertexBuffer(Sprite sprite) {
-    var worldTransform, width, height, w0, w1, h0, h1, index, index2, index3;
+    var worldTransform, w0, w1, h0, h1, index;
     var a, b, c, d, tx, ty;
     
-    width = sprite.width;
-    height = sprite.height;
-    w0 = width; //width * (1 - aX);
-    w1 = 0; //width * -aX;
-    
-    h0 = height; //height * (1 - aY);
-    h1 = 0; //height * -aY;
     
     index = _numSprites * 8;
     
@@ -92,25 +85,38 @@ class RenderBatch implements Dispose {
     tx = worldTransform[2];
     ty = worldTransform[5];
     
-    verticies[index + 0 ] = a * w1 + c * h1 + tx; 
-    verticies[index + 1 ] = d * h1 + b * w1 + ty;
+    w0 = sprite.width;
+    h0 = sprite.height;
+    w1 = renderer.canvas.width;
+    h1 = renderer.canvas.height;
+    var w3 = w0 / w1;
+    var h3 = h0 / h1;
     
-    verticies[index + 2 ] = a * w0 + c * h1 + tx; 
-    verticies[index + 3 ] = d * h1 + b * w0 + ty; 
+    var left = -1.0 + tx / w1;
+    var top = 1.0 - ty / h1; 
     
-    verticies[index + 4 ] = a * w0 + c * h0 + tx; 
-    verticies[index + 5 ] = d * h0 + b * w0 + ty; 
+    verticies[index + 0 ] = left;
+    verticies[index + 1 ] = top - h3;
     
-    verticies[index + 6] =  a * w1 + c * h0 + tx; 
-    verticies[index + 7] =  d * h0 + b * w1 + ty; 
+    verticies[index + 2 ] = left + w3;
+    verticies[index + 3 ] = top - h3;
+    
+    verticies[index + 4 ] = left + w3;
+    verticies[index + 5 ] = top;
+    
+    verticies[index + 6] = left;
+    verticies[index + 7] = top;
     
     if(sprite.fill is Color) {
       var color = sprite.fill as Color;
-      var colorIndex = _numSprites * 4;
-      colors[colorIndex] = color.red.toDouble();
-      colors[colorIndex + 1] = color.green.toDouble(); 
-      colors[colorIndex + 2] = color.blue.toDouble();
-      colors[colorIndex + 3] = color.alpha;
+      var colorIndex = _numSprites * 16;
+      for(var i = 0; i < 4; i++){
+        colors[colorIndex + i] = color.red / 255.0;
+        colors[colorIndex + i + 1] = color.green / 255.0;
+        colors[colorIndex + i + 2] = color.blue / 255.0;
+        colors[colorIndex + i + 3] = color.alpha;
+        colorIndex += 3;
+      }
     }
   }
   
@@ -121,7 +127,7 @@ class RenderBatch implements Dispose {
     gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA);
     
     gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-//    gl.bufferSubData(ARRAY_BUFFER, 0, new Float32List.fromList(verticies));
+    gl.bufferSubData(ARRAY_BUFFER, 0, new Float32List.fromList(verticies));
 //    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(verticies), STATIC_DRAW);
     gl.vertexAttribPointer(renderer.vertexPositionAttribute, 2, FLOAT, false, 0, 0);
     
@@ -129,9 +135,9 @@ class RenderBatch implements Dispose {
 //    gl.vertexAttribPointer(renderer.textureCoordAttribute, 2, FLOAT, false, 0, 0);
     
     gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-//    gl.bufferSubData(ARRAY_BUFFER, 0, new Float32List.fromList(colors));
+    gl.bufferSubData(ARRAY_BUFFER, 0, new Float32List.fromList(colors));
 //    gl.bufferData(ARRAY_BUFFER, new Float32List.fromList(colors), STATIC_DRAW);
-    gl.vertexAttribPointer(renderer.colorAttribute, 1, FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(renderer.colorAttribute, 4, FLOAT, false, 0, 0);
     
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.drawElements(TRIANGLES, _numSprites * 6, UNSIGNED_SHORT, 0);

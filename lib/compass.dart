@@ -44,12 +44,10 @@ const VERTEX_SHADER_CODE =  """
 attribute vec2 aVertexPosition;
 attribute vec4 aColor;
 
-uniform mat4 uMVMatrix;
-
 varying vec4 vColor;
 
 void main(void) {
-    gl_Position = uMVMatrix * vec4(aVertexPosition, 1.0, 1.0);
+    gl_Position = vec4(aVertexPosition, 1.0, 1.0);
     vColor = aColor;
 }
 """;

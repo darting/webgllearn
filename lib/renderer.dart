@@ -19,7 +19,7 @@ class GLRenderer extends Renderer {
   List<RenderBatch> _batchs;
   int _currentBatchIndex;
   
-  GLRenderer(canvas) : super(canvas) {
+  GLRenderer(CanvasElement canvas) : super(canvas) {
     gl = canvas.getContext3d(preserveDrawingBuffer: true);
     _initShader();
     
@@ -57,12 +57,16 @@ class GLRenderer extends Renderer {
     colorAttribute = gl.getAttribLocation(program, "aColor");
     gl.enableVertexAttribArray(colorAttribute);
     
-    mvMatrixUniform = gl.getUniformLocation(program, "uMVMatrix");
+//    mvMatrixUniform = gl.getUniformLocation(program, "uMVMatrix");
     samplerUniform = gl.getUniformLocation(program, "uSampler");
   }
 
   nextFrame() {
     _currentBatchIndex = 0;
+    
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(1, 1, 1, 1);
+    gl.clear(COLOR_BUFFER_BIT);
   }
   
   render(Sprite sprite) {
