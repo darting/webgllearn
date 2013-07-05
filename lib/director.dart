@@ -12,10 +12,10 @@ class Director implements Dispose {
   static init(CanvasElement canvas) {
     if(director != null) 
       director.dispose();
-    director = new Director(canvas);
+    director = new Director._internal(canvas);
   }
   
-  Director(CanvasElement canvas) {
+  Director._internal(CanvasElement canvas) {
     stats = new Stats();
 
     _canvas = canvas;
@@ -28,7 +28,7 @@ class Director implements Dispose {
     _run();
   }
   
-  replaceScene(Scene scene) {
+  replace(Scene scene) {
     if(_scene != null){
       _scene.exit();
     }

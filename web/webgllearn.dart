@@ -20,7 +20,7 @@ void main() {
   
   document.body.children.add(director.stats.container);
   
-  director.replaceScene(new TestScene());
+  director.replace(new TestScene());
   
 }
 
@@ -32,7 +32,7 @@ class TestScene extends Scene {
     sx = speed;
     sy = speed;
     
-    newChild(20000);
+    newChild(2000);
   }
   
   tick(num interval) {
@@ -73,6 +73,7 @@ class TestScene extends Scene {
     for(var i = 0; i < count; i++){
       var sprite = new Sprite();
       sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+//      sprite.fill = new Image("bunny.png");
       sprite.x = rng.nextDouble() * director.width;
       sprite.y = rng.nextDouble() * director.height;
       sprite.width = rng.nextDouble() * 50;

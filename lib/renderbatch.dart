@@ -25,6 +25,7 @@ class RenderBatch implements Dispose {
     
     var gl = renderer.gl;
     vertexBuffer = gl.createBuffer();
+    uvBuffer = gl.createBuffer();
     colorBuffer = gl.createBuffer();
     indexBuffer = gl.createBuffer();
   }
@@ -111,6 +112,18 @@ class RenderBatch implements Dispose {
         colors[colorIndex + i + 3] = color.alpha;
         colorIndex += 3;
       }
+    } else if(_fill is Image) {
+      uvs[index + 0] = 0.0;
+      uvs[index +1] = 0.0;
+      
+      uvs[index +2] = 1.0;
+      uvs[index +3] = 0.0;
+      
+      uvs[index +4] = 1.0;
+      uvs[index +5] = 1.0; 
+      
+      uvs[index +6] = 1.0;
+      uvs[index +7] = 0.0;
     }
   }
   
@@ -120,9 +133,15 @@ class RenderBatch implements Dispose {
     gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(ARRAY_BUFFER, verticies, DYNAMIC_DRAW);
     
-    colors = new Float32List(_numSprites * 16);
-    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-    gl.bufferData(ARRAY_BUFFER, colors, DYNAMIC_DRAW);
+    if(_fill is Color){
+      colors = new Float32List(_numSprites * 16);
+      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+      gl.bufferData(ARRAY_BUFFER, colors, DYNAMIC_DRAW);
+    }else if(_fill is Image){
+      uvs  = new Float32List(_numSprites * 8);  
+      gl.bindBuffer(ARRAY_BUFFER, uvBuffer);
+      gl.bufferData(ARRAY_BUFFER, uvs, DYNAMIC_DRAW);
+    }
     
     indices = new Uint16List(_numSprites * 6); 
     for (var i = 0; i < _numSprites; i++){
@@ -150,14 +169,30 @@ class RenderBatch implements Dispose {
     RenderingContext gl = renderer.gl;
     gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA);
     
+    ShaderProgram program;
+    if(_fill is Color){
+      program = renderer.getShaderProgram("color");
+      gl.useProgram(program.program);
+      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+      gl.bufferSubData(ARRAY_BUFFER, 0, colors);
+      gl.vertexAttribPointer(program.colorAttribute, 4, FLOAT, false, 0, 0);
+    }else if(_fill is Image){
+      program = renderer.getShaderProgram("texture");
+      gl.useProgram(program.program);
+      gl.bindBuffer(ARRAY_BUFFER, uvBuffer);
+      gl.bufferSubData(ARRAY_BUFFER, 0, uvs);
+      gl.vertexAttribPointer(program.textureCoordAttribute, 2, FLOAT, false, 0, 0);
+      gl.activeTexture(TEXTURE0);
+      gl.bindTexture(TEXTURE_2D, renderer.findTexture(_fill as Image));
+      gl.uniform1i(program.samplerUniform, 0);
+    }
+    
     gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
     gl.bufferSubData(ARRAY_BUFFER, 0, verticies);
-    gl.vertexAttribPointer(renderer.vertexPositionAttribute, 2, FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(program.vertexPositionAttribute, 2, FLOAT, false, 0, 0);
     
-    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-    gl.bufferSubData(ARRAY_BUFFER, 0, colors);
-    gl.vertexAttribPointer(renderer.colorAttribute, 4, FLOAT, false, 0, 0);
-
+    
+    
     gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.drawElements(TRIANGLES, _numSprites * 6, UNSIGNED_SHORT, 0);
   }
