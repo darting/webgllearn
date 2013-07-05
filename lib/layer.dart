@@ -9,11 +9,14 @@ class Layer extends DisplayObject {
   
   addChild(DisplayObject node) {
     node.removeFromParent();
+    node.parent = this;
     children.add(node);
   }
   
   removeChild(DisplayObject node) {
-    return children.remove(node);
+    if(children.remove(node)){
+      node.parent = null;
+    }
   }
   
   render(Renderer renderer) {

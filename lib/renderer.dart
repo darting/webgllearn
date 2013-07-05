@@ -64,7 +64,7 @@ class GLRenderer extends Renderer {
   nextFrame() {
     _currentBatchIndex = 0;
     
-    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.viewport(0, 0, director.width, director.height);
     gl.clearColor(1, 1, 1, 1);
     gl.clear(COLOR_BUFFER_BIT);
   }

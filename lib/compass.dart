@@ -34,9 +34,10 @@ part 'renderbatch.dart';
 part 'renderer.dart';
 part 'director.dart';
 part 'interfaces.dart';
+part 'label.dart';
 
 
-
+Director director;
 
 
 

@@ -6,11 +6,22 @@ class Director implements Dispose {
   CanvasElement _canvas;
   Renderer _renderer;
   Scene _scene;
+  num _lastElapsed;
+  int width, height;
   
-  Director(canvas) {
+  static init(CanvasElement canvas) {
+    if(director != null) 
+      director.dispose();
+    director = new Director(canvas);
+  }
+  
+  Director(CanvasElement canvas) {
     stats = new Stats();
-    
+
     _canvas = canvas;
+    width = canvas.width;
+    height = canvas.height;
+    _lastElapsed = 0;
     _renderer = new GLRenderer(canvas);
     _scene = new Scene();
    
@@ -18,7 +29,9 @@ class Director implements Dispose {
   }
   
   replaceScene(Scene scene) {
-    if(_scene != null) _scene.exit();
+    if(_scene != null){
+      _scene.exit();
+    }
     scene.enter();
     _scene = scene;
   }
@@ -29,6 +42,11 @@ class Director implements Dispose {
   
   _animate(num elapsed) {
     stats.begin();
+    
+    var interval = elapsed - _lastElapsed;
+    _lastElapsed = elapsed;
+    _scene.tick(interval);
+    
     _renderer.nextFrame();
     _scene.render(_renderer);
     _renderer.finishBatch();
