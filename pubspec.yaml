@@ -5,3 +5,4 @@ dependencies:
   stats: any
   three: any
   vector_math: any
+  xml: any

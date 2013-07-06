@@ -25,3 +25,7 @@ packages:
     description: vector_math
     source: hosted
     version: "1.3.2"
+  xml:
+    description: xml
+    source: hosted
+    version: "0.9.3+2"

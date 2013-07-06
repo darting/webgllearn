@@ -34,4 +34,34 @@ class Image extends Fill {
   }
 }
 
+class TextureAtlas {
+  Image _image;
+  Map<String, Rectangle> _regions;
+  Map<String, Rectangle> _frames;
+  
+  TextureAtlas(Image image, XmlElement atlasXml) {
+    _image = image;
+    _regions = new Map<String, Rectangle>();
+    _frames = new Map<String, Rectangle>();
+    _parseAtlasXml(atlasXml);
+  }
+  
+  _parseAtlasXml(XmlElement atlasXml) {
+    
+  }
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
