@@ -8,6 +8,7 @@ class Director implements Dispose {
   Scene _scene;
   num _lastElapsed;
   int width, height;
+  Color background;
   
   static init(CanvasElement canvas) {
     if(director != null) 
@@ -21,6 +22,7 @@ class Director implements Dispose {
     _canvas = canvas;
     width = canvas.width;
     height = canvas.height;
+    background = Color.parse(Color.White);
     _lastElapsed = 0;
     _renderer = new GLRenderer(canvas);
     _scene = new Scene();

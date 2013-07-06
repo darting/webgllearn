@@ -18,6 +18,8 @@ void main() {
 
   Director.init(canvas);
   
+  director.background = Color.parse(Color.Green);
+  
   document.body.children.add(director.stats.container);
   
   director.replace(new TestScene());
@@ -33,14 +35,15 @@ class TestScene extends Scene {
     sy = speed;
     scaleSpeed = 0.1;
     
-    newChild(20000);
+    newChild(1, true);
+//    newChild(3, false);
   }
   
   tick(num interval) {
     children.forEach((DisplayObject child) {
-      move(interval / 1000, child);
-      rotate(interval / 1000, child);
-      scaleChildren(interval / 1000, child);
+//      move(interval / 1000, child);
+//      rotate(interval / 1000, child);
+//      scaleChildren(interval / 1000, child);
     });
     counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
   }
@@ -79,20 +82,28 @@ class TestScene extends Scene {
     }
   }
   
-  newChild(int count) {
+  newChild(int count, bool useImage) {
     var rng = new Random();
     for(var i = 0; i < count; i++){
       var sprite = new Sprite();
-//      sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
-      sprite.fill = new Image("bunny.png");
-      sprite.x = rng.nextDouble() * director.width;
-      sprite.y = rng.nextDouble() * director.height;
-      sprite.pivotX = 0.5;
-      sprite.pivotY = 0.5;
+      if(useImage){
+        var img = new Image("atlas.png");
+        sprite.fill = img;
+        sprite.frame.setTo(250, 1305, 332, 328);
+        sprite.width = 440.0;
+        sprite.height = 440.0;
+//        sprite.scaleX = sprite.scaleY = 0.3;
+      }else {
+        sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256), rng.nextDouble());
+        sprite.width = 32.0;//rng.nextDouble() * 50;
+        sprite.height = 32.0;//rng.nextDouble() * 50;
+      }
+      sprite.x = 0.0;// rng.nextDouble() * director.width;
+      sprite.y = 0.0;// rng.nextDouble() * director.height;
+//      sprite.pivotX = 0.5;
+//      sprite.pivotY = 0.5;
 //      sprite.x = 100.0;
 //      sprite.y = 100.0;
-      sprite.width = 32.0;//rng.nextDouble() * 50;
-      sprite.height = 32.0;//rng.nextDouble() * 50;
       addChild(sprite);
     }
   }

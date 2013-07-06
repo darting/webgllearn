@@ -13,8 +13,8 @@ h1, p {
 }
 
 #container {
-  width: 600px;
-  height: 400px;
+  width: 800px;
+  height: 500px;
   position: relative;
   border: 1px solid #ccc;
   background-color: #fff;

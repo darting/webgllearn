@@ -20,6 +20,11 @@ class GLRenderer extends Renderer {
   
   GLRenderer(CanvasElement canvas) : super(canvas) {
     gl = canvas.getContext3d(preserveDrawingBuffer: true);
+    gl.disable(DEPTH_TEST);
+    gl.disable(CULL_FACE);
+    gl.enable(BLEND);
+//    gl.blendFunc(SRC_ALPHA, ONE);
+//    gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA);
     _initShader();
     
     _batchs = [new RenderBatch(this)];
@@ -39,7 +44,10 @@ class GLRenderer extends Renderer {
     _currentBatchIndex = 0;
     
     gl.viewport(0, 0, director.width, director.height);
-    gl.clearColor(1, 1, 1, 1);
+    gl.clearColor(director.background.red, 
+        director.background.green, 
+        director.background.blue, 
+        director.background.alpha);
     gl.clear(COLOR_BUFFER_BIT);
   }
   
@@ -70,10 +78,13 @@ class GLRenderer extends Renderer {
     print('handle texture ${fill.src}');
     Texture texture = gl.createTexture();
     gl.bindTexture(TEXTURE_2D, texture);
-    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
+    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
+//    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
     gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, fill.imageData);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
+    gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
+    gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
+    gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_S, REPEAT);
+    gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_T, REPEAT);
     gl.bindTexture(TEXTURE_2D, null);
     _texturesCache[fill.src] = texture;
   }
