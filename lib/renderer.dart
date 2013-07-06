@@ -55,7 +55,10 @@ class GLRenderer extends Renderer {
   
   loadTexture(Image fill) {
     if(!_texturesCache.containsKey(fill.src)){
-      fill.onLoad.listen((e) => _handleTexture(fill));
+      if(fill.loaded)
+        _handleTexture(fill);
+      else
+        fill.imageData.onLoad.listen((e) => _handleTexture(fill));
     }
   }
   
@@ -64,6 +67,7 @@ class GLRenderer extends Renderer {
   }
 
   _handleTexture(Image fill) {
+    print('handle texture ${fill.src}');
     Texture texture = gl.createTexture();
     gl.bindTexture(TEXTURE_2D, texture);
     gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);

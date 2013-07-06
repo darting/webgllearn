@@ -9,6 +9,7 @@ class Image extends Fill {
   
   final String src;
   ImageElement imageData;
+  bool loaded;
   
   factory Image(String src) {
     if(_cache.containsKey(src))
@@ -21,10 +22,10 @@ class Image extends Fill {
   }
   
   Image._internal(this.src) {
+    loaded = false;
     imageData = new ImageElement(src: src);
+    imageData.onLoad.listen((e) => loaded = true);
   }
-  
-  get onLoad => imageData.onLoad;
   
   equals(Fill fill) {
     if(fill is Image)

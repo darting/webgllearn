@@ -67,12 +67,24 @@ class RenderBatch implements Dispose {
   }
   
   updateBuffer(int no, Sprite sprite) {
-    var worldTransform, w0, w1, h0, h1, index;
+    var worldTransform, width, height, aX, aY, w0, w1, h0, h1, index, index2, index3;
     var a, b, c, d, tx, ty;
     
     index = no * 8;
     
+    width = sprite.width;
+    height = sprite.height;
+    
+    aX = sprite.pivotX;
+    aY = sprite.pivotY;
+    w0 = width * (1 - aX);
+    w1 = width * -aX;
+    
+    h0 = height * (1 - aY);
+    h1 = height * -aY;
+    
     worldTransform = sprite.transformationMatrix;
+    
     a = worldTransform[0];
     b = worldTransform[3];
     c = worldTransform[1];
@@ -80,27 +92,17 @@ class RenderBatch implements Dispose {
     tx = worldTransform[2];
     ty = worldTransform[5];
     
-    w0 = sprite.width;
-    h0 = sprite.height;
-    w1 = renderer.canvas.width;
-    h1 = renderer.canvas.height;
-    var w3 = w0 / w1 * 2;
-    var h3 = h0 / h1 * 2;
+    verticies[index + 0 ] = (a * w1 + c * h1 + tx) * 2 / director.width - 1.0; 
+    verticies[index + 1 ] = -(d * h1 + b * w1 + ty) * 2 / director.height + 1;
     
-    var left = -1.0 + tx * 2/ w1;
-    var top = 1.0 - ty * 2 / h1; 
+    verticies[index + 2 ] = (a * w0 + c * h1 + tx) * 2 / director.width - 1.0; 
+    verticies[index + 3 ] = -(d * h1 + b * w0 + ty) * 2 / director.height + 1.0; 
     
-    verticies[index + 0 ] = left;
-    verticies[index + 1 ] = top - h3;
+    verticies[index + 4 ] = (a * w0 + c * h0 + tx) * 2 / director.width - 1.0; 
+    verticies[index + 5 ] = -(d * h0 + b * w0 + ty) * 2 / director.height + 1.0; 
     
-    verticies[index + 2 ] = left + w3;
-    verticies[index + 3 ] = top - h3;
-    
-    verticies[index + 4 ] = left + w3;
-    verticies[index + 5 ] = top;
-    
-    verticies[index + 6] = left;
-    verticies[index + 7] = top;
+    verticies[index + 6] =  (a * w1 + c * h0 + tx) * 2 / director.width - 1.0; 
+    verticies[index + 7] =  -(d * h0 + b * w1 + ty) * 2 / director.height + 1.0; 
     
     if(sprite.fill is Color) {
       var color = sprite.fill as Color;

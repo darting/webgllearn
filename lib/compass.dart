@@ -38,6 +38,7 @@ part 'label.dart';
 
 
 Director director;
+final double PI2 = PI * 2;
 
 
 

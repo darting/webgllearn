@@ -26,45 +26,56 @@ void main() {
 
 class TestScene extends Scene {
   
-  num speed = 200, sx, sy;
+  num speed = 200, sx, sy, scaleSpeed;
   
   enter() {
     sx = speed;
     sy = speed;
+    scaleSpeed = 0.1;
     
-    newChild(2000);
+    newChild(20000);
   }
   
   tick(num interval) {
     children.forEach((DisplayObject child) {
-      var s = (interval / 1000);
-      
-      
-      var dx = s * sx;
-      var dy = s * sy;
-      if(child.x + child.width + dx > director.width.toDouble()){ 
-        sx = -speed;
-        child.x = director.width.toDouble() - child.width;
-      }else if(child.x + dx < 0){
-        sx = speed;
-        child.x = 0.0;
-      }else{
-        child.x += dx;
-      }
-      if(child.y + child.height + dy > director.height.toDouble()){ 
-        sy = -speed;
-        child.y = director.height.toDouble() - child.height;
-      }else if(child.y + dy < 0){
-        sy = speed;
-        child.y = 0.0;
-      }else{
-        child.y += dy;
-      }
+      move(interval / 1000, child);
+      rotate(interval / 1000, child);
+      scaleChildren(interval / 1000, child);
     });
     counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
-    return;
-    if(interval < 33){
-      newChild(10);
+  }
+  
+  scaleChildren(num s, DisplayObject child) {
+    num ss = child.scaleX + scaleSpeed;
+    if(ss >= 2.0) scaleSpeed = -0.1;
+    else if(ss < 0.5) scaleSpeed = 0.1;
+    child.scaleX = child.scaleY = ss;
+  }
+  
+  rotate(num s, DisplayObject child) {
+    child.rotation += 0.1;
+  }
+  
+  move(num s, child) {
+    var dx = s * sx;
+    var dy = s * sy;
+    if(child.x + child.width + dx > director.width.toDouble()){ 
+      sx = -speed;
+      child.x = director.width.toDouble() - child.width;
+    }else if(child.x + dx < 0){
+      sx = speed;
+      child.x = 0.0;
+    }else{
+      child.x += dx;
+    }
+    if(child.y + child.height + dy > director.height.toDouble()){ 
+      sy = -speed;
+      child.y = director.height.toDouble() - child.height;
+    }else if(child.y + dy < 0){
+      sy = speed;
+      child.y = 0.0;
+    }else{
+      child.y += dy;
     }
   }
   
@@ -72,12 +83,16 @@ class TestScene extends Scene {
     var rng = new Random();
     for(var i = 0; i < count; i++){
       var sprite = new Sprite();
-      sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
-//      sprite.fill = new Image("bunny.png");
+//      sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+      sprite.fill = new Image("bunny.png");
       sprite.x = rng.nextDouble() * director.width;
       sprite.y = rng.nextDouble() * director.height;
-      sprite.width = rng.nextDouble() * 50;
-      sprite.height = rng.nextDouble() * 50;
+      sprite.pivotX = 0.5;
+      sprite.pivotY = 0.5;
+//      sprite.x = 100.0;
+//      sprite.y = 100.0;
+      sprite.width = 32.0;//rng.nextDouble() * 50;
+      sprite.height = 32.0;//rng.nextDouble() * 50;
       addChild(sprite);
     }
   }
