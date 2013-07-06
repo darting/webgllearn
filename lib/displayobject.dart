@@ -1,6 +1,6 @@
 part of compass;
 
-class DisplayObject extends EventDispatcher implements Dispose {
+class DisplayObject implements Dispose {
   Layer parent;
   
   double _x, _y, _width, _height, _pivotX, _pivotY, _skewX, _skewY, _scaleX, _scaleY, _rotation, _alpha;

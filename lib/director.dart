@@ -10,6 +10,8 @@ class Director implements Dispose {
   int width, height;
   Color background;
   
+    
+  
   static init(CanvasElement canvas) {
     if(director != null) 
       director.dispose();

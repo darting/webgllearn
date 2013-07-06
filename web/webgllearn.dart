@@ -35,7 +35,7 @@ class TestScene extends Scene {
     sy = speed;
     scaleSpeed = 0.1;
     
-    newChild(1, true);
+    newChild(2, true);
 //    newChild(3, false);
   }
   

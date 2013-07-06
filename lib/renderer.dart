@@ -63,10 +63,15 @@ class GLRenderer extends Renderer {
   
   loadTexture(Image fill) {
     if(!_texturesCache.containsKey(fill.src)){
-      if(fill.loaded)
-        _handleTexture(fill);
-      else
-        fill.imageData.onLoad.listen((e) => _handleTexture(fill));
+      var subscription = fill.onReady.then((f) {
+        _handleTexture(f);
+        subscription.cancel();
+      });
+      
+//      if(fill.loaded)
+//        _handleTexture(fill);
+//      else
+//        fill.imageData.onLoad.listen((e) => _handleTexture(fill));
     }
   }
   
@@ -79,7 +84,6 @@ class GLRenderer extends Renderer {
     Texture texture = gl.createTexture();
     gl.bindTexture(TEXTURE_2D, texture);
     gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-//    gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
     gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, fill.imageData);
     gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
     gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);

@@ -9,7 +9,7 @@ class Image extends Fill {
   
   final String src;
   ImageElement imageData;
-  bool loaded;
+  EventDispatcher onReady;
   
   factory Image(String src) {
     if(_cache.containsKey(src))
@@ -22,9 +22,9 @@ class Image extends Fill {
   }
   
   Image._internal(this.src) {
-    loaded = false;
+    onReady = new EventDispatcher(this);
     imageData = new ImageElement(src: src);
-    imageData.onLoad.listen((e) => loaded = true);
+    imageData.onLoad.listen((e) => onReady.dispatch());
   }
   
   equals(Fill fill) {

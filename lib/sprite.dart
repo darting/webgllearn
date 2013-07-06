@@ -12,11 +12,13 @@ class Sprite extends DisplayObject {
   set fill(Fill val) {
     _fill = val;
     if(val is Image) {
-      if(val.loaded){
-        _handleImage(val);
-      }else{
-        val.imageData.onLoad.listen((e) => _handleImage(val));
-      }
+      val.onReady + _handleImage;
+      
+//      if(val.loaded){
+//        _handleImage(val);
+//      }else{
+//        val.imageData.onLoad.listen((e) => _handleImage(val));
+//      }
     }
   }
   

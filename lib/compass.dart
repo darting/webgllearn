@@ -10,21 +10,13 @@ import 'package:vector_math/vector_math.dart';
 import 'package:stats/stats.dart';
 import 'package:xml/xml.dart';
 
-part 'display/displayobject.dart';
-part 'display/displayobjectcontainer.dart';
-part 'display/quad.dart';
 part 'geom/circle.dart';
 part 'geom/point.dart';
 part 'geom/rectangle.dart';
 part 'geom/vector.dart';
 part 'color.dart';
-part 'stage.dart';
-part 'renderers.dart';
 part 'state.dart';
 part 'interactionmanager.dart';
-part 'rendergroup.dart';
-part 'webglrenderer.dart';
-part 'webglbatch.dart';
 part 'eventdispatcher.dart';
 part 'displayobject.dart';
 part 'sprite.dart';
@@ -36,10 +28,13 @@ part 'renderer.dart';
 part 'director.dart';
 part 'interfaces.dart';
 part 'label.dart';
+part 'resourcemanager.dart';
+part 'eventstreamsubscription.dart';
 
 
 Director director;
-final double PI2 = PI * 2;
+
+const double PI2 = PI * 2;
 
 
 
