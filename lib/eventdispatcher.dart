@@ -1,8 +1,8 @@
 part of compass;
 
-class EventDispatcher<T> extends Stream<T> {
+class EventDispatcher<T> {
   dynamic _trigger;
-  List<_EventSubscription> _subscriptions = [];
+  List<EventSubscription> _subscriptions = [];
   bool _dispatched = false;
   T _data;
   
@@ -10,24 +10,40 @@ class EventDispatcher<T> extends Stream<T> {
     _trigger = trigger;
   }
 
-  StreamSubscription<T> listen(onData, {void onError(error), void onDone(), bool cancelOnError:false}) {
-      var subscription = new _EventSubscription<T>(this, onData);
+  EventSubscription<T> listen(handler) {
+      var subscription = new EventSubscription<T>(this, handler);
       _subscriptions.add(subscription);
       return subscription;
   }
   
-  StreamSubscription<T> then(onData) {
-    var subscription = listen(onData);
-    if(_dispatched)
-      subscription._invoke(_trigger, _data);
+  EventSubscription<T> then(handler) {
+    return _then(handler, false);
+  }
+  
+  EventSubscription<T> once(handler) {
+    return _then(handler, true);
+  }
+  
+  EventSubscription<T> _then(handler, bool once) {
+    var subscription = listen(handler);
+    subscription._once = once;
+    if(_dispatched) subscription._invoke(_trigger, _data);
     return subscription;
   }
-  
-  void once(onData) {
-    (then(onData) as _EventSubscription)._once = true;
+
+  dispatch([T data])  {
+    _dispatched = true;
+    var subscriptions = _subscriptions;
+    var subscriptionsLength = _subscriptions.length;
+    for(var i = 0; i < subscriptionsLength; i++) {
+      var subscription = subscriptions[i];
+      if (subscription._canceled == false) {
+        subscription._invoke(_trigger, data);
+      }
+    }
   }
   
-  cancelSubscription(_EventSubscription<T> eventSubscription) {
+  cancel(EventSubscription<T> eventSubscription) {
     if (eventSubscription._canceled) return;
     var subscriptions = [];
     for(var i = 0; i < _subscriptions.length; i++) {
@@ -41,27 +57,12 @@ class EventDispatcher<T> extends Stream<T> {
     _subscriptions = subscriptions;
   }
   
-  cancelSubscriptions() {
+  clear() {
     for(var i = 0; i < _subscriptions.length; i++) {
       var subscription = _subscriptions[i];
       subscription._canceled = true;
     }
     _subscriptions = [];
-  }
-
-  dispatch([T data])  {
-    _dispatched = true;
-    var subscriptions = _subscriptions;
-    var subscriptionsLength = _subscriptions.length;
-    for(var i = 0; i < subscriptionsLength; i++) {
-      var subscription = subscriptions[i];
-      if (subscription._canceled == false) {
-        if(?data)
-          subscription._invoke(_trigger, data);
-        else
-          subscription._invoke(_trigger);
-      }
-    }
   }
 }
 
