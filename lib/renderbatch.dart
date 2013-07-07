@@ -9,7 +9,7 @@ class RenderBatch implements Dispose {
   Buffer vertexBuffer, indexBuffer, uvBuffer, colorBuffer;
   Float32List verticies, uvs, colors;
   Uint16List indices;
-  GLRenderer renderer;
+  WebGLRenderer renderer;
   bool dirty;
   List<Sprite> _sprites;
   

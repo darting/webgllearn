@@ -11,7 +11,7 @@ abstract class Renderer implements Dispose{
   dispose();
 }
 
-class GLRenderer extends Renderer {
+class WebGLRenderer extends Renderer {
   final Set<String> _loadingTextures = new Set<String>();
   final Map<String, Texture> _texturesCache = new Map<String, Texture>();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
@@ -19,7 +19,7 @@ class GLRenderer extends Renderer {
   List<RenderBatch> _batchs;
   int _currentBatchIndex;
   
-  GLRenderer(CanvasElement canvas) : super(canvas) {
+  WebGLRenderer(CanvasElement canvas) : super(canvas) {
     gl = canvas.getContext3d(preserveDrawingBuffer: true);
     gl.disable(DEPTH_TEST);
     gl.disable(CULL_FACE);

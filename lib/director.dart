@@ -26,7 +26,7 @@ class Director implements Dispose {
     height = canvas.height;
     background = Color.parse(Color.White);
     _lastElapsed = 0;
-    _renderer = new GLRenderer(canvas);
+    _renderer = new WebGLRenderer(canvas);
     _scene = new Scene();
    
     _run();
