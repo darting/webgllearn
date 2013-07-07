@@ -116,21 +116,22 @@ class RenderBatch implements Dispose {
       }
     } else if(_fill is Image) {
       var img = _fill as Image;
-      var frame = sprite.frame;
-      var tw = img.imageData.naturalWidth;
-      var th = img.imageData.naturalHeight;
+      var tw = img.width;
+      var th = img.height;
+      var right = img.frameX + img.frameWidth;
+      var bottom = img.frameY + img.frameHeight;
       
-      uvs[index + 0] = frame.x / tw;
-      uvs[index + 1] = frame.y / th;
+      uvs[index + 0] = img.frameX / tw;
+      uvs[index + 1] = img.frameY / th;
       
-      uvs[index + 2] = frame.right / tw;
-      uvs[index + 3] = frame.y / th;
+      uvs[index + 2] = right / tw;
+      uvs[index + 3] = img.frameY / th;
      
-      uvs[index + 4] = frame.right / tw;
-      uvs[index + 5] = frame.bottom / th;
+      uvs[index + 4] = right / tw;
+      uvs[index + 5] = bottom / th;
       
-      uvs[index + 6] = frame.x / tw;
-      uvs[index + 7] = frame.bottom / th;
+      uvs[index + 6] = img.frameX / tw;
+      uvs[index + 7] = bottom / th;
       
 //      print(uvs);
     }

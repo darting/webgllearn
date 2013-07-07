@@ -12,7 +12,6 @@ abstract class Renderer implements Dispose{
 }
 
 class WebGLRenderer extends Renderer {
-  final Set<Image> _loadingTextures = new Set<Image>();
   final Map<Image, webgl.Texture> _texturesCache = new Map<Image, webgl.Texture>();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
   webgl.RenderingContext gl;
@@ -63,9 +62,8 @@ class WebGLRenderer extends Renderer {
   }
   
   loadTexture(Image fill) {
-    if(!_loadingTextures.contains(fill) && !_texturesCache.containsKey(fill)){
-      _loadingTextures.add(fill);
-      fill.onReady.once(_handleTexture);
+    if(!_texturesCache.containsKey(fill)){
+      _handleTexture(fill);
     }
   }
   
@@ -74,7 +72,6 @@ class WebGLRenderer extends Renderer {
   }
 
   _handleTexture(Image fill) {
-    print('handle texture ${fill}');
     webgl.Texture texture = gl.createTexture();
     gl.bindTexture(webgl.TEXTURE_2D, texture);
     gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
@@ -84,7 +81,6 @@ class WebGLRenderer extends Renderer {
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
     gl.bindTexture(webgl.TEXTURE_2D, null);
-    _loadingTextures.remove(fill);
     _texturesCache[fill] = texture;
   }
   

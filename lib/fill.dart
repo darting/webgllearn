@@ -5,15 +5,33 @@ abstract class Fill {
 }
 
 class Image extends Fill {
-  static final Map<String, Image> _cache = new Map<String, Image>();
+  int _width;
+  int _height;
+  int _frameX;
+  int _frameY;
+  int _frameWidth;
+  int _frameHeight;
   
   html.ImageElement imageData;
-  EventDispatcher onReady;
   
   Image.fromImageElement(html.ImageElement image) {
     imageData = image;
-    onReady = new EventDispatcher(this);
-    onReady.dispatch();
+    _width = image.naturalWidth;
+    _height = image.naturalHeight;
+    _frameX = 0;
+    _frameY = 0;
+    _frameWidth = _width;
+    _frameHeight = _height;
+  }
+  
+  Image.fromTextureAtlasFrame(TextureAtlasFrame frame) {
+    imageData = frame.textureAtlas._image.imageData;
+    _width = imageData.naturalWidth;
+    _height = imageData.naturalHeight;
+    _frameX = frame.frameX;
+    _frameY = frame.frameY;
+    _frameWidth = frame.frameWidth;
+    _frameHeight = frame.frameHeight;
   }
   
   equals(Fill fill) {
@@ -21,6 +39,13 @@ class Image extends Fill {
       return imageData == (fill as Image).imageData;
     return false;
   }
+  
+  int get frameX => _frameX;
+  int get frameY => _frameY;
+  int get frameWidth => _frameWidth;
+  int get frameHeight => _frameHeight;
+  int get width => _width;
+  int get height => _height;
   
   static Future<Image> load(String url) {
     Completer<Image> completer = new Completer<Image>();
@@ -55,53 +80,71 @@ class TextureAtlas {
   Image _image;
   final List<TextureAtlasFrame> _frames = new List<TextureAtlasFrame>();
   
-  static Future<TextureAtlas> load(String url, String textureAtlasFormat) {
-
+  static Future<TextureAtlas> load(String url) {
     Completer<TextureAtlas> completer = new Completer<TextureAtlas>();
     TextureAtlas textureAtlas = new TextureAtlas();
+    html.HttpRequest.getString(url).then((textureAtlasJson) {
+      var data = json.parse(textureAtlasJson);
+      var frames = data["frames"];
+      var meta = data["meta"];
+      var imageUrl = _replaceFilename(url, meta["image"]);
 
-    switch(textureAtlasFormat) {
-      case TextureAtlasFormat.JSON:
-        html.HttpRequest.getString(url).then((textureAtlasJson) {
-          var data = json.parse(textureAtlasJson);
-          var frames = data["frames"];
-          var meta = data["meta"];
-          var imageUrl = _replaceFilename(url, meta["image"]);
+      if (frames is List) {
+        for(var frame in frames) {
+          var frameMap = frame as Map;
+          var fileName = frameMap["filename"] as String;
+          var frameName = _getFilenameWithoutExtension(fileName);
+          var taf = new TextureAtlasFrame.fromJson(textureAtlas, frameName, frameMap);
+          textureAtlas._frames.add(taf);
+        }
+      }
 
-          if (frames is List) {
-            for(var frame in frames) {
-              var frameMap = frame as Map;
-              var fileName = frameMap["filename"] as String;
-              var frameName = _getFilenameWithoutExtension(fileName);
-              var taf = new TextureAtlasFrame.fromJson(textureAtlas, frameName, frameMap);
-              textureAtlas._frames.add(taf);
-            }
-          }
+      if (frames is Map) {
+        for(String fileName in frames.keys) {
+          var frameMap = frames[fileName] as Map;
+          var frameName = _getFilenameWithoutExtension(fileName);
+          var taf = new TextureAtlasFrame.fromJson(textureAtlas, frameName, frameMap);
+          textureAtlas._frames.add(taf);
+        }
+      }
 
-          if (frames is Map) {
-            for(String fileName in frames.keys) {
-              var frameMap = frames[fileName] as Map;
-              var frameName = _getFilenameWithoutExtension(fileName);
-              var taf = new TextureAtlasFrame.fromJson(textureAtlas, frameName, frameMap);
-              textureAtlas._frames.add(taf);
-            }
-          }
+      Image.load(imageUrl).then((Image image) {
+        textureAtlas._image = image;
+        completer.complete(textureAtlas);
+      }).catchError((error) {
+        completer.completeError(new StateError("Failed to load image."));
+      });
 
-          Image.load(imageUrl).then((Image image) {
-            textureAtlas._image = image;
-            completer.complete(textureAtlas);
-          }).catchError((error) {
-            completer.completeError(new StateError("Failed to load image."));
-          });
-
-        }).catchError((error) {
-          completer.completeError(new StateError("Failed to load json file."));
-        });
-
-        break;
-    }
-
+    }).catchError((error) {
+      completer.completeError(new StateError("Failed to load json file."));
+    });
+    
     return completer.future;
+  }
+
+  Image getImage(String name) {
+    for(int i = 0; i < _frames.length; i++) {
+      var frame = _frames[i];
+      if (frame.name == name) {
+        return new Image.fromTextureAtlasFrame(frame);
+      }
+    }
+    throw new ArgumentError("TextureAtlasFrame not found: '$name'");
+  }
+
+  List<Image> getImages(String namePrefix) {
+    var imageList = new List<Image>();
+    for(int i = 0; i < _frames.length; i++) {
+      var frame = _frames[i];
+      if (frame.name.startsWith(namePrefix)) {
+        imageList.add(new Image.fromTextureAtlasFrame(frame));
+      }
+    }
+    return imageList;
+  }
+
+  List<String> get frameNames {
+    return _frames.map((f) => f.name).toList(growable: false);
   }
   
 }
@@ -112,11 +155,6 @@ class TextureAtlasFrame {
   final String _name;
   final bool _rotated;
   
-  final int _originalWidth;
-  final int _originalHeight;
-  final int _offsetX;
-  final int _offsetY;
-  
   final int _frameX;
   final int _frameY;
   final int _frameWidth;
@@ -126,10 +164,6 @@ class TextureAtlasFrame {
     _textureAtlas = textureAtlas,
     _name = name,
     _rotated = _ensureBool(frame["rotated"]),
-    _originalWidth = _ensureInt(frame["sourceSize"]["w"]),
-    _originalHeight = _ensureInt(frame["sourceSize"]["h"]),
-    _offsetX = _ensureInt(frame["spriteSourceSize"]["x"]),
-    _offsetY = _ensureInt(frame["spriteSourceSize"]["y"]),
     _frameX = _ensureInt(frame["frame"]["x"]),
     _frameY = _ensureInt(frame["frame"]["y"]),
     _frameWidth = _ensureInt(frame["frame"]["w"]),
@@ -143,11 +177,6 @@ class TextureAtlasFrame {
   int get frameY => _frameY;
   int get frameWidth => _frameWidth;
   int get frameHeight => _frameHeight;
-
-  int get offsetX => _offsetX;
-  int get offsetY => _offsetY;
-  int get originalWidth => _originalWidth;
-  int get originalHeight => _originalHeight;
 }
 
 

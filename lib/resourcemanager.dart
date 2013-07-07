@@ -62,8 +62,8 @@ class ResourceManager {
     _addResource("Image", name, url, Image.load(url));
   }
 
-  void addTextureAtlas(String name, String url, String textureAtlasFormat) {
-    _addResource("TextureAtlas", name, url, TextureAtlas.load(url, textureAtlasFormat));
+  void addTextureAtlas(String name, String url) {
+    _addResource("TextureAtlas", name, url, TextureAtlas.load(url));
   }
 
   void addText(String name, String text) {

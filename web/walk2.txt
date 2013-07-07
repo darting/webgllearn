@@ -1,0 +1,2306 @@
+Simple plain text exporter for demo purposes
+
+See http://www.grantlee.org/apidox/for_themers.html for more information
+
+Texture data:
+    texture.width  = 512
+    texture.height = 2048
+
+    texture.trimmedName = walk2
+    texture.fullName = walk2.png
+    texture.absoluteFileName = /Users/valorz/github/webgllearn/web/walk2.png
+
+SmartUpdateHash: $TexturePacker:SmartUpdate:9afec32db1c332989827f630ad180fd7$
+
+Settings:
+
+Access to all values in the settings (.tps file):
+
+settings.premultiplyAlpha = false
+settings.dataFormat = plain
+settings.allowRotation = false
+settings.flipPVR = false
+settings.ditherType = 0
+...
+
+Sprite data:
+
+There are 2 variants:
+- sprites - contains the sprites, aliases are available in the
+  aliasList property and are not added top level
+
+- allSprites - list of all sprites
+
+Load javascript filter plugin, must be located in the exporter's folder in a subfolder
+grantlee/0.2/makecssselector.qs
+
+
+// set width & height for calculations using the javascript filter
+
+
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__01.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__01
+
+    -- name with image extension
+    sprite.fullName         = walk__01.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 246
+    sprite.frameRect.y = 1076
+    sprite.frameRect.width = 112
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.48046875
+    sprite.frameRectRel.y = 0.525390625
+    sprite.frameRectRel.width = 0.21875
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.48046875
+    sprite.frameRectRel.y = 2.1015625
+    sprite.frameRectRel.width = 0.21875
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 246
+    sprite.frameRectWithoutRotation.y = 1076
+    sprite.frameRectWithoutRotation.width = 112
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 112
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 112
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__01.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 24223
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__02.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__02
+
+    -- name with image extension
+    sprite.fullName         = walk__02.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 134
+    sprite.frameRect.y = 808
+    sprite.frameRect.width = 124
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.26171875
+    sprite.frameRectRel.y = 0.39453125
+    sprite.frameRectRel.width = 0.2421875
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.26171875
+    sprite.frameRectRel.y = 1.578125
+    sprite.frameRectRel.width = 0.2421875
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 134
+    sprite.frameRectWithoutRotation.y = 808
+    sprite.frameRectWithoutRotation.width = 124
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 124
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 124
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__02.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 25152
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__03.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__03
+
+    -- name with image extension
+    sprite.fullName         = walk__03.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 804
+    sprite.frameRect.width = 130
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.392578125
+    sprite.frameRectRel.width = 0.25390625
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 1.5703125
+    sprite.frameRectRel.width = 0.25390625
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 804
+    sprite.frameRectWithoutRotation.width = 130
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 130
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 130
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__03.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 25103
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__04.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__04
+
+    -- name with image extension
+    sprite.fullName         = walk__04.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 538
+    sprite.frameRect.width = 134
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.2626953125
+    sprite.frameRectRel.width = 0.26171875
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 1.05078125
+    sprite.frameRectRel.width = 0.26171875
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 538
+    sprite.frameRectWithoutRotation.width = 134
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 134
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 134
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__04.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 25183
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__05.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__05
+
+    -- name with image extension
+    sprite.fullName         = walk__05.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 270
+    sprite.frameRect.width = 134
+    sprite.frameRect.height = 266
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.1318359375
+    sprite.frameRectRel.width = 0.26171875
+    sprite.frameRectRel.height = 0.1298828125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.52734375
+    sprite.frameRectRel.width = 0.26171875
+    sprite.frameRectRel.height = 0.51953125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 270
+    sprite.frameRectWithoutRotation.width = 134
+    sprite.frameRectWithoutRotation.height = 266
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 134
+    sprite.sourceRect.height = 266
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 134
+    sprite.untrimmedSize.height = 266
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__05.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 25181
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__06.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__06
+
+    -- name with image extension
+    sprite.fullName         = walk__06.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 138
+    sprite.frameRect.y = 540
+    sprite.frameRect.width = 130
+    sprite.frameRect.height = 266
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.26953125
+    sprite.frameRectRel.y = 0.263671875
+    sprite.frameRectRel.width = 0.25390625
+    sprite.frameRectRel.height = 0.1298828125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.26953125
+    sprite.frameRectRel.y = 1.0546875
+    sprite.frameRectRel.width = 0.25390625
+    sprite.frameRectRel.height = 0.51953125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 138
+    sprite.frameRectWithoutRotation.y = 540
+    sprite.frameRectWithoutRotation.width = 130
+    sprite.frameRectWithoutRotation.height = 266
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 130
+    sprite.sourceRect.height = 266
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 130
+    sprite.untrimmedSize.height = 266
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__06.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 24863
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__07.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__07
+
+    -- name with image extension
+    sprite.fullName         = walk__07.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 270
+    sprite.frameRect.y = 806
+    sprite.frameRect.width = 124
+    sprite.frameRect.height = 268
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.52734375
+    sprite.frameRectRel.y = 0.3935546875
+    sprite.frameRectRel.width = 0.2421875
+    sprite.frameRectRel.height = 0.130859375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.52734375
+    sprite.frameRectRel.y = 1.57421875
+    sprite.frameRectRel.width = 0.2421875
+    sprite.frameRectRel.height = 0.5234375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 270
+    sprite.frameRectWithoutRotation.y = 806
+    sprite.frameRectWithoutRotation.width = 124
+    sprite.frameRectWithoutRotation.height = 268
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 124
+    sprite.sourceRect.height = 268
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 124
+    sprite.untrimmedSize.height = 268
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__07.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 24096
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__08.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__08
+
+    -- name with image extension
+    sprite.fullName         = walk__08.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 1340
+    sprite.frameRect.width = 116
+    sprite.frameRect.height = 268
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.654296875
+    sprite.frameRectRel.width = 0.2265625
+    sprite.frameRectRel.height = 0.130859375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 2.6171875
+    sprite.frameRectRel.width = 0.2265625
+    sprite.frameRectRel.height = 0.5234375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 1340
+    sprite.frameRectWithoutRotation.width = 116
+    sprite.frameRectWithoutRotation.height = 268
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 116
+    sprite.sourceRect.height = 268
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 116
+    sprite.untrimmedSize.height = 268
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__08.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 23301
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__09.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__09
+
+    -- name with image extension
+    sprite.fullName         = walk__09.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 120
+    sprite.frameRect.y = 1342
+    sprite.frameRect.width = 106
+    sprite.frameRect.height = 268
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.234375
+    sprite.frameRectRel.y = 0.6552734375
+    sprite.frameRectRel.width = 0.20703125
+    sprite.frameRectRel.height = 0.130859375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.234375
+    sprite.frameRectRel.y = 2.62109375
+    sprite.frameRectRel.width = 0.20703125
+    sprite.frameRectRel.height = 0.5234375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 120
+    sprite.frameRectWithoutRotation.y = 1342
+    sprite.frameRectWithoutRotation.width = 106
+    sprite.frameRectWithoutRotation.height = 268
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 106
+    sprite.sourceRect.height = 268
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 106
+    sprite.untrimmedSize.height = 268
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__09.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 22234
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__10.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__10
+
+    -- name with image extension
+    sprite.fullName         = walk__10.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 324
+    sprite.frameRect.y = 1364
+    sprite.frameRect.width = 92
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.6328125
+    sprite.frameRectRel.y = 0.666015625
+    sprite.frameRectRel.width = 0.1796875
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.6328125
+    sprite.frameRectRel.y = 2.6640625
+    sprite.frameRectRel.width = 0.1796875
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 324
+    sprite.frameRectWithoutRotation.y = 1364
+    sprite.frameRectWithoutRotation.width = 92
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 92
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 92
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__10.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 20352
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__11.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__11
+
+    -- name with image extension
+    sprite.fullName         = walk__11.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 204
+    sprite.frameRect.y = 1616
+    sprite.frameRect.width = 74
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.3984375
+    sprite.frameRectRel.y = 0.7890625
+    sprite.frameRectRel.width = 0.14453125
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.3984375
+    sprite.frameRectRel.y = 3.15625
+    sprite.frameRectRel.width = 0.14453125
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 204
+    sprite.frameRectWithoutRotation.y = 1616
+    sprite.frameRectWithoutRotation.width = 74
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 74
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 74
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__11.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 18199
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__12.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__12
+
+    -- name with image extension
+    sprite.fullName         = walk__12.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 402
+    sprite.frameRect.y = 1636
+    sprite.frameRect.width = 54
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.78515625
+    sprite.frameRectRel.y = 0.798828125
+    sprite.frameRectRel.width = 0.10546875
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.78515625
+    sprite.frameRectRel.y = 3.1953125
+    sprite.frameRectRel.width = 0.10546875
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 402
+    sprite.frameRectWithoutRotation.y = 1636
+    sprite.frameRectWithoutRotation.width = 54
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 54
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 54
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__12.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 17235
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__13.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__13
+
+    -- name with image extension
+    sprite.fullName         = walk__13.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 442
+    sprite.frameRect.y = 2
+    sprite.frameRect.width = 64
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.86328125
+    sprite.frameRectRel.y = 0.0009765625
+    sprite.frameRectRel.width = 0.125
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.86328125
+    sprite.frameRectRel.y = 0.00390625
+    sprite.frameRectRel.width = 0.125
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 442
+    sprite.frameRectWithoutRotation.y = 2
+    sprite.frameRectWithoutRotation.width = 64
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 64
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 64
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__13.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 17963
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__14.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__14
+
+    -- name with image extension
+    sprite.fullName         = walk__14.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 424
+    sprite.frameRect.y = 552
+    sprite.frameRect.width = 86
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.828125
+    sprite.frameRectRel.y = 0.26953125
+    sprite.frameRectRel.width = 0.16796875
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.828125
+    sprite.frameRectRel.y = 1.078125
+    sprite.frameRectRel.width = 0.16796875
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 424
+    sprite.frameRectWithoutRotation.y = 552
+    sprite.frameRectWithoutRotation.width = 86
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 86
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 86
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__14.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 19616
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__15.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__15
+
+    -- name with image extension
+    sprite.fullName         = walk__15.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 1610
+    sprite.frameRect.width = 104
+    sprite.frameRect.height = 268
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.7861328125
+    sprite.frameRectRel.width = 0.203125
+    sprite.frameRectRel.height = 0.130859375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 3.14453125
+    sprite.frameRectRel.width = 0.203125
+    sprite.frameRectRel.height = 0.5234375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 1610
+    sprite.frameRectWithoutRotation.width = 104
+    sprite.frameRectWithoutRotation.height = 268
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 104
+    sprite.sourceRect.height = 268
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 104
+    sprite.untrimmedSize.height = 268
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__15.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 21234
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__16.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__16
+
+    -- name with image extension
+    sprite.fullName         = walk__16.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 124
+    sprite.frameRect.y = 1074
+    sprite.frameRect.width = 120
+    sprite.frameRect.height = 266
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.2421875
+    sprite.frameRectRel.y = 0.5244140625
+    sprite.frameRectRel.width = 0.234375
+    sprite.frameRectRel.height = 0.1298828125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.2421875
+    sprite.frameRectRel.y = 2.09765625
+    sprite.frameRectRel.width = 0.234375
+    sprite.frameRectRel.height = 0.51953125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 124
+    sprite.frameRectWithoutRotation.y = 1074
+    sprite.frameRectWithoutRotation.width = 120
+    sprite.frameRectWithoutRotation.height = 266
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 120
+    sprite.sourceRect.height = 266
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 120
+    sprite.untrimmedSize.height = 266
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__16.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 22799
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__17.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__17
+
+    -- name with image extension
+    sprite.fullName         = walk__17.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 292
+    sprite.frameRect.y = 268
+    sprite.frameRect.width = 132
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.5703125
+    sprite.frameRectRel.y = 0.130859375
+    sprite.frameRectRel.width = 0.2578125
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.5703125
+    sprite.frameRectRel.y = 0.5234375
+    sprite.frameRectRel.width = 0.2578125
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 292
+    sprite.frameRectWithoutRotation.y = 268
+    sprite.frameRectWithoutRotation.width = 132
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 132
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 132
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__17.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 23858
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__18.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__18
+
+    -- name with image extension
+    sprite.fullName         = walk__18.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 298
+    sprite.frameRect.y = 2
+    sprite.frameRect.width = 142
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.58203125
+    sprite.frameRectRel.y = 0.0009765625
+    sprite.frameRectRel.width = 0.27734375
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.58203125
+    sprite.frameRectRel.y = 0.00390625
+    sprite.frameRectRel.width = 0.27734375
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 298
+    sprite.frameRectWithoutRotation.y = 2
+    sprite.frameRectWithoutRotation.width = 142
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 142
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 142
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__18.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 24524
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__19.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__19
+
+    -- name with image extension
+    sprite.fullName         = walk__19.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 150
+    sprite.frameRect.y = 2
+    sprite.frameRect.width = 146
+    sprite.frameRect.height = 264
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.29296875
+    sprite.frameRectRel.y = 0.0009765625
+    sprite.frameRectRel.width = 0.28515625
+    sprite.frameRectRel.height = 0.12890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.29296875
+    sprite.frameRectRel.y = 0.00390625
+    sprite.frameRectRel.width = 0.28515625
+    sprite.frameRectRel.height = 0.515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 150
+    sprite.frameRectWithoutRotation.y = 2
+    sprite.frameRectWithoutRotation.width = 146
+    sprite.frameRectWithoutRotation.height = 264
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 146
+    sprite.sourceRect.height = 264
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 146
+    sprite.untrimmedSize.height = 264
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__19.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 24950
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__20.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__20
+
+    -- name with image extension
+    sprite.fullName         = walk__20.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 2
+    sprite.frameRect.width = 146
+    sprite.frameRect.height = 266
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.0009765625
+    sprite.frameRectRel.width = 0.28515625
+    sprite.frameRectRel.height = 0.1298828125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.00390625
+    sprite.frameRectRel.width = 0.28515625
+    sprite.frameRectRel.height = 0.51953125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 2
+    sprite.frameRectWithoutRotation.width = 146
+    sprite.frameRectWithoutRotation.height = 266
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 146
+    sprite.sourceRect.height = 266
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 146
+    sprite.untrimmedSize.height = 266
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__20.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 25027
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__21.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__21
+
+    -- name with image extension
+    sprite.fullName         = walk__21.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 150
+    sprite.frameRect.y = 268
+    sprite.frameRect.width = 140
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.29296875
+    sprite.frameRectRel.y = 0.130859375
+    sprite.frameRectRel.width = 0.2734375
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.29296875
+    sprite.frameRectRel.y = 0.5234375
+    sprite.frameRectRel.width = 0.2734375
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 150
+    sprite.frameRectWithoutRotation.y = 268
+    sprite.frameRectWithoutRotation.width = 140
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 140
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 140
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__21.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 24403
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__22.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__22
+
+    -- name with image extension
+    sprite.fullName         = walk__22.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 292
+    sprite.frameRect.y = 534
+    sprite.frameRect.width = 130
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.5703125
+    sprite.frameRectRel.y = 0.2607421875
+    sprite.frameRectRel.width = 0.25390625
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.5703125
+    sprite.frameRectRel.y = 1.04296875
+    sprite.frameRectRel.width = 0.25390625
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 292
+    sprite.frameRectWithoutRotation.y = 534
+    sprite.frameRectWithoutRotation.width = 130
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 130
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 130
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__22.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 23781
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__23.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__23
+
+    -- name with image extension
+    sprite.fullName         = walk__23.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 2
+    sprite.frameRect.y = 1070
+    sprite.frameRect.width = 120
+    sprite.frameRect.height = 268
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 0.5224609375
+    sprite.frameRectRel.width = 0.234375
+    sprite.frameRectRel.height = 0.130859375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.00390625
+    sprite.frameRectRel.y = 2.08984375
+    sprite.frameRectRel.width = 0.234375
+    sprite.frameRectRel.height = 0.5234375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 2
+    sprite.frameRectWithoutRotation.y = 1070
+    sprite.frameRectWithoutRotation.width = 120
+    sprite.frameRectWithoutRotation.height = 268
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 120
+    sprite.sourceRect.height = 268
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 120
+    sprite.untrimmedSize.height = 268
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__23.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 22774
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__24.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__24
+
+    -- name with image extension
+    sprite.fullName         = walk__24.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 360
+    sprite.frameRect.y = 1092
+    sprite.frameRect.width = 108
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.703125
+    sprite.frameRectRel.y = 0.533203125
+    sprite.frameRectRel.width = 0.2109375
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.703125
+    sprite.frameRectRel.y = 2.1328125
+    sprite.frameRectRel.width = 0.2109375
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 360
+    sprite.frameRectWithoutRotation.y = 1092
+    sprite.frameRectWithoutRotation.width = 108
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 108
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 108
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__24.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 21575
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__25.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__25
+
+    -- name with image extension
+    sprite.fullName         = walk__25.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 228
+    sprite.frameRect.y = 1342
+    sprite.frameRect.width = 94
+    sprite.frameRect.height = 272
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.4453125
+    sprite.frameRectRel.y = 0.6552734375
+    sprite.frameRectRel.width = 0.18359375
+    sprite.frameRectRel.height = 0.1328125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.4453125
+    sprite.frameRectRel.y = 2.62109375
+    sprite.frameRectRel.width = 0.18359375
+    sprite.frameRectRel.height = 0.53125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 228
+    sprite.frameRectWithoutRotation.y = 1342
+    sprite.frameRectWithoutRotation.width = 94
+    sprite.frameRectWithoutRotation.height = 272
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 94
+    sprite.sourceRect.height = 272
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 94
+    sprite.untrimmedSize.height = 272
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__25.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 20264
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__26.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__26
+
+    -- name with image extension
+    sprite.fullName         = walk__26.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 426
+    sprite.frameRect.y = 274
+    sprite.frameRect.width = 78
+    sprite.frameRect.height = 276
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.83203125
+    sprite.frameRectRel.y = 0.1337890625
+    sprite.frameRectRel.width = 0.15234375
+    sprite.frameRectRel.height = 0.134765625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.83203125
+    sprite.frameRectRel.y = 0.53515625
+    sprite.frameRectRel.width = 0.15234375
+    sprite.frameRectRel.height = 0.5390625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 426
+    sprite.frameRectWithoutRotation.y = 274
+    sprite.frameRectWithoutRotation.width = 78
+    sprite.frameRectWithoutRotation.height = 276
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 78
+    sprite.sourceRect.height = 276
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 78
+    sprite.untrimmedSize.height = 276
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__26.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 18571
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__27.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__27
+
+    -- name with image extension
+    sprite.fullName         = walk__27.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 280
+    sprite.frameRect.y = 1636
+    sprite.frameRect.width = 60
+    sprite.frameRect.height = 274
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.546875
+    sprite.frameRectRel.y = 0.798828125
+    sprite.frameRectRel.width = 0.1171875
+    sprite.frameRectRel.height = 0.1337890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.546875
+    sprite.frameRectRel.y = 3.1953125
+    sprite.frameRectRel.width = 0.1171875
+    sprite.frameRectRel.height = 0.53515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 280
+    sprite.frameRectWithoutRotation.y = 1636
+    sprite.frameRectWithoutRotation.width = 60
+    sprite.frameRectWithoutRotation.height = 274
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 60
+    sprite.sourceRect.height = 274
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 60
+    sprite.untrimmedSize.height = 274
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__27.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 17141
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__28.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__28
+
+    -- name with image extension
+    sprite.fullName         = walk__28.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 342
+    sprite.frameRect.y = 1636
+    sprite.frameRect.width = 58
+    sprite.frameRect.height = 274
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.66796875
+    sprite.frameRectRel.y = 0.798828125
+    sprite.frameRectRel.width = 0.11328125
+    sprite.frameRectRel.height = 0.1337890625
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.66796875
+    sprite.frameRectRel.y = 3.1953125
+    sprite.frameRectRel.width = 0.11328125
+    sprite.frameRectRel.height = 0.53515625
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 342
+    sprite.frameRectWithoutRotation.y = 1636
+    sprite.frameRectWithoutRotation.width = 58
+    sprite.frameRectWithoutRotation.height = 274
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 58
+    sprite.sourceRect.height = 274
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 58
+    sprite.untrimmedSize.height = 274
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__28.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 17585
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__29.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__29
+
+    -- name with image extension
+    sprite.fullName         = walk__29.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 418
+    sprite.frameRect.y = 1364
+    sprite.frameRect.width = 74
+    sprite.frameRect.height = 270
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.81640625
+    sprite.frameRectRel.y = 0.666015625
+    sprite.frameRectRel.width = 0.14453125
+    sprite.frameRectRel.height = 0.1318359375
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.81640625
+    sprite.frameRectRel.y = 2.6640625
+    sprite.frameRectRel.width = 0.14453125
+    sprite.frameRectRel.height = 0.52734375
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 418
+    sprite.frameRectWithoutRotation.y = 1364
+    sprite.frameRectWithoutRotation.width = 74
+    sprite.frameRectWithoutRotation.height = 270
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 74
+    sprite.sourceRect.height = 270
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 74
+    sprite.untrimmedSize.height = 270
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__29.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 18768
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__30.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__30
+
+    -- name with image extension
+    sprite.fullName         = walk__30.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 108
+    sprite.frameRect.y = 1612
+    sprite.frameRect.width = 94
+    sprite.frameRect.height = 266
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.2109375
+    sprite.frameRectRel.y = 0.787109375
+    sprite.frameRectRel.width = 0.18359375
+    sprite.frameRectRel.height = 0.1298828125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.2109375
+    sprite.frameRectRel.y = 3.1484375
+    sprite.frameRectRel.width = 0.18359375
+    sprite.frameRectRel.height = 0.51953125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 108
+    sprite.frameRectWithoutRotation.y = 1612
+    sprite.frameRectWithoutRotation.width = 94
+    sprite.frameRectWithoutRotation.height = 266
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 94
+    sprite.sourceRect.height = 266
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 94
+    sprite.untrimmedSize.height = 266
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__30.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 21067
+
+
+    =========================================================================
+
+    Use the javascript filter plugin to replace -hover with :hover
+    walk__31.png
+
+    -- name without image type extension
+    sprite.trimmedName      = walk__31
+
+    -- name with image extension
+    sprite.fullName         = walk__31.png
+
+    -- offset of the center of the trimmed sprite from the
+    -- center of the original sprite (used by cocos2d)
+    sprite.absoluteOffset.x = 
+    sprite.absoluteOffset.y = 
+
+    -- list of alias sprites for this one
+    sprite.aliasList = 
+
+    --- frame rectangle with pixel coordinates
+    sprite.frameRect.x = 396
+    sprite.frameRect.y = 824
+    sprite.frameRect.width = 114
+    sprite.frameRect.height = 266
+
+    --- frame rectangle with uv coordinates (0..1)
+    sprite.frameRectRel.x = 0.7734375
+    sprite.frameRectRel.y = 0.40234375
+    sprite.frameRectRel.width = 0.22265625
+    sprite.frameRectRel.height = 0.1298828125
+
+    --- frame rectangle with uv coordinates (0..1) calculated through JS
+    sprite.frameRectRel.x = 0.7734375
+    sprite.frameRectRel.y = 1.609375
+    sprite.frameRectRel.width = 0.22265625
+    sprite.frameRectRel.height = 0.51953125
+
+    --- version of the frame rect with "original" width and height
+    sprite.frameRectWithoutRotation.x = 396
+    sprite.frameRectWithoutRotation.y = 824
+    sprite.frameRectWithoutRotation.width = 114
+    sprite.frameRectWithoutRotation.height = 266
+
+    -- true if the sprite was rotated
+    sprite.rotated        = false
+
+    -- true if the sprite was trimmed
+    sprite.trimmed        = false
+
+    sprite.sourceRect.x = 0
+    sprite.sourceRect.y = 0
+    sprite.sourceRect.width = 114
+    sprite.sourceRect.height = 266
+
+    sprite.cornerOffset.x = 0
+    sprite.cornerOffset.y = 0
+
+    sprite.untrimmedSize.width = 114
+    sprite.untrimmedSize.height = 266
+
+    -- the file absolute file name of the sprite
+    sprite.fileData.absoluteFileName = /Users/valorz/github/StageXL/example/example07/images/walk/walk__31.png
+
+    -- the modification date of the sprite
+    sprite.fileData.lastModified = 2013-07-06T18:39:59
+
+    -- the creation date of the sprite
+    sprite.fileData.created = 2013-07-06T18:39:59
+
+    -- the file size of the sprite
+    sprite.fileData.fileSize = 22733
+
+
+

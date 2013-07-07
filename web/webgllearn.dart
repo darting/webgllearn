@@ -38,7 +38,11 @@ class TestScene extends Scene {
     
     resources = new ResourceManager();
     resources.addImage("atlas", "atlas.png");
-    resources.load().then((_) => newChild(2, true, resources.getImage("atlas")));
+    resources.addTextureAtlas("walk", "walk2.json");
+    resources.load().then((_) {
+      var atlas = resources.getTextureAtlas("walk");
+      newChild(2, true, atlas.getImage("walk__01"));
+    });
     
 //    newChild(2, true);
 //    newChild(3, false);
@@ -93,9 +97,6 @@ class TestScene extends Scene {
       var sprite = new Sprite();
       if(useImage){
         sprite.fill = image;
-        sprite.frame.setTo(250, 1305, 332, 328);
-        sprite.width = 440.0;
-        sprite.height = 440.0;
 //        sprite.scaleX = sprite.scaleY = 0.3;
       }else {
         sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256), rng.nextDouble());
