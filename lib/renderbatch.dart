@@ -6,7 +6,7 @@ class RenderBatch implements Dispose {
   int _numSprites;
   Fill _fill;
   Matrix3 _modelViewMatrix;
-  Buffer vertexBuffer, indexBuffer, uvBuffer, colorBuffer;
+  webgl.Buffer vertexBuffer, indexBuffer, uvBuffer, colorBuffer;
   Float32List verticies, uvs, colors;
   Uint16List indices;
   WebGLRenderer renderer;
@@ -137,19 +137,19 @@ class RenderBatch implements Dispose {
   }
   
   growBuffer() {
-    final RenderingContext gl = renderer.gl;
+    final webgl.RenderingContext gl = renderer.gl;
     verticies = new Float32List(_numSprites * 8);
-    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(ARRAY_BUFFER, verticies, DYNAMIC_DRAW);
+    gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(webgl.ARRAY_BUFFER, verticies, webgl.DYNAMIC_DRAW);
     
     if(_fill is Color){
       colors = new Float32List(_numSprites * 16);
-      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.bufferData(ARRAY_BUFFER, colors, DYNAMIC_DRAW);
+      gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
+      gl.bufferData(webgl.ARRAY_BUFFER, colors, webgl.DYNAMIC_DRAW);
     }else if(_fill is Image){
       uvs  = new Float32List(_numSprites * 8);  
-      gl.bindBuffer(ARRAY_BUFFER, uvBuffer);
-      gl.bufferData(ARRAY_BUFFER, uvs, DYNAMIC_DRAW);
+      gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
+      gl.bufferData(webgl.ARRAY_BUFFER, uvs, webgl.DYNAMIC_DRAW);
     }
     
     indices = new Uint16List(_numSprites * 6); 
@@ -163,8 +163,8 @@ class RenderBatch implements Dispose {
       indices[index2 + 4] = index3 + 2;
       indices[index2 + 5] = index3 + 3;
     };
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(ELEMENT_ARRAY_BUFFER, indices, STATIC_DRAW);
+    gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(webgl.ELEMENT_ARRAY_BUFFER, indices, webgl.STATIC_DRAW);
   }
   
   render() {
@@ -175,35 +175,35 @@ class RenderBatch implements Dispose {
       refresh();
     }
     
-    RenderingContext gl = renderer.gl;
-    gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA);
+    webgl.RenderingContext gl = renderer.gl;
+    gl.blendFunc(webgl.ONE, webgl.ONE_MINUS_SRC_ALPHA);
     
     ShaderProgram program;
     if(_fill is Color){
       program = renderer.getShaderProgram("color");
       gl.useProgram(program.program);
-      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.bufferSubData(ARRAY_BUFFER, 0, colors);
-      gl.vertexAttribPointer(program.colorAttribute, 4, FLOAT, false, 0, 0);
+      gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
+      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, colors);
+      gl.vertexAttribPointer(program.colorAttribute, 4, webgl.FLOAT, false, 0, 0);
     }else if(_fill is Image){
       program = renderer.getShaderProgram("texture");
       gl.useProgram(program.program);
-      gl.bindBuffer(ARRAY_BUFFER, uvBuffer);
-      gl.bufferSubData(ARRAY_BUFFER, 0, uvs);
-      gl.vertexAttribPointer(program.textureCoordAttribute, 2, FLOAT, false, 0, 0);
-      gl.activeTexture(TEXTURE0);
-      gl.bindTexture(TEXTURE_2D, renderer.findTexture(_fill as Image));
+      gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
+      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, uvs);
+      gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
+      gl.activeTexture(webgl.TEXTURE0);
+      gl.bindTexture(webgl.TEXTURE_2D, renderer.findTexture(_fill as Image));
       gl.uniform1i(program.samplerUniform, 0);
     }
     
-    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-    gl.bufferSubData(ARRAY_BUFFER, 0, verticies);
-    gl.vertexAttribPointer(program.vertexPositionAttribute, 2, FLOAT, false, 0, 0);
+    gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferSubData(webgl.ARRAY_BUFFER, 0, verticies);
+    gl.vertexAttribPointer(program.vertexPositionAttribute, 2, webgl.FLOAT, false, 0, 0);
     
     
     
-    gl.bindBuffer(ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.drawElements(TRIANGLES, _numSprites * 6, UNSIGNED_SHORT, 0);
+    gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.drawElements(webgl.TRIANGLES, _numSprites * 6, webgl.UNSIGNED_SHORT, 0);
   }
 }
 

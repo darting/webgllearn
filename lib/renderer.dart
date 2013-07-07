@@ -13,17 +13,17 @@ abstract class Renderer implements Dispose{
 
 class WebGLRenderer extends Renderer {
   final Set<Image> _loadingTextures = new Set<Image>();
-  final Map<Image, Texture> _texturesCache = new Map<Image, Texture>();
+  final Map<Image, webgl.Texture> _texturesCache = new Map<Image, webgl.Texture>();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
-  RenderingContext gl;
+  webgl.RenderingContext gl;
   List<RenderBatch> _batchs;
   int _currentBatchIndex;
   
   WebGLRenderer(CanvasElement canvas) : super(canvas) {
     gl = canvas.getContext3d(preserveDrawingBuffer: true);
-    gl.disable(DEPTH_TEST);
-    gl.disable(CULL_FACE);
-    gl.enable(BLEND);
+    gl.disable(webgl.DEPTH_TEST);
+    gl.disable(webgl.CULL_FACE);
+    gl.enable(webgl.BLEND);
 //    gl.blendFunc(SRC_ALPHA, ONE);
 //    gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA);
     _initShader();
@@ -49,7 +49,7 @@ class WebGLRenderer extends Renderer {
         director.background.green, 
         director.background.blue, 
         director.background.alpha);
-    gl.clear(COLOR_BUFFER_BIT);
+    gl.clear(webgl.COLOR_BUFFER_BIT);
   }
   
   render(Sprite sprite) {
@@ -75,15 +75,15 @@ class WebGLRenderer extends Renderer {
 
   _handleTexture(Image fill) {
     print('handle texture ${fill}');
-    Texture texture = gl.createTexture();
-    gl.bindTexture(TEXTURE_2D, texture);
-    gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
-    gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, fill.imageData);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_S, REPEAT);
-    gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_T, REPEAT);
-    gl.bindTexture(TEXTURE_2D, null);
+    webgl.Texture texture = gl.createTexture();
+    gl.bindTexture(webgl.TEXTURE_2D, texture);
+    gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
+    gl.texImage2D(webgl.TEXTURE_2D, 0, webgl.RGBA, webgl.RGBA, webgl.UNSIGNED_BYTE, fill.imageData);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MAG_FILTER, webgl.LINEAR);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_MIN_FILTER, webgl.LINEAR);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
+    gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
+    gl.bindTexture(webgl.TEXTURE_2D, null);
     _loadingTextures.remove(fill);
     _texturesCache[fill] = texture;
   }
@@ -103,22 +103,22 @@ class WebGLRenderer extends Renderer {
 }
 
 class ShaderProgram {
-  Program program;
+  webgl.Program program;
   int vertexPositionAttribute, textureCoordAttribute, colorAttribute;
-  UniformLocation samplerUniform;
+  webgl.UniformLocation samplerUniform;
   
-  ShaderProgram(String vertextShaderSource, String fragmentShaderSource, RenderingContext gl) {
-    Shader vertexShader = gl.createShader(VERTEX_SHADER);
+  ShaderProgram(String vertextShaderSource, String fragmentShaderSource, webgl.RenderingContext gl) {
+    webgl.Shader vertexShader = gl.createShader(webgl.VERTEX_SHADER);
     gl.shaderSource(vertexShader, vertextShaderSource);
     gl.compileShader(vertexShader);
-    if (!gl.getShaderParameter(vertexShader, COMPILE_STATUS)) {
+    if (!gl.getShaderParameter(vertexShader, webgl.COMPILE_STATUS)) {
       throw "vertex shader error: "+ gl.getShaderInfoLog(vertexShader);
     }
     
-    Shader fragmentShader = gl.createShader(FRAGMENT_SHADER);
+    webgl.Shader fragmentShader = gl.createShader(webgl.FRAGMENT_SHADER);
     gl.shaderSource(fragmentShader, fragmentShaderSource);
     gl.compileShader(fragmentShader);
-    if (!gl.getShaderParameter(fragmentShader, COMPILE_STATUS)) {
+    if (!gl.getShaderParameter(fragmentShader, webgl.COMPILE_STATUS)) {
       throw "fragment shader error: "+ gl.getShaderInfoLog(fragmentShader);
     }
     
@@ -126,7 +126,7 @@ class ShaderProgram {
     gl.attachShader(program, vertexShader);
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, LINK_STATUS)) {
+    if (!gl.getProgramParameter(program, webgl.LINK_STATUS)) {
       throw "Could not initialise shaders.";
     }
 

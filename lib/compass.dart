@@ -2,7 +2,7 @@ library compass;
 
 import 'dart:html';
 import 'dart:json' as json;
-import 'dart:web_gl';
+import 'dart:web_gl' as webgl;
 import 'dart:typed_data';
 import 'dart:async';
 import 'dart:math';
