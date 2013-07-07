@@ -7,10 +7,10 @@ abstract class Fill {
 class Image extends Fill {
   static final Map<String, Image> _cache = new Map<String, Image>();
   
-  ImageElement imageData;
+  html.ImageElement imageData;
   EventDispatcher onReady;
   
-  Image.fromImageElement(ImageElement image) {
+  Image.fromImageElement(html.ImageElement image) {
     imageData = image;
     onReady = new EventDispatcher(this);
     onReady.dispatch();
@@ -25,7 +25,7 @@ class Image extends Fill {
   static Future<Image> load(String url) {
     Completer<Image> completer = new Completer<Image>();
 
-    ImageElement imageElement = new ImageElement();
+    html.ImageElement imageElement = new html.ImageElement();
     StreamSubscription onLoadSubscription;
     StreamSubscription onErrorSubscription;
 
@@ -62,7 +62,7 @@ class TextureAtlas {
 
     switch(textureAtlasFormat) {
       case TextureAtlasFormat.JSON:
-        HttpRequest.getString(url).then((textureAtlasJson) {
+        html.HttpRequest.getString(url).then((textureAtlasJson) {
           var data = json.parse(textureAtlasJson);
           var frames = data["frames"];
           var meta = data["meta"];

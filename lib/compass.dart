@@ -1,6 +1,6 @@
 library compass;
 
-import 'dart:html';
+import 'dart:html' as html;
 import 'dart:json' as json;
 import 'dart:web_gl' as webgl;
 import 'dart:typed_data';

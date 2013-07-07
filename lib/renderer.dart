@@ -2,7 +2,7 @@ part of compass;
 
 
 abstract class Renderer implements Dispose{
-  CanvasElement canvas;
+  html.CanvasElement canvas;
   
   Renderer(this.canvas);
   nextFrame();
@@ -19,7 +19,7 @@ class WebGLRenderer extends Renderer {
   List<RenderBatch> _batchs;
   int _currentBatchIndex;
   
-  WebGLRenderer(CanvasElement canvas) : super(canvas) {
+  WebGLRenderer(html.CanvasElement canvas) : super(canvas) {
     gl = canvas.getContext3d(preserveDrawingBuffer: true);
     gl.disable(webgl.DEPTH_TEST);
     gl.disable(webgl.CULL_FACE);

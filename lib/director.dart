@@ -3,7 +3,7 @@ part of compass;
 
 class Director implements Dispose {
   Stats stats;
-  CanvasElement _canvas;
+  html.CanvasElement _canvas;
   Renderer _renderer;
   Scene _scene;
   num _lastElapsed;
@@ -12,13 +12,13 @@ class Director implements Dispose {
   
     
   
-  static init(CanvasElement canvas) {
+  static init(html.CanvasElement canvas) {
     if(director != null) 
       director.dispose();
     director = new Director._internal(canvas);
   }
   
-  Director._internal(CanvasElement canvas) {
+  Director._internal(html.CanvasElement canvas) {
     stats = new Stats();
 
     _canvas = canvas;
@@ -41,7 +41,7 @@ class Director implements Dispose {
   }
   
   _run() {
-    window.requestAnimationFrame(_animate);
+    html.window.requestAnimationFrame(_animate);
   }
   
   _animate(num elapsed) {
