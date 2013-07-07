@@ -31,6 +31,8 @@ class TestScene extends Scene {
   num speed = 200, sx, sy, scaleSpeed;
   ResourceManager resources;
   
+  SpriteSheet animate;  
+  
   enter() {
     sx = speed;
     sy = speed;
@@ -41,7 +43,10 @@ class TestScene extends Scene {
     resources.addTextureAtlas("walk", "walk2.json");
     resources.load().then((_) {
       var atlas = resources.getTextureAtlas("walk");
-      newChild(2, true, atlas.getImage("walk__01"));
+      newChild(20000, true, atlas.getImage("walk__03"));
+//      animate = new SpriteSheet(atlas.getImages("walk"), 12);
+//      addChild(animate);
+//      newAnimation(1000, atlas.getImages("walk"));
     });
     
 //    newChild(2, true);
@@ -49,11 +54,15 @@ class TestScene extends Scene {
   }
   
   tick(num interval) {
-    children.forEach((DisplayObject child) {
+    if(animate != null)
+      animate.advanceTime(interval);
+//    children.forEach((DisplayObject child) {
 //      move(interval / 1000, child);
 //      rotate(interval / 1000, child);
 //      scaleChildren(interval / 1000, child);
-    });
+//      if(child is SpriteSheet)
+//        (child as SpriteSheet).advanceTime(interval);
+//    });
     counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
   }
   
@@ -97,19 +106,30 @@ class TestScene extends Scene {
       var sprite = new Sprite();
       if(useImage){
         sprite.fill = image;
-//        sprite.scaleX = sprite.scaleY = 0.3;
+        sprite.scaleX = sprite.scaleY = 0.3;
       }else {
         sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256), rng.nextDouble());
         sprite.width = 32.0;//rng.nextDouble() * 50;
         sprite.height = 32.0;//rng.nextDouble() * 50;
       }
-      sprite.x = 0.0;// rng.nextDouble() * director.width;
-      sprite.y = 0.0;// rng.nextDouble() * director.height;
+      sprite.x = rng.nextDouble() * director.width;
+      sprite.y = rng.nextDouble() * director.height;
 //      sprite.pivotX = 0.5;
 //      sprite.pivotY = 0.5;
 //      sprite.x = 100.0;
 //      sprite.y = 100.0;
       addChild(sprite);
+    }
+  }
+  
+  newAnimation(int count, List<Image> images) {
+    var rng = new Random();
+    for(var i = 0; i < count; i++){
+      var animate = new SpriteSheet(images, 12);
+      animate.x = rng.nextDouble() * director.width;
+      animate.y = rng.nextDouble() * director.height;
+      animate.scaleX = animate.scaleY = 0.5;
+      addChild(animate);
     }
   }
 }

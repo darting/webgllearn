@@ -32,6 +32,7 @@ part 'label.dart';
 part 'resourcemanager.dart';
 part 'eventsubscription.dart';
 part 'resource.dart';
+part 'animatable.dart';
 
 
 Director director;
