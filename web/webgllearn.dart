@@ -29,13 +29,18 @@ void main() {
 class TestScene extends Scene {
   
   num speed = 200, sx, sy, scaleSpeed;
+  ResourceManager resources;
   
   enter() {
     sx = speed;
     sy = speed;
     scaleSpeed = 0.1;
     
-    newChild(2, true);
+    resources = new ResourceManager();
+    resources.addImage("atlas", "atlas.png");
+    resources.load().then((_) => newChild(2, true, resources.getImage("atlas")));
+    
+//    newChild(2, true);
 //    newChild(3, false);
   }
   
@@ -82,13 +87,12 @@ class TestScene extends Scene {
     }
   }
   
-  newChild(int count, bool useImage) {
+  newChild(int count, bool useImage, [Image image]) {
     var rng = new Random();
     for(var i = 0; i < count; i++){
       var sprite = new Sprite();
       if(useImage){
-        var img = new Image("atlas.png");
-        sprite.fill = img;
+        sprite.fill = image;
         sprite.frame.setTo(250, 1305, 332, 328);
         sprite.width = 440.0;
         sprite.height = 440.0;

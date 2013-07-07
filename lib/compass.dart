@@ -1,6 +1,7 @@
 library compass;
 
 import 'dart:html';
+import 'dart:json' as json;
 import 'dart:web_gl';
 import 'dart:typed_data';
 import 'dart:async';
@@ -30,6 +31,7 @@ part 'interfaces.dart';
 part 'label.dart';
 part 'resourcemanager.dart';
 part 'eventsubscription.dart';
+part 'resource.dart';
 
 
 Director director;
@@ -89,7 +91,52 @@ void main(void) {
 """;
 
 
+String _replaceFilename(String url, String filename) {
+  RegExp regex = new RegExp(r"^(.*/)?(?:$|(.+?)(?:(\.[^.]*$)|$))", multiLine:false, caseSensitive:false);
+  Match match = regex.firstMatch(url);
+  String path = match.group(1);
+  return (path == null) ? filename : "$path$filename";
+}
 
+String _getFilenameWithoutExtension(String filename) {
+
+  RegExp regex = new RegExp(r"(.+?)(\.[^.]*$|$)", multiLine:false, caseSensitive:false);
+  Match match = regex.firstMatch(filename);
+  return match.group(1);
+}
+
+
+bool _ensureBool(bool value) {
+  if (value is bool) {
+    return value;
+  } else {
+    throw new ArgumentError("The supplied value ($value) is not a bool.");
+  }
+}
+
+int _ensureInt(int value) {
+  if (value is int) {
+    return value;
+  } else {
+    throw new ArgumentError("The supplied value ($value) is not an int.");
+  }
+}
+
+num _ensureNum(num value) {
+  if (value is num) {
+    return value;
+  } else {
+    throw new ArgumentError("The supplied value ($value) is not a number.");
+  }
+}
+
+String _ensureString(String value) {
+  if (value is String) {
+    return value;
+  } else {
+    throw new ArgumentError("The supplied value ($value) is not a string.");
+  }
+}
 
 
 

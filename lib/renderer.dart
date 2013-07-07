@@ -12,8 +12,8 @@ abstract class Renderer implements Dispose{
 }
 
 class WebGLRenderer extends Renderer {
-  final Set<String> _loadingTextures = new Set<String>();
-  final Map<String, Texture> _texturesCache = new Map<String, Texture>();
+  final Set<Image> _loadingTextures = new Set<Image>();
+  final Map<Image, Texture> _texturesCache = new Map<Image, Texture>();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
   RenderingContext gl;
   List<RenderBatch> _batchs;
@@ -63,18 +63,18 @@ class WebGLRenderer extends Renderer {
   }
   
   loadTexture(Image fill) {
-    if(!_loadingTextures.contains(fill.src) && !_texturesCache.containsKey(fill.src)){
-      _loadingTextures.add(fill.src);
+    if(!_loadingTextures.contains(fill) && !_texturesCache.containsKey(fill)){
+      _loadingTextures.add(fill);
       fill.onReady.once(_handleTexture);
     }
   }
   
   findTexture(Image fill) {
-    return _texturesCache[fill.src];
+    return _texturesCache[fill];
   }
 
   _handleTexture(Image fill) {
-    print('handle texture ${fill.src}');
+    print('handle texture ${fill}');
     Texture texture = gl.createTexture();
     gl.bindTexture(TEXTURE_2D, texture);
     gl.pixelStorei(UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
@@ -84,8 +84,8 @@ class WebGLRenderer extends Renderer {
     gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_S, REPEAT);
     gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_T, REPEAT);
     gl.bindTexture(TEXTURE_2D, null);
-    _loadingTextures.remove(fill.src);
-    _texturesCache[fill.src] = texture;
+    _loadingTextures.remove(fill);
+    _texturesCache[fill] = texture;
   }
   
   finishBatch() {
