@@ -12,7 +12,7 @@ class Sprite extends DisplayObject {
   set fill(Fill val) {
     _fill = val;
     if(val is Image) {
-      val.onReady + _handleImage;
+      val.onReady.once(_handleImage);
       
 //      if(val.loaded){
 //        _handleImage(val);

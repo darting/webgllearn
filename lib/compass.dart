@@ -29,7 +29,7 @@ part 'director.dart';
 part 'interfaces.dart';
 part 'label.dart';
 part 'resourcemanager.dart';
-part 'eventstreamsubscription.dart';
+part 'eventsubscription.dart';
 
 
 Director director;

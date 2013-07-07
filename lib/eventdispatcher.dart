@@ -2,7 +2,7 @@ part of compass;
 
 class EventDispatcher<T> extends Stream<T> {
   dynamic _trigger;
-  List<_EventStreamSubscription> _subscriptions = [];
+  List<_EventSubscription> _subscriptions = [];
   bool _dispatched = false;
   T _data;
   
@@ -11,31 +11,28 @@ class EventDispatcher<T> extends Stream<T> {
   }
 
   StreamSubscription<T> listen(onData, {void onError(error), void onDone(), bool cancelOnError:false}) {
-      var eventStreamSubscription = new _EventStreamSubscription<T>(this, onData);
-      _subscriptions.add(eventStreamSubscription);
-      return eventStreamSubscription;
+      var subscription = new _EventSubscription<T>(this, onData);
+      _subscriptions.add(subscription);
+      return subscription;
   }
   
   StreamSubscription<T> then(onData) {
-    var eventStreamSubscription = listen(onData);
-    if(_dispatched) 
-      eventStreamSubscription._invoke(_trigger, _data);
-    return eventStreamSubscription;
+    var subscription = listen(onData);
+    if(_dispatched)
+      subscription._invoke(_trigger, _data);
+    return subscription;
   }
   
   void once(onData) {
-    var eventStreamSubscription = listen((t, d) {
-      onData(t, d);
-      eventStreamSubscription.cancel();
-    });
+    (then(onData) as _EventSubscription)._once = true;
   }
   
-  cancelSubscription(_EventStreamSubscription<T> eventStreamSubscription) {
-    if (eventStreamSubscription._canceled) return;
+  cancelSubscription(_EventSubscription<T> eventSubscription) {
+    if (eventSubscription._canceled) return;
     var subscriptions = [];
     for(var i = 0; i < _subscriptions.length; i++) {
       var subscription = _subscriptions[i];
-      if (identical(subscription, eventStreamSubscription)) {
+      if (identical(subscription, eventSubscription)) {
         subscription._canceled = true;
       } else {
         subscriptions.add(subscription);
@@ -59,7 +56,10 @@ class EventDispatcher<T> extends Stream<T> {
     for(var i = 0; i < subscriptionsLength; i++) {
       var subscription = subscriptions[i];
       if (subscription._canceled == false) {
-        subscription._invoke(_trigger, data);
+        if(?data)
+          subscription._invoke(_trigger, data);
+        else
+          subscription._invoke(_trigger);
       }
     }
   }

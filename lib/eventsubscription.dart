@@ -1,18 +1,23 @@
 part of compass;
 
-class _EventStreamSubscription<T> extends StreamSubscription<T> {
+class _EventSubscription<T> extends StreamSubscription<T> {
   int _pauseCount = 0;
   bool _canceled = false;
+  bool _once = false;
   
   EventDispatcher<T> _eventStream;
   Function _onData;
-  _EventStreamSubscription(this._eventStream, this._onData);
+  _EventSubscription(this._eventStream, this._onData);
 
   void _invoke(trigger, [T data]) {
     if(?data)
       _onData(trigger, data);
     else
       _onData(trigger);
+    if(_once){
+      _canceled = true;
+      cancel();
+    }
   }
 
   void onData(void handleData(T data)) {

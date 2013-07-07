@@ -12,6 +12,7 @@ abstract class Renderer implements Dispose{
 }
 
 class GLRenderer extends Renderer {
+  final Set<String> _loadingTextures = new Set<String>();
   final Map<String, Texture> _texturesCache = new Map<String, Texture>();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
   RenderingContext gl;
@@ -62,16 +63,9 @@ class GLRenderer extends Renderer {
   }
   
   loadTexture(Image fill) {
-    if(!_texturesCache.containsKey(fill.src)){
-      var subscription = fill.onReady.then((f) {
-        _handleTexture(f);
-        subscription.cancel();
-      });
-      
-//      if(fill.loaded)
-//        _handleTexture(fill);
-//      else
-//        fill.imageData.onLoad.listen((e) => _handleTexture(fill));
+    if(!_loadingTextures.contains(fill.src) && !_texturesCache.containsKey(fill.src)){
+      _loadingTextures.add(fill.src);
+      fill.onReady.once(_handleTexture);
     }
   }
   
@@ -90,6 +84,7 @@ class GLRenderer extends Renderer {
     gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_S, REPEAT);
     gl.texParameteri(TEXTURE_2D, TEXTURE_WRAP_T, REPEAT);
     gl.bindTexture(TEXTURE_2D, null);
+    _loadingTextures.remove(fill.src);
     _texturesCache[fill.src] = texture;
   }
   
