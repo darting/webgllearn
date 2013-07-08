@@ -22,7 +22,9 @@ class Sprite extends DisplayObject {
   }
   
   render(Renderer renderer) {
+//    var c = new CallerStats("sprite render");
     renderer.render(this);
+//    c.stop();
   }
 }
 

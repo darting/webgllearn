@@ -145,6 +145,7 @@ class CallerStats {
   String name;
   int count = 0;
   int total = 0;
+  double avg = 0.0;
   Stopwatch watch;
   CallerStats(this.name) {
     if(callerStatsMap.containsKey(name)){
@@ -160,6 +161,7 @@ class CallerStats {
   stop(){
     watch.stop();
     callerStatsMap[name].total += watch.elapsedMilliseconds;
+    callerStatsMap[name].avg = callerStatsMap[name].total / callerStatsMap[name].count;
   }
 }
 
@@ -170,17 +172,16 @@ printCallerStats(counter) {
     list.add(v);
   });
   list.sort((a, b) {
-    if(a.total < b.total) return 1;
-    else if(a.total == b.total) return 0;
+    if(a.avg < b.avg) return 1;
+    else if(a.avg == b.avg) return 0;
     return -1;
   });
   var totalAvg = 0.0;
   list.forEach((CallerStats v) {
-    var avg = (v.total / v.count);
     var li = new html.LIElement();
-    li.innerHtml = '${v.name} >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", avg.toStringAsFixed(3), "ms")}';
+    li.innerHtml = '${v.name} >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", v.avg.toStringAsFixed(3), "ms")}';
     counter.children.add(li);
-    totalAvg += avg;
+    totalAvg += v.avg;
   });
   var li = new html.LIElement();
   li.innerHtml = '<h3>Avg: ${totalAvg.toStringAsFixed(3)}ms</h3>';

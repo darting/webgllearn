@@ -45,19 +45,27 @@ class Director implements Dispose {
   }
   
   _animate(num elapsed) {
-    var caller = new CallerStats("director");
     stats.begin();
+
+    var caller = new CallerStats("director animate");
     
     var interval = elapsed - _lastElapsed;
     _lastElapsed = elapsed;
     _scene.tick(interval);
     
+    var c = new CallerStats("nextFrame");
     _renderer.nextFrame();
+    c.stop();
+    
+    c = new CallerStats("scene render");
     _scene.render(_renderer);
+    c.stop();
+    
     _renderer.finishBatch();
     
-    stats.end();
     caller.stop();
+    
+    stats.end();
     
     _run();
   }

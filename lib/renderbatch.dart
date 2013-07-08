@@ -31,6 +31,8 @@ class RenderBatch implements Dispose {
   }
   
   reset() {
+    return;
+    
     _numSprites = 0;
     _sprites.clear();
     _fill = null;
@@ -48,15 +50,19 @@ class RenderBatch implements Dispose {
     return !_fill.equals(sprite.fill);
   }
   
+  bool init = true;
+  
   add(Sprite sprite) {
-    var c1 = new CallerStats("add to batch");
-    
-    if(_numSprites == 0) _fill = sprite.fill;
-    _sprites.add(sprite);
-    _numSprites++;
-    dirty = true;
-    
-    c1.stop();
+    if(init){
+//      var c1 = new CallerStats("add to batch");
+      
+      if(_numSprites == 0) _fill = sprite.fill;
+      _sprites.add(sprite);
+      _numSprites++;
+      dirty = true;
+      
+//      c1.stop();
+    }
   }
   
   refresh() {
@@ -79,6 +85,8 @@ class RenderBatch implements Dispose {
     var a, b, c, d, tx, ty;
     
     index = no * 8;
+    
+    var caller = new CallerStats("calculate pos");
     
     width = sprite.width;
     height = sprite.height;
@@ -112,6 +120,8 @@ class RenderBatch implements Dispose {
     verticies[index + 6] =  (a * w1 + c * h0 + tx) * 2 / director.width - 1.0; 
     verticies[index + 7] =  -(d * h0 + b * w1 + ty) * 2 / director.height + 1.0; 
     
+    caller.stop();
+    
     if(sprite.fill is Color) {
       var color = sprite.fill as Color;
       var colorIndex = no * 16;
@@ -123,23 +133,33 @@ class RenderBatch implements Dispose {
         colorIndex += 3;
       }
     } else if(_fill is Image) {
+      
+      caller = new CallerStats("calculate uvs");
+      
       var img = _fill as Image;
       var tw = img.width;
       var th = img.height;
       var right = img.frameX + img.frameWidth;
       var bottom = img.frameY + img.frameHeight;
       
-      uvs[index + 0] = img.frameX / tw;
-      uvs[index + 1] = img.frameY / th;
+      var fxtw = img.frameX / tw;
+      var fyth = img.frameY / th;
+      var rtw = right / tw;
+      var bth = bottom / th;
       
-      uvs[index + 2] = right / tw;
-      uvs[index + 3] = img.frameY / th;
+      uvs[index + 0] = fxtw;
+      uvs[index + 1] = fyth;
+      
+      uvs[index + 2] = rtw;
+      uvs[index + 3] = fyth;
      
-      uvs[index + 4] = right / tw;
-      uvs[index + 5] = bottom / th;
+      uvs[index + 4] = rtw;
+      uvs[index + 5] = bth;
       
-      uvs[index + 6] = img.frameX / tw;
-      uvs[index + 7] = bottom / th;
+      uvs[index + 6] = fxtw;
+      uvs[index + 7] = bth;
+      
+      caller.stop();
       
 //      print(uvs);
     }
@@ -181,6 +201,8 @@ class RenderBatch implements Dispose {
   }
   
   render() {
+//    var c = new CallerStats("batch render");
+    
     if(_numSprites == 0) return;
 
     if(dirty){
@@ -193,33 +215,46 @@ class RenderBatch implements Dispose {
     
     ShaderProgram program;
     if(_fill is Color){
+//      var c1 = new CallerStats("upload color");
       program = renderer.getShaderProgram("color");
       gl.useProgram(program.program);
       gl.enableVertexAttribArray(program.colorAttribute);
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
-      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, colors);
+      if(init)
+        gl.bufferSubData(webgl.ARRAY_BUFFER, 0, colors);
       gl.vertexAttribPointer(program.colorAttribute, 4, webgl.FLOAT, false, 0, 0);
+//      c1.stop();
     }else if(_fill is Image){
+//      var c1 = new CallerStats("upload texture");
       program = renderer.getShaderProgram("texture");
       gl.useProgram(program.program);
       gl.enableVertexAttribArray(program.textureCoordAttribute);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
-      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, uvs);
+      if(init)
+        gl.bufferSubData(webgl.ARRAY_BUFFER, 0, uvs);
       gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
       gl.activeTexture(webgl.TEXTURE0);
       gl.bindTexture(webgl.TEXTURE_2D, renderer.findTexture(_fill as Image));
       gl.uniform1i(program.samplerUniform, 0);
+//      c1.stop();
     }
 
+//    var c1 = new CallerStats("upload position");
     gl.enableVertexAttribArray(program.vertexPositionAttribute);
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferSubData(webgl.ARRAY_BUFFER, 0, verticies);
+    if(init)
+      gl.bufferSubData(webgl.ARRAY_BUFFER, 0, verticies);
     gl.vertexAttribPointer(program.vertexPositionAttribute, 2, webgl.FLOAT, false, 0, 0);
+//    c1.stop();
     
-    
-    
+//    c1 = new CallerStats("draw elements");
     gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.drawElements(webgl.TRIANGLES, _numSprites * 6, webgl.UNSIGNED_SHORT, 0);
+//    c1.stop();
+    
+//    c.stop();
+    
+    init = false;
   }
 }
 

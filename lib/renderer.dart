@@ -56,26 +56,27 @@ class WebGLRenderer extends Renderer {
   }
   
   render(Sprite sprite) {
-    var c1 = new CallerStats("loadTexture");
-    if(sprite.fill is Image){
-      loadTexture(sprite.fill as Image);
-    }
-    c1.stop();
     
-    var c2 = new CallerStats("isStateChanged");
-    if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
-      print('batch state changed');
-      finishBatch();
-    }
-    c2.stop();
+//    if(sprite.fill is Image){
+//      loadTexture(sprite.fill as Image);
+//    }
+    
+//    var c2 = new CallerStats("isStateChanged");
+//    if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
+//      print('batch state changed');
+//      finishBatch();
+//    }
+//    c2.stop();
     
     _batchs[_currentBatchIndex].add(sprite);
   }
   
   loadTexture(Image fill) {
+    var c1 = new CallerStats("loadTexture");
     if(!_texturesCache.containsKey(fill.imageData)){
       _handleTexture(fill);
     }
+    c1.stop();
   }
   
   findTexture(Image fill) {
@@ -83,7 +84,6 @@ class WebGLRenderer extends Renderer {
   }
 
   _handleTexture(Image fill) {
-    print('upload texture $fill');
     webgl.Texture texture = gl.createTexture();
     gl.bindTexture(webgl.TEXTURE_2D, texture);
     gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
@@ -97,13 +97,13 @@ class WebGLRenderer extends Renderer {
   }
   
   finishBatch() {
-    var c1 = new CallerStats("finishBatch");
+//    var c1 = new CallerStats("finishBatch");
     _batchs[_currentBatchIndex].render();
     _batchs[_currentBatchIndex].reset();
     _currentBatchIndex++;
     if(_batchs.length <= _currentBatchIndex)
       _batchs.add(new RenderBatch(this));
-    c1.stop();
+//    c1.stop();
   }
 
   dispose() {

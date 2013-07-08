@@ -155,7 +155,27 @@ class Color extends Fill {
   toInt() {
     return red << 16 | green << 8 | blue;
   }
+  
+// 1)
+//
+//  Out.r = SquaredDistance * 2^0
+//      Out.g = SquaredDistance * 2^8
+//      Out.b = SquaredDistance * 2^16
+//      Out.a = SquaredDistance * 2^24
+//
+//      float4 vPack = {1.0f, 256.0f, 65536.0, 16777216.0f};
+//  return vPack * dot(vLight, vLight);
 
+// 2)
+//  
+//Out.r = floor(fDepth) / 256.0;
+//Out.g = frac(fDepth);
+//
+//  float fDepth = dot(vLight, vLight);
+//  return float(floor(fDepth) / 256.0, frac(fDepth),
+//               frac(fDepth), frac(fDepth));
+//
+// Method 1 is computationally cheaper, but the second one gives you higher precision.
   static parse(int color) {
     int r = (color >> 16) & 0xFF;
     int g = (color >>  8) & 0xFF;
