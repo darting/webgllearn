@@ -43,10 +43,10 @@ class TestScene extends Scene {
     resources.addTextureAtlas("walk", "walk2.json");
     resources.load().then((_) {
       var atlas = resources.getTextureAtlas("walk");
-      newChild(1000, true, atlas.getImage("walk__03"));
+//      newChild(20000, false, atlas.getImage("walk__03"));
 //      animate = new SpriteSheet(atlas.getImages("walk"), 12);
 //      addChild(animate);
-//      newAnimation(1000, atlas.getImages("walk"));
+      newAnimation(10000, atlas.getImages("walk"));
     });
     
 //    newChild(2, true);
@@ -54,15 +54,15 @@ class TestScene extends Scene {
   }
   
   tick(num interval) {
-    if(animate != null)
-      animate.advanceTime(interval);
-//    children.forEach((DisplayObject child) {
+//    if(animate != null)
+//      animate.advanceTime(interval);
+    children.forEach((DisplayObject child) {
 //      move(interval / 1000, child);
 //      rotate(interval / 1000, child);
 //      scaleChildren(interval / 1000, child);
-//      if(child is SpriteSheet)
-//        (child as SpriteSheet).advanceTime(interval);
-//    });
+      if(child is SpriteSheet)
+        (child as SpriteSheet).advanceTime(interval);
+    });
     counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
   }
   

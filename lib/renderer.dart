@@ -12,7 +12,7 @@ abstract class Renderer implements Dispose{
 }
 
 class WebGLRenderer extends Renderer {
-  final Map<Image, webgl.Texture> _texturesCache = new Map<Image, webgl.Texture>();
+  final Map<html.ImageElement, webgl.Texture> _texturesCache = new Map<html.ImageElement, webgl.Texture>();
   final Map<String, ShaderProgram> _programsCache = new Map<String, ShaderProgram>();
   webgl.RenderingContext gl;
   List<RenderBatch> _batchs;
@@ -63,13 +63,13 @@ class WebGLRenderer extends Renderer {
   }
   
   loadTexture(Image fill) {
-    if(!_texturesCache.containsKey(fill)){
+    if(!_texturesCache.containsKey(fill.imageData)){
       _handleTexture(fill);
     }
   }
   
   findTexture(Image fill) {
-    return _texturesCache[fill];
+    return _texturesCache[fill.imageData];
   }
 
   _handleTexture(Image fill) {
@@ -83,7 +83,7 @@ class WebGLRenderer extends Renderer {
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_S, webgl.REPEAT);
     gl.texParameteri(webgl.TEXTURE_2D, webgl.TEXTURE_WRAP_T, webgl.REPEAT);
     gl.bindTexture(webgl.TEXTURE_2D, null);
-    _texturesCache[fill] = texture;
+    _texturesCache[fill.imageData] = texture;
   }
   
   finishBatch() {
