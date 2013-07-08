@@ -165,9 +165,18 @@ class CallerStats {
 
 printCallerStats(counter) {
   counter.children.clear();
+  var list = [];
   callerStatsMap.forEach((String k, CallerStats v) {
+    list.add(v);
+  });
+  list.sort((a, b) {
+    if(a.total < b.total) return 1;
+    else if(a.total == b.total) return 0;
+    return -1;
+  });
+  list.forEach((CallerStats v) {
     var li = new html.LIElement();
-    li.innerHtml = '$k >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", (v.total / v.count).toStringAsFixed(3), "ms")}';
+    li.innerHtml = '${v.name} >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", (v.total / v.count).toStringAsFixed(3), "ms")}';
     counter.children.add(li);
   });
 }
