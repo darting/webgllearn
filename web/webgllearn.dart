@@ -43,7 +43,7 @@ class TestScene extends Scene {
     resources.addTextureAtlas("walk", "walk2.json");
     resources.load().then((_) {
       var atlas = resources.getTextureAtlas("walk");
-      newChild(20000, false, atlas.getImage("walk__03"));
+      newChild(1000, true, atlas.getImage("walk__03"));
 //      animate = new SpriteSheet(atlas.getImages("walk"), 12);
 //      addChild(animate);
 //      newAnimation(1000, atlas.getImages("walk"));
