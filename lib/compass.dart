@@ -140,6 +140,27 @@ String _ensureString(String value) {
 }
 
 
+var callerStatsMap = new Map<String, CallerStats>();
+class CallerStats {
+  String name;
+  int count = 0;
+  int total = 0;
+  Stopwatch watch;
+  CallerStats(this.name) {
+    if(callerStatsMap.containsKey(name)){
+      callerStatsMap[name].count += 1;
+    }else{
+      callerStatsMap[name] = this;
+    }
+    watch = new Stopwatch();
+    watch.start();
+  }
+  
+  stop(){
+    watch.stop();
+    callerStatsMap[name].total += watch.elapsedMilliseconds;
+  }
+}
 
 
 
