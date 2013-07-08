@@ -72,6 +72,7 @@ class WebGLRenderer extends Renderer {
   }
 
   _handleTexture(Image fill) {
+    print('upload texture $fill');
     webgl.Texture texture = gl.createTexture();
     gl.bindTexture(webgl.TEXTURE_2D, texture);
     gl.pixelStorei(webgl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
