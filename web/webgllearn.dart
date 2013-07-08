@@ -47,7 +47,7 @@ class TestScene extends Scene {
 //      newChild(20000, false, atlas.getImage("walk__03"));
 //      animate = new SpriteSheet(atlas.getImages("walk"), 12);
 //      addChild(animate);
-      newAnimation(100, atlas.getImages("walk"));
+      newAnimation(5000, atlas.getImages("walk"));
     });
     
 //    newChild(2, true);

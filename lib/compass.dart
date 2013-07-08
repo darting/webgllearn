@@ -174,11 +174,17 @@ printCallerStats(counter) {
     else if(a.total == b.total) return 0;
     return -1;
   });
+  var totalAvg = 0.0;
   list.forEach((CallerStats v) {
+    var avg = (v.total / v.count);
     var li = new html.LIElement();
-    li.innerHtml = '${v.name} >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", (v.total / v.count).toStringAsFixed(3), "ms")}';
+    li.innerHtml = '${v.name} >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", avg.toStringAsFixed(3), "ms")}';
     counter.children.add(li);
+    totalAvg += avg;
   });
+  var li = new html.LIElement();
+  li.innerHtml = '<h3>Avg: ${totalAvg.toStringAsFixed(3)}ms</h3>';
+  counter.children.add(li);
 }
 
 formatCallerStats(k, v, b) => '[<b>$k</b>: <font color="red">$v</font>$b]';
