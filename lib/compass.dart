@@ -150,6 +150,7 @@ class CallerStats {
     if(callerStatsMap.containsKey(name)){
       callerStatsMap[name].count += 1;
     }else{
+      count = 1;
       callerStatsMap[name] = this;
     }
     watch = new Stopwatch();
@@ -161,6 +162,17 @@ class CallerStats {
     callerStatsMap[name].total += watch.elapsedMilliseconds;
   }
 }
+
+printCallerStats(counter) {
+  counter.children.clear();
+  callerStatsMap.forEach((String k, CallerStats v) {
+    var li = new html.LIElement();
+    li.innerHtml = '$k >> ${formatCallerStats("count", v.count, "")}  |  ${formatCallerStats("total", v.total, "ms")}   |   ${formatCallerStats("avg", (v.total / v.count).toStringAsFixed(3), "ms")}';
+    counter.children.add(li);
+  });
+}
+
+formatCallerStats(k, v, b) => '[<b>$k</b>: <font color="red">$v</font>$b]';
 
 
 

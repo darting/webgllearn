@@ -41,6 +41,8 @@ class WebGLRenderer extends Renderer {
   }
   
   nextFrame() {
+    var caller = new CallerStats("nextFrame");
+    
     _currentBatchIndex = 0;
     
     gl.viewport(0, 0, director.width, director.height);
@@ -49,16 +51,24 @@ class WebGLRenderer extends Renderer {
         director.background.blue, 
         director.background.alpha);
     gl.clear(webgl.COLOR_BUFFER_BIT);
+    
+    caller.stop();
   }
   
   render(Sprite sprite) {
+    var c1 = new CallerStats("loadTexture");
     if(sprite.fill is Image){
       loadTexture(sprite.fill as Image);
     }
+    c1.stop();
+    
+    var c2 = new CallerStats("isStateChanged");
     if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
       print('batch state changed');
       finishBatch();
     }
+    c2.stop();
+    
     _batchs[_currentBatchIndex].add(sprite);
   }
   
@@ -87,11 +97,13 @@ class WebGLRenderer extends Renderer {
   }
   
   finishBatch() {
+    var c1 = new CallerStats("finishBatch");
     _batchs[_currentBatchIndex].render();
     _batchs[_currentBatchIndex].reset();
     _currentBatchIndex++;
     if(_batchs.length <= _currentBatchIndex)
       _batchs.add(new RenderBatch(this));
+    c1.stop();
   }
 
   dispose() {

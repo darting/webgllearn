@@ -45,6 +45,7 @@ class Director implements Dispose {
   }
   
   _animate(num elapsed) {
+    var caller = new CallerStats("director");
     stats.begin();
     
     var interval = elapsed - _lastElapsed;
@@ -56,6 +57,8 @@ class Director implements Dispose {
     _renderer.finishBatch();
     
     stats.end();
+    caller.stop();
+    
     _run();
   }
 

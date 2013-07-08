@@ -49,10 +49,14 @@ class RenderBatch implements Dispose {
   }
   
   add(Sprite sprite) {
+    var c1 = new CallerStats("add to batch");
+    
     if(_numSprites == 0) _fill = sprite.fill;
     _sprites.add(sprite);
     _numSprites++;
     dirty = true;
+    
+    c1.stop();
   }
   
   refresh() {
@@ -61,9 +65,13 @@ class RenderBatch implements Dispose {
       growBuffer();
     }
     
+    var c1 = new CallerStats("update all buffer");
+    
     for(var i = 0; i < _numSprites; i++){
       updateBuffer(i, _sprites[i]);
     }
+    
+    c1.stop();
   }
   
   updateBuffer(int no, Sprite sprite) {
@@ -138,6 +146,8 @@ class RenderBatch implements Dispose {
   }
   
   growBuffer() {
+    var c1 = new CallerStats("growBuffer");
+    
     final webgl.RenderingContext gl = renderer.gl;
     verticies = new Float32List(_numSprites * 8);
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
@@ -166,6 +176,8 @@ class RenderBatch implements Dispose {
     };
     gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(webgl.ELEMENT_ARRAY_BUFFER, indices, webgl.STATIC_DRAW);
+    
+    c1.stop();
   }
   
   render() {

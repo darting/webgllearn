@@ -6,7 +6,8 @@ import 'lesson5.dart';
 import '../lib/compass.dart';
 import 'dart:math';
 
-SpanElement counter;
+Element counter;
+
 
 void main() {
  
@@ -46,7 +47,7 @@ class TestScene extends Scene {
 //      newChild(20000, false, atlas.getImage("walk__03"));
 //      animate = new SpriteSheet(atlas.getImages("walk"), 12);
 //      addChild(animate);
-      newAnimation(10000, atlas.getImages("walk"));
+      newAnimation(100, atlas.getImages("walk"));
     });
     
 //    newChild(2, true);
@@ -56,14 +57,15 @@ class TestScene extends Scene {
   tick(num interval) {
 //    if(animate != null)
 //      animate.advanceTime(interval);
-    children.forEach((DisplayObject child) {
+//    children.forEach((DisplayObject child) {
 //      move(interval / 1000, child);
 //      rotate(interval / 1000, child);
 //      scaleChildren(interval / 1000, child);
-      if(child is SpriteSheet)
-        (child as SpriteSheet).advanceTime(interval);
-    });
-    counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
+//      if(child is SpriteSheet)
+//        (child as SpriteSheet).advanceTime(interval);
+//    });
+//    counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
+    printCallerStats(counter);
   }
   
   scaleChildren(num s, DisplayObject child) {
