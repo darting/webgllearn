@@ -1,10 +1,11 @@
 part of compass;
 
-class InteractionManager {
+class InteractionManager implements Animatable {
   bool dirty;
   
   InteractionManager();
-  
-  update() {
+
+  advanceTime(double time) {
+    
   }
 }
