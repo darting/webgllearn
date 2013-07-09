@@ -56,7 +56,6 @@ class WebGLRenderer extends Renderer {
       loadTexture(sprite.fill as Image);
     }
     if(_batchs[_currentBatchIndex].isStateChanged(sprite)){
-      print('batch state changed');
       finishBatch();
     }
     _batchs[_currentBatchIndex].add(sprite);

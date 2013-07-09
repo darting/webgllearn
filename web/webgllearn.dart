@@ -39,11 +39,11 @@ class TestScene extends Scene {
     scaleSpeed = 0.1;
     
     resources = new ResourceManager();
-    resources.addImage("atlas", "atlas.png");
+    resources.addImage("bunny", "bunny.png");
     resources.addTextureAtlas("walk", "walk2.json");
     resources.load().then((_) {
       var atlas = resources.getTextureAtlas("walk");
-      newChild(10000, true, atlas.getImage("walk__03"));
+      newChild(10000, true, resources.getImage("bunny"));
 //      animate = new SpriteSheet(atlas.getImages("walk"), 12);
 //      addChild(animate);
 //      newAnimation(10000, atlas.getImages("walk"));
@@ -57,11 +57,11 @@ class TestScene extends Scene {
 //    if(animate != null)
 //      animate.advanceTime(interval);
     children.forEach((DisplayObject child) {
-//      move(interval / 1000, child);
-//      rotate(interval / 1000, child);
+      move(interval / 1000, child);
+      rotate(interval / 1000, child);
 //      scaleChildren(interval / 1000, child);
-      if(child is SpriteSheet)
-        (child as SpriteSheet).advanceTime(interval);
+//      if(child is SpriteSheet)
+//        (child as SpriteSheet).advanceTime(interval);
     });
     counter.text = 'num: ' + children.length.toString() + '  tick: ' + interval.toString() + 'ms';
   }
@@ -106,7 +106,6 @@ class TestScene extends Scene {
       var sprite = new Sprite();
       if(useImage){
         sprite.fill = image;
-        sprite.scaleX = sprite.scaleY = 0.3;
       }else {
         sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
         sprite.width = rng.nextDouble() * 50;
