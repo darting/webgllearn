@@ -131,11 +131,11 @@ class ShaderProgram {
     gl.enableVertexAttribArray(vertexPositionAttribute);
     
     colorAttribute = gl.getAttribLocation(program, "aColor");
-    if(colorAttribute > 0)
+    if(colorAttribute >= 0)
       gl.enableVertexAttribArray(colorAttribute);
     
     textureCoordAttribute = gl.getAttribLocation(program, "aTextureCoord");
-    if(textureCoordAttribute > 0)
+    if(textureCoordAttribute >= 0)
       gl.enableVertexAttribArray(textureCoordAttribute);
     
     samplerUniform = gl.getUniformLocation(program, "uSampler");

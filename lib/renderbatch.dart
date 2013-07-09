@@ -183,14 +183,12 @@ class RenderBatch implements Dispose {
     if(_fill is Color){
       program = renderer.getShaderProgram("color");
       gl.useProgram(program.program);
-      gl.enableVertexAttribArray(program.colorAttribute);
       gl.bindBuffer(webgl.ARRAY_BUFFER, colorBuffer);
       gl.bufferSubData(webgl.ARRAY_BUFFER, 0, colors);
       gl.vertexAttribPointer(program.colorAttribute, 4, webgl.FLOAT, false, 0, 0);
     }else if(_fill is Image){
       program = renderer.getShaderProgram("texture");
       gl.useProgram(program.program);
-      gl.enableVertexAttribArray(program.textureCoordAttribute);
       gl.bindBuffer(webgl.ARRAY_BUFFER, uvBuffer);
       gl.bufferSubData(webgl.ARRAY_BUFFER, 0, uvs);
       gl.vertexAttribPointer(program.textureCoordAttribute, 2, webgl.FLOAT, false, 0, 0);
@@ -199,12 +197,9 @@ class RenderBatch implements Dispose {
       gl.uniform1i(program.samplerUniform, 0);
     }
 
-    gl.enableVertexAttribArray(program.vertexPositionAttribute);
     gl.bindBuffer(webgl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferSubData(webgl.ARRAY_BUFFER, 0, verticies);
     gl.vertexAttribPointer(program.vertexPositionAttribute, 2, webgl.FLOAT, false, 0, 0);
-    
-    
     
     gl.bindBuffer(webgl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.drawElements(webgl.TRIANGLES, _numSprites * 6, webgl.UNSIGNED_SHORT, 0);
