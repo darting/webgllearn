@@ -43,10 +43,10 @@ class TestScene extends Scene {
     resources.addTextureAtlas("walk", "walk2.json");
     resources.load().then((_) {
       var atlas = resources.getTextureAtlas("walk");
-//      newChild(20000, false, atlas.getImage("walk__03"));
+      newChild(10000, true, atlas.getImage("walk__03"));
 //      animate = new SpriteSheet(atlas.getImages("walk"), 12);
 //      addChild(animate);
-      newAnimation(10000, atlas.getImages("walk"));
+//      newAnimation(10000, atlas.getImages("walk"));
     });
     
 //    newChild(2, true);
@@ -108,14 +108,14 @@ class TestScene extends Scene {
         sprite.fill = image;
         sprite.scaleX = sprite.scaleY = 0.3;
       }else {
-        sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256), rng.nextDouble());
-        sprite.width = 32.0;//rng.nextDouble() * 50;
-        sprite.height = 32.0;//rng.nextDouble() * 50;
+        sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+        sprite.width = rng.nextDouble() * 50;
+        sprite.height = rng.nextDouble() * 50;
       }
       sprite.x = rng.nextDouble() * director.width;
       sprite.y = rng.nextDouble() * director.height;
-//      sprite.pivotX = 0.5;
-//      sprite.pivotY = 0.5;
+      sprite.pivotX = 0.5;
+      sprite.pivotY = 0.5;
 //      sprite.x = 100.0;
 //      sprite.y = 100.0;
       addChild(sprite);
