@@ -3,14 +3,14 @@ part of compass;
 
 class Director implements Dispose {
   Stats stats;
+  int width, height;
+  Color background;
+  Juggler juggler;
+  
   html.CanvasElement _canvas;
   Renderer _renderer;
   Scene _scene;
   num _lastElapsed;
-  int width, height;
-  Color background;
-  
-    
   
   static init(html.CanvasElement canvas) {
     if(director != null) 
@@ -20,7 +20,8 @@ class Director implements Dispose {
   
   Director._internal(html.CanvasElement canvas) {
     stats = new Stats();
-
+    
+    juggler = new Juggler();
     _canvas = canvas;
     width = canvas.width;
     height = canvas.height;
@@ -49,7 +50,9 @@ class Director implements Dispose {
     
     var interval = elapsed - _lastElapsed;
     _lastElapsed = elapsed;
-    _scene.tick(interval);
+    
+    _scene.advanceTime(interval);
+    juggler.advanceTime(interval);
     
     _renderer.nextFrame();
     _scene.render(_renderer);

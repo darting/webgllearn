@@ -7,6 +7,7 @@ import '../lib/compass.dart';
 import 'dart:math';
 
 SpanElement counter;
+ResourceManager resources;
 
 void main() {
  
@@ -22,38 +23,50 @@ void main() {
   
   document.body.children.add(director.stats.container);
   
-  director.replace(new TestScene());
+  resources = new ResourceManager();
+  resources.addImage("bunny", "bunny.png");
+  resources.addTextureAtlas("walk", "walk2.json");
+  resources.load().then((_) {
+    director.replace(new TestAnimationScene());
+  });
+}
+
+class TestAnimationScene extends Scene {
+  int tick = 0;
+  var animate;
+  enter(){
+    var atlas = resources.getTextureAtlas("walk");
+    var rng = new Random();
+    animate = new SpriteSheet(atlas.getImages("walk"), 12);
+    animate.x = rng.nextDouble() * director.width;
+    animate.y = rng.nextDouble() * director.height;
+    addChild(animate);
+    director.juggler.add(animate);
+  }
   
+  advanceTime(num time){
+    tick++;
+    if(tick > 500){
+      director.juggler.remove(animate);
+    }
+  }
 }
 
 class TestScene extends Scene {
-  
   num speed = 200, sx, sy, scaleSpeed;
-  ResourceManager resources;
-  
   SpriteSheet animate;  
   
   enter() {
     sx = speed;
     sy = speed;
     scaleSpeed = 0.1;
-    
-    resources = new ResourceManager();
-    resources.addImage("bunny", "bunny.png");
-    resources.addTextureAtlas("walk", "walk2.json");
-    resources.load().then((_) {
-      var atlas = resources.getTextureAtlas("walk");
-      newChild(16500, true, resources.getImage("bunny"));
-//      animate = new SpriteSheet(atlas.getImages("walk"), 12);
-//      addChild(animate);
-//      newAnimation(10000, atlas.getImages("walk"));
-    });
-    
-//    newChild(2, true);
-//    newChild(3, false);
+
+    var atlas = resources.getTextureAtlas("walk");
+    newChild(16500, true, resources.getImage("bunny"));
+//    newAnimation(1000, atlas.getImages("walk"));
   }
   
-  tick(num interval) {
+  advanceTime(num interval) {
 //    if(animate != null)
 //      animate.advanceTime(interval);
     children.forEach((DisplayObject child) {
@@ -131,6 +144,7 @@ class TestScene extends Scene {
       animate.y = rng.nextDouble() * director.height;
       animate.scaleX = animate.scaleY = 0.5;
       addChild(animate);
+      director.juggler.add(animate);
     }
   }
 }

@@ -1,12 +1,11 @@
 part of compass;
 
-class Scene extends Layer {
+class Scene extends Layer implements Animatable {
   
   enter() {
   }
-  
-  tick(num interval) {
-    
+
+  advanceTime(double time) {
   }
   
   exit() {
