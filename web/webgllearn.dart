@@ -26,29 +26,22 @@ void main() {
   resources = new ResourceManager();
   resources.addImage("bunny", "bunny.png");
   resources.addTextureAtlas("walk", "walk2.json");
+  resources.addTextureAtlas("bird", "bird.json");
   resources.load().then((_) {
     director.replace(new TestAnimationScene());
   });
 }
 
 class TestAnimationScene extends Scene {
-  int tick = 0;
   var animate;
   enter(){
-    var atlas = resources.getTextureAtlas("walk");
+    var atlas = resources.getTextureAtlas("bird");
     var rng = new Random();
-    animate = new SpriteSheet(atlas.getImages("walk"), 12);
-    animate.x = rng.nextDouble() * director.width;
-    animate.y = rng.nextDouble() * director.height;
+    animate = new SpriteSheet(atlas.getImages("flight"), 12);
+    animate.x = 400.0;
+    animate.y = 200.0;
     addChild(animate);
     director.juggler.add(animate);
-  }
-  
-  advanceTime(num time){
-    tick++;
-    if(tick > 500){
-      director.juggler.remove(animate);
-    }
   }
 }
 
@@ -61,7 +54,8 @@ class TestScene extends Scene {
     sy = speed;
     scaleSpeed = 0.1;
 
-    var atlas = resources.getTextureAtlas("walk");
+    var atlas = resources.getTextureAtlas("bird");
+//    newChild(1, true, atlas.getImage("flight_00"));
     newChild(16500, true, resources.getImage("bunny"));
 //    newAnimation(1000, atlas.getImages("walk"));
   }
