@@ -34,6 +34,7 @@ part 'eventsubscription.dart';
 part 'resource.dart';
 part 'animatable.dart';
 part 'juggler.dart';
+part 'events.dart';
 
 
 Director director;

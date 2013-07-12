@@ -83,7 +83,7 @@ class RenderBatch implements Dispose {
     h0 = height * (1 - aY);
     h1 = height * -aY;
     
-    worldTransform = sprite.transformationMatrix;
+    worldTransform = sprite.worldTransform;
     
     a = worldTransform[0];
     b = worldTransform[3];

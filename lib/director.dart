@@ -10,6 +10,7 @@ class Director implements Dispose {
   html.CanvasElement _canvas;
   Renderer _renderer;
   Scene _scene;
+  InteractionManager _interactionManager;
   num _lastElapsed;
   
   static init(html.CanvasElement canvas) {
@@ -22,12 +23,13 @@ class Director implements Dispose {
     stats = new Stats();
     
     juggler = new Juggler();
-    _canvas = canvas;
     width = canvas.width;
     height = canvas.height;
     background = Color.parse(Color.White);
+    _canvas = canvas;
     _lastElapsed = 0;
     _renderer = new WebGLRenderer(canvas);
+    _interactionManager = new InteractionManager(canvas);
     _scene = new Scene();
    
     _run();
@@ -48,7 +50,7 @@ class Director implements Dispose {
   _animate(num elapsed) {
     stats.begin();
     
-    var interval = elapsed - _lastElapsed;
+    final interval = elapsed - _lastElapsed;
     _lastElapsed = elapsed;
     
     _scene.advanceTime(interval);
@@ -65,4 +67,6 @@ class Director implements Dispose {
   dispose() {
     // TODO implement this method
   }
+  
+  get scene => _scene;
 }

@@ -32,6 +32,7 @@ class EventDispatcher<T> {
   }
 
   dispatch([T data])  {
+    //TODO 这里会产生一个比较诡异的BUG，某些时候监听时并不想获取上一次的事件，所以这个还是需要在构造的时候指定一下。
     _dispatched = true;
     var subscriptions = _subscriptions;
     var subscriptionsLength = _subscriptions.length;
@@ -64,6 +65,8 @@ class EventDispatcher<T> {
     }
     _subscriptions = [];
   }
+  
+  get hasListener => _subscriptions.length > 0;
 }
 
 

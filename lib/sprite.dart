@@ -1,6 +1,6 @@
 part of compass;
 
-class Sprite extends DisplayObject {
+class Sprite extends InteractiveObject {
   Fill _fill;
   
   Sprite() {

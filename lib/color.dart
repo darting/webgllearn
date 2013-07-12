@@ -162,6 +162,11 @@ class Color extends Fill {
     int b = color & 0xFF;
     return new Color(r, g, b);
   }
+  
+  static random() {
+    var rng = new Random();
+    return new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+  }
 
   equals(Fill fill) {
     if(fill is Color)

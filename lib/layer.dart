@@ -1,10 +1,12 @@
 part of compass;
 
-class Layer extends DisplayObject {
+class Layer extends InteractiveObject {
   List<DisplayObject> children;
+  bool interactiveChildren;
   
   Layer() {
     children = [];
+    interactiveChildren = true;
   }
   
   addChild(DisplayObject node) {

@@ -28,8 +28,64 @@ void main() {
   resources.addTextureAtlas("walk", "walk2.json");
   resources.addTextureAtlas("bird", "bird.json");
   resources.load().then((_) {
-    director.replace(new TestAnimationScene());
+    director.replace(new TestMultiInteractiveScene());
   });
+}
+
+class TestMultiInteractiveScene extends Scene {
+  enter() {
+    newChild(this, 16500, false);
+  }
+
+  newChild(Layer layer, int count, bool useImage, [Image image]) {
+    var rng = new Random();
+    for(var i = 0; i < count; i++){
+      var sprite = new Sprite();
+      sprite.name = i.toString();
+      if(useImage && ?image){
+        sprite.fill = image;
+        sprite.width = 26.0;
+        sprite.height = 37.0;
+      }else {
+        sprite.fill = new Color(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+        sprite.width = rng.nextDouble() * 50;
+        sprite.height = rng.nextDouble() * 50;
+      }
+      sprite.x = rng.nextDouble() * director.width;
+      sprite.y = rng.nextDouble() * director.height;
+      sprite.onMouseOver.listen((trigger, e) => trigger.fill = Color.parse(Color.Red));
+      sprite.onMouseMove.listen((trigger, e) => print(["move", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onMouseOut.listen((trigger, e) => trigger.fill = Color.random());
+      sprite.onMouseDown.listen((trigger, e) => print(["down", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onMouseUp.listen((trigger, e) => print(["up", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onMouseUpOut.listen((trigger, e) => print(["up out", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onClick.listen((trigger, e) => trigger.fill = Color.random());
+      layer.addChild(sprite);
+    }
+  }
+}
+
+class TestInteractiveScene extends Scene {
+  enter() {
+    for(var i = 0; i < 5; i++) {
+      var sprite = new Sprite();
+      sprite.fill = Color.random();
+  //    sprite.pivotX = 0.5;
+  //    sprite.pivotY = 1.0;
+      sprite.x = 110.0 * i + 10;
+      sprite.y = 20.0;
+      sprite.width = 100.0;
+      sprite.height = 100.0;
+      sprite.onMouseOver.listen((trigger, e) => trigger.fill = Color.parse(Color.Red));
+      sprite.onMouseMove.listen((trigger, e) => print(["move", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onMouseOut.listen((trigger, e) => trigger.fill = Color.random());
+      sprite.onMouseDown.listen((trigger, e) => print(["down", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onMouseUp.listen((trigger, e) => print(["up", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onMouseUpOut.listen((trigger, e) => print(["up out", e.localX, e.localY, e.worldX, e.worldY]));
+      sprite.onClick.listen((trigger, e) => trigger.fill = Color.random());
+      addChild(sprite);
+    }
+  }
 }
 
 class TestAnimationScene extends Scene {
@@ -40,6 +96,7 @@ class TestAnimationScene extends Scene {
     animate = new SpriteSheet(atlas.getImages("flight"), 12);
     animate.x = 400.0;
     animate.y = 200.0;
+    animate.onMouseMove.listen((trigger, e) => print([trigger, e.clientX, e.clientY]));
     addChild(animate);
     director.juggler.add(animate);
   }
