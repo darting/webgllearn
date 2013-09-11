@@ -6,6 +6,7 @@ import 'package:vector_math/vector_math.dart';
 
 const VertexShaderCode = """
 attribute vec3 aVertexPosition;
+attribute vec2 aTextureCoord;
 attribute highp vec3 aVertexNormal;
 
 uniform mat4 uNormalMatrix;
@@ -13,6 +14,7 @@ uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
 
 varying highp vec3 vLighting;
+varying vec2 vTextureCoord;
 
 void main(void) {
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
@@ -141,7 +143,7 @@ class Mesh {
 }
 
 class SubMesh {
-  String material;
+  Material material;
   List<int> faces;
   gl.Buffer faceBuffer;
 }
@@ -155,10 +157,13 @@ class Geometry {
   gl.Buffer normalBuffer;
 }
 
-class Face {
-  int v1;
-  int v2;
-  int v3;
+class Material {
+  String name;
+  String texture;
+  List<double> ambient;
+  List<double> diffuse;
+  List<double> specular;
+  List<double> emissive;
 }
 
 /**
@@ -166,22 +171,29 @@ class Face {
  * var mesh = {
  *   geometry : {
  *      vertexcount : int,
- *      vertices : [x, y, z, x, y, z ...],
- *      normals : [x, y, z, x, y, z ...],
- *      texturecoords : [u, v, u, v ...]
+ *      vertices : [x, y, z ...],
+ *      normals : [x, y, z ...],
+ *      texturecoords : [u, v ...]
  *   },
- *   
+ *
  *   submeshes : [
  *     {
- *      material: string,
- *      faces : [v1, v2, v3, v1, v2, v3 ...] 
+ *      material: {
+ *       name: String,
+ *       texture: String,
+ *       ambient: [],
+ *       specular: [],
+ *       diffuse: [],
+ *       emissive: []
+ *      },
+ *      faces : [v1, v2, v3 ...]
  *     },
  *     ...
  *   ]
  * }
  * 
  */ 
-Mesh makeMesh(String jsonStr) {
+Mesh parseMesh(String jsonStr) {
   var json = parse(jsonStr);
   
   var mesh = new Mesh();
@@ -211,7 +223,31 @@ Mesh makeMesh(String jsonStr) {
   mesh.subMeshes = new List.generate(submeshes.length, (index) {
     var submesh = submeshes[index];
     var sub =  new SubMesh();
-    sub.material = submesh["material"];
+    
+    var material = submesh["material"];
+    sub.material = new Material();
+    sub.material.name = material["name"];
+    sub.material.texture = material["texture"];
+    
+    var ambient = material["ambient"];
+    sub.material.ambient = new List.generate(ambient.length, (i) {
+      return ambient[i].toDouble();
+    });
+
+    var diffuse = material["diffuse"];
+    sub.material.diffuse = new List.generate(diffuse.length, (i) {
+      return diffuse[i].toDouble();
+    });
+    
+    var specular = material["specular"];
+    sub.material.specular = new List.generate(specular.length, (i) {
+      return specular[i].toDouble();
+    });
+    
+    var emissive = material["emissive"];
+    sub.material.emissive = new List.generate(emissive.length, (i) {
+      return emissive[i].toDouble();
+    });
     
     var faces = submesh["faces"];
     sub.faces = new List.generate(faces.length, (i) {

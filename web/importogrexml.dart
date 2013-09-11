@@ -32,7 +32,7 @@ void main() {
 
 startup(String responseData) {
   
-  mesh = makeMesh(responseData);
+  mesh = parseMesh(responseData);
   mesh.init(renderer);
   renderer.ctx.enable(DEPTH_TEST);
   render();
@@ -49,7 +49,7 @@ void _render(num elapsed) {
   
   renderer.resetMatrix();
   
-  renderer.mvMatrix.translate(0.0, 0.0, -7.0);
+  renderer.mvMatrix.translate(0.0, -1.0, -7.0);
 //  renderer.mvMatrix.scale(0.3, 0.3, 0.3);
   renderer.mvMatrix.rotateY(_rotation);
   
