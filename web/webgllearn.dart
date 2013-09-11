@@ -42,7 +42,7 @@ class TestMultiInteractiveScene extends Scene {
     for(var i = 0; i < count; i++){
       var sprite = new Sprite();
       sprite.name = i.toString();
-      if(useImage && ?image){
+      if(useImage && image != null){
         sprite.fill = image;
         sprite.width = 26.0;
         sprite.height = 37.0;
