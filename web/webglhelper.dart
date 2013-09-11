@@ -6,20 +6,35 @@ import 'package:vector_math/vector_math.dart';
 
 const VertexShaderCode = """
 attribute vec3 aVertexPosition;
+attribute highp vec3 aVertexNormal;
 
+uniform mat4 uNormalMatrix;
 uniform mat4 uMVMatrix;
 uniform mat4 uPMatrix;
 
+varying highp vec3 vLighting;
+
 void main(void) {
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+
+    //apply lighting effect
+    highp vec3 ambientLight = vec3(0.6, 0.6, 0.6);
+    highp vec3 directionalLightColor = vec3(0.5, 0.5, 0.75);
+    highp vec3 directionalVector = vec3(0.85, 0.8, 0.75);
+
+    highp vec4 transformedNormal = uNormalMatrix * vec4(aVertexNormal, 1.0);
+    highp float directional = max(dot(transformedNormal.xyz, directionalVector), 0.0);
+    vLighting = ambientLight + (directionalLightColor * directional);
 }
 """;
 
 const FragmentShader = """
 precision mediump float;
 
+varying highp vec3 vLighting;
+
 void main(void) {
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    gl_FragColor = vec4(vec3(1.0, 0.0, 0.0) * vLighting, 1.0);
 }
 """;
 
@@ -29,8 +44,10 @@ class Renderer {
   CanvasElement canvas;
   gl.RenderingContext ctx;
   int vertexPositionAttribute;
+  int vertexNormalAttribute;
   gl.UniformLocation pMatrixUniform;
   gl.UniformLocation mvMatrixUniform;
+  gl.UniformLocation uNormalMatrix;
   Matrix4 pMatrix;
   Matrix4 mvMatrix;
   
@@ -58,8 +75,12 @@ class Renderer {
     vertexPositionAttribute = ctx.getAttribLocation(program, "aVertexPosition");
     ctx.enableVertexAttribArray(vertexPositionAttribute);
     
+    vertexNormalAttribute = ctx.getAttribLocation(program, "aVertexNormal");
+    ctx.enableVertexAttribArray(vertexNormalAttribute);
+    
     pMatrixUniform = ctx.getUniformLocation(program, "uPMatrix");
     mvMatrixUniform = ctx.getUniformLocation(program, "uMVMatrix");
+    uNormalMatrix = ctx.getUniformLocation(program, "uNormalMatrix");
   }
   
   resetMatrix() {
@@ -71,8 +92,15 @@ class Renderer {
     Float32List tmp = new Float32List.fromList(new List.filled(16, 0.0));
     pMatrix.copyIntoArray(tmp);
     ctx.uniformMatrix4fv(pMatrixUniform, false, tmp);
+    
     mvMatrix.copyIntoArray(tmp);
     ctx.uniformMatrix4fv(mvMatrixUniform, false, tmp);
+    
+    var normalMatrix = new Matrix4.zero();
+    normalMatrix.copyInverse(mvMatrix);
+    normalMatrix.transpose();
+    normalMatrix.copyIntoArray(tmp);
+    ctx.uniformMatrix4fv(uNormalMatrix, false, tmp);
   }
 }
 
@@ -86,6 +114,10 @@ class Mesh {
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
     renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.vertices), gl.STATIC_DRAW);
     
+    _geometry.normalBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.normalBuffer);
+    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.normals), gl.STATIC_DRAW);
+    
     subMeshes.forEach((sub) {
       sub.faceBuffer = renderer.ctx.createBuffer();
       renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
@@ -96,6 +128,9 @@ class Mesh {
   render(Renderer renderer) {
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
     renderer.ctx.vertexAttribPointer(renderer.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+    
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.normalBuffer);
+    renderer.ctx.vertexAttribPointer(renderer.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
     
     subMeshes.forEach((sub) {
       renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
@@ -117,6 +152,7 @@ class Geometry {
   List<double> textureCoords;
   
   gl.Buffer vertexBuffer;
+  gl.Buffer normalBuffer;
 }
 
 class Face {

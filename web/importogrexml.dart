@@ -20,6 +20,7 @@ void main() {
   renderer = new Renderer(canvas);
   
   var fileUrl = "BOSS_DRAGON.MESH.json";
+  fileUrl = "NPC_HUF_TOWN_01.MESH.json";
   HttpRequest.getString(fileUrl).then(startup);
 }
 
@@ -43,7 +44,7 @@ void _render(num elapsed) {
   renderer.resetMatrix();
   
   renderer.mvMatrix.translate(0.0, 0.0, -7.0);
-  renderer.mvMatrix.scale(0.3, 0.3, 0.3);
+//  renderer.mvMatrix.scale(0.3, 0.3, 0.3);
   renderer.mvMatrix.rotateY(_rotation);
   
   mesh.render(renderer);
