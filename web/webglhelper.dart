@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:json';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:web_gl' as gl;
 import 'package:vector_math/vector_math.dart';
@@ -61,6 +62,8 @@ class Renderer {
   gl.UniformLocation samplerUniform;
   Matrix4 pMatrix;
   Matrix4 mvMatrix;
+  
+  var s3tc;
   
   Renderer(this.canvas) {
     ctx = canvas.getContext3d(preserveDrawingBuffer: true);
@@ -157,9 +160,9 @@ class Mesh {
     
     subMeshes.forEach((sub) {
       if(sub.material.ready) {
+        renderer.ctx.uniform1i(renderer.samplerUniform, 0);
         renderer.ctx.activeTexture(gl.TEXTURE0);
         renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
-        renderer.ctx.uniform1i(renderer.samplerUniform, 0);
         renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
         renderer.setMatrixUniforms();
         renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
@@ -192,36 +195,212 @@ class Material {
   List<double> specular;
   List<double> emissive;
   
-  ImageElement image;
+  ImageElement _image;
   gl.Texture texture;
+  bool compressed = false;
   bool ready = false;
   
   load(Renderer renderer) {
-    image = new ImageElement(src: textureSource);
-    image.onLoad.listen((e) => _handleTexture(renderer));
+    if(textureSource.endsWith(".DDS"))
+      _loadDDS(renderer);
+    else
+      _loadImage(renderer);
   }
 
+  _loadDDS(Renderer renderer) {
+    compressed = true;
+    var req = new HttpRequest();
+    req.responseType = "arraybuffer";
+    req.onLoad.listen((e) {
+      texture = renderer.ctx.createTexture();
+      renderer.ctx.bindTexture(gl.TEXTURE_2D, texture);
+
+      var dds = parseDDS(req.response, true);
+      var mipmapCount = dds["mipmapCount"];
+      var mipmaps = dds["mipmaps"];
+      for(var i = 0; i < mipmapCount; i++){
+        var m = mipmaps[i];
+        renderer.ctx.compressedTexImage2D(gl.TEXTURE_2D, i, dds["format"], m["width"].toInt(), m["height"].toInt(), 0, m["data"]);
+      }
+      
+      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+          mipmapCount > 1 ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+      
+      ready = false;
+    });
+    req.open("GET", textureSource);
+    req.send();
+  }
+
+  _loadImage(Renderer renderer) {
+    _image = new ImageElement(src: textureSource);
+    _image.onLoad.listen((e) => _handleTexture(renderer));
+  }
   
   _handleTexture(Renderer renderer) {
     texture = renderer.ctx.createTexture();
-    // 绑定纹理
     renderer.ctx.bindTexture(gl.TEXTURE_2D, texture);
-    // 反转纹理，由于计算机图形系统 的坐标是Y轴向下，而webgl的坐标Y轴向上，所以要反转。
     renderer.ctx.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-    // 将图片上传到显卡的纹理空间
-    // 参数分别是：图片类型，细节层次，图片通道大小，最后是图片本身
-    // 要注意图片需要是2的整数倍
-    renderer.ctx.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    // 指示纹理的缩放方式，MAG_FILTER 表示放大是怎么放大的。
-    // NEAREST 是指无论如何都只使用原始图片，此方法渲染速度最快。
+    renderer.ctx.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, _image);
     renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    // 指示纹理缩小时如何缩小
     renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    // 清理当前绑定的纹理。
     renderer.ctx.bindTexture(gl.TEXTURE_2D, null);
     ready = true;
   }
 }
+
+
+// Compressed texture formats
+const int RGB_S3TC_DXT1_Format = 2001;
+const int RGBA_S3TC_DXT1_Format = 2002;
+const int RGBA_S3TC_DXT3_Format = 2003;
+const int RGBA_S3TC_DXT5_Format = 2004;
+
+parseDDS( buffer, loadMipmaps ) {
+
+  var dds = { "mipmaps": [], "width": 0, "height": 0, "format": null, "mipmapCount": 1 };
+
+  // Adapted from @toji's DDS utils
+  //  https://github.com/toji/webgl-texture-utils/blob/master/texture-util/dds.js
+
+  // All values and structures referenced from:
+  // http://msdn.microsoft.com/en-us/library/bb943991.aspx/
+
+  var DDS_MAGIC = 0x20534444;
+
+  var DDSD_CAPS = 0x1,
+    DDSD_HEIGHT = 0x2,
+    DDSD_WIDTH = 0x4,
+    DDSD_PITCH = 0x8,
+    DDSD_PIXELFORMAT = 0x1000,
+    DDSD_MIPMAPCOUNT = 0x20000,
+    DDSD_LINEARSIZE = 0x80000,
+    DDSD_DEPTH = 0x800000;
+
+  var DDSCAPS_COMPLEX = 0x8,
+    DDSCAPS_MIPMAP = 0x400000,
+    DDSCAPS_TEXTURE = 0x1000;
+
+  var DDSCAPS2_CUBEMAP = 0x200,
+    DDSCAPS2_CUBEMAP_POSITIVEX = 0x400,
+    DDSCAPS2_CUBEMAP_NEGATIVEX = 0x800,
+    DDSCAPS2_CUBEMAP_POSITIVEY = 0x1000,
+    DDSCAPS2_CUBEMAP_NEGATIVEY = 0x2000,
+    DDSCAPS2_CUBEMAP_POSITIVEZ = 0x4000,
+    DDSCAPS2_CUBEMAP_NEGATIVEZ = 0x8000,
+    DDSCAPS2_VOLUME = 0x200000;
+
+  var DDPF_ALPHAPIXELS = 0x1,
+    DDPF_ALPHA = 0x2,
+    DDPF_FOURCC = 0x4,
+    DDPF_RGB = 0x40,
+    DDPF_YUV = 0x200,
+    DDPF_LUMINANCE = 0x20000;
+
+  fourCCToInt32( value ) {
+    return value.codeUnitAt(0) +
+      (value.codeUnitAt(1) << 8) +
+      (value.codeUnitAt(2) << 16) +
+      (value.codeUnitAt(3) << 24);
+
+  }
+
+  int32ToFourCC( value ) {
+
+    return new String.fromCharCodes([
+      value & 0xff,
+      (value >> 8) & 0xff,
+      (value >> 16) & 0xff,
+      (value >> 24) & 0xff
+    ]);
+  }
+
+  var FOURCC_DXT1 = fourCCToInt32("DXT1");
+  var FOURCC_DXT3 = fourCCToInt32("DXT3");
+  var FOURCC_DXT5 = fourCCToInt32("DXT5");
+
+  var headerLengthInt = 31; // The header length in 32 bit ints
+
+  // Offsets into the header array
+
+  var off_magic = 0;
+
+  var off_size = 1;
+  var off_flags = 2;
+  var off_height = 3;
+  var off_width = 4;
+
+  var off_mipmapCount = 7;
+
+  var off_pfFlags = 20;
+  var off_pfFourCC = 21;
+
+  // Parse header
+
+  var header = new Int32List.view( buffer, 0, headerLengthInt );
+
+  if ( header[ off_magic ] != DDS_MAGIC ) {
+      print( "ImageUtils.parseDDS(): Invalid magic number in DDS header" );
+      return dds;
+  }
+
+  if ( (header[ off_pfFlags ] & DDPF_FOURCC) == 0 ) {
+      print( "ImageUtils.parseDDS(): Unsupported format, must contain a FourCC code" );
+      return dds;
+  }
+
+  var blockBytes;
+
+  var fourCC = header[ off_pfFourCC ];
+
+  if( fourCC == FOURCC_DXT1 ) {
+      blockBytes = 8;
+      dds["format"] = RGB_S3TC_DXT1_Format;
+  } else if(fourCC == FOURCC_DXT3) {
+      blockBytes = 16;
+      dds["format"] = RGBA_S3TC_DXT3_Format;
+  } else if(fourCC == FOURCC_DXT5) {
+      blockBytes = 16;
+      dds["format"] = RGBA_S3TC_DXT5_Format;
+  } else {
+      print( "ImageUtils.parseDDS(): Unsupported FourCC code: ${int32ToFourCC( fourCC )}" );
+  }
+
+  dds["mipmapCount"] = 1;
+
+  if ( ( (header[ off_flags ] & DDSD_MIPMAPCOUNT) != 0) && (loadMipmaps != false) ) {
+      dds["mipmapCount"] = max( 1, header[ off_mipmapCount ] );
+  }
+
+  dds["width"] = header[ off_width ];
+  dds["height"] = header[ off_height ];
+
+  var dataOffset = header[ off_size ] + 4;
+
+  // Extract mipmaps buffers
+
+  var width = dds["width"];
+  var height = dds["height"];
+
+  for ( var i = 0; i < dds["mipmapCount"]; i ++ ) {
+
+    int dataLength = max( 4, width ) ~/ 4 * max( 4, height ) ~/ 4 * blockBytes;
+    var byteArray = new Uint8List.view( buffer, dataOffset, dataLength);
+
+    var mipmap = { "data": byteArray, "width": width, "height": height };
+    dds["mipmaps"].add( mipmap );
+
+    dataOffset += dataLength;
+
+    width = max( width * 0.5, 1 );
+    height = max( height * 0.5, 1 );
+
+  }
+
+  return dds;
+}
+
 
 /**
  * 

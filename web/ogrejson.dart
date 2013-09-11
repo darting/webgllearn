@@ -1,9 +1,11 @@
 import 'dart:html';
 import 'dart:web_gl';
 
-import 'webglhelper.dart';
+
 import 'package:vector_math/vector_math.dart';
 import 'package:stats/stats.dart';
+import 'webglhelper.dart';
+import 'dart:math';
 
 
 Stats stats;
@@ -12,6 +14,7 @@ Renderer renderer;
 
 double _rotation = 0.0;
 double _lastElapsed = 0.0;
+double _zoom = 1.0;
 
 Mesh mesh;
 
@@ -22,6 +25,7 @@ void main() {
   
   stats = new Stats();
   document.body.children.add(stats.container);
+  document.body.onMouseWheel.listen(mouseWheelHandler);
   
   var fileUrl = "BOSS_DRAGON.MESH.json";
   fileUrl = "NPC_HUF_TOWN_01.MESH.json";
@@ -29,12 +33,22 @@ void main() {
   HttpRequest.getString(fileUrl).then(startup);
 }
 
+mouseWheelHandler(WheelEvent e) {
+  _zoom += e.deltaY / 500;
+  _zoom = max(_zoom, 0.0);
+  print(_zoom);
+}
 
 startup(String responseData) {
   
   mesh = parseMesh(responseData);
   mesh.init(renderer);
+  
   renderer.ctx.enable(DEPTH_TEST);
+  renderer.ctx.frontFace(CCW);
+  renderer.ctx.cullFace(BACK);
+  renderer.ctx.enable(CULL_FACE);
+  
   render();
 }
 
@@ -49,8 +63,10 @@ void _render(num elapsed) {
   
   renderer.resetMatrix();
   
+//  renderer.pMatrix.scale(_zoom, _zoom, _zoom);
+  
   renderer.mvMatrix.translate(0.0, -1.0, -7.0);
-//  renderer.mvMatrix.scale(0.3, 0.3, 0.3);
+  renderer.mvMatrix.scale(_zoom, _zoom, _zoom);
   renderer.mvMatrix.rotateY(_rotation);
   
   mesh.render(renderer);
