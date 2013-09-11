@@ -1,5 +1,8 @@
+import 'dart:html';
 import 'dart:json';
+import 'dart:typed_data';
 import 'dart:web_gl' as gl;
+import 'package:vector_math/vector_math.dart';
 
 const VertexShaderCode = """
 attribute vec3 aVertexPosition;
@@ -22,14 +25,84 @@ void main(void) {
 
 
 
+class Renderer {
+  CanvasElement canvas;
+  gl.RenderingContext ctx;
+  int vertexPositionAttribute;
+  gl.UniformLocation pMatrixUniform;
+  gl.UniformLocation mvMatrixUniform;
+  Matrix4 pMatrix;
+  Matrix4 mvMatrix;
+  
+  Renderer(this.canvas) {
+    ctx = canvas.getContext3d(preserveDrawingBuffer: true);
+    initShader();
+    resetMatrix();
+  }
+  
+  initShader() {
+    gl.Shader vertexShader = ctx.createShader(gl.VERTEX_SHADER);
+    ctx.shaderSource(vertexShader, VertexShaderCode);
+    ctx.compileShader(vertexShader);
 
+    gl.Shader fragmentShader = ctx.createShader(gl.FRAGMENT_SHADER);
+    ctx.shaderSource(fragmentShader, FragmentShader);
+    ctx.compileShader(fragmentShader);
+    
+    gl.Program program = ctx.createProgram();
+    ctx.attachShader(program, vertexShader);
+    ctx.attachShader(program, fragmentShader);
+    ctx.linkProgram(program);
+    ctx.useProgram(program);
+
+    vertexPositionAttribute = ctx.getAttribLocation(program, "aVertexPosition");
+    ctx.enableVertexAttribArray(vertexPositionAttribute);
+    
+    pMatrixUniform = ctx.getUniformLocation(program, "uPMatrix");
+    mvMatrixUniform = ctx.getUniformLocation(program, "uMVMatrix");
+  }
+  
+  resetMatrix() {
+    pMatrix = makePerspectiveMatrix(radians(45.0), canvas.width / canvas.height, 0.1, 100.0);
+    mvMatrix = new Matrix4.identity();
+  }
+  
+  setMatrixUniforms() {
+    Float32List tmp = new Float32List.fromList(new List.filled(16, 0.0));
+    pMatrix.copyIntoArray(tmp);
+    ctx.uniformMatrix4fv(pMatrixUniform, false, tmp);
+    mvMatrix.copyIntoArray(tmp);
+    ctx.uniformMatrix4fv(mvMatrixUniform, false, tmp);
+  }
+}
 
 
 class Mesh {
-  Geometry geometry;
+  Geometry _geometry;
   List<SubMesh> subMeshes;
   
+  init(Renderer renderer){
+    _geometry.vertexBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
+    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.vertices), gl.STATIC_DRAW);
+    
+    subMeshes.forEach((sub) {
+      sub.faceBuffer = renderer.ctx.createBuffer();
+      renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
+      renderer.ctx.bufferDataTyped(gl.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(sub.faces), gl.STATIC_DRAW);
+    });
+  }
   
+  render(Renderer renderer) {
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
+    renderer.ctx.vertexAttribPointer(renderer.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+    
+    subMeshes.forEach((sub) {
+      renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
+      renderer.setMatrixUniforms();
+      renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
+    });
+  }
 }
 
 class SubMesh {
@@ -109,7 +182,7 @@ Mesh makeMesh(String jsonStr) {
     return textureCoords[index].toDouble();
   });
   
-  mesh.geometry = geometry;
+  mesh._geometry = geometry;
   
   var submeshes = json["submeshes"];
   mesh.subMeshes = new List.generate(submeshes.length, (index) {
