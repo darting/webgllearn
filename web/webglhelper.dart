@@ -19,6 +19,8 @@ varying vec2 vTextureCoord;
 void main(void) {
     gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
 
+    vTextureCoord = aTextureCoord;
+
     //apply lighting effect
     highp vec3 ambientLight = vec3(0.6, 0.6, 0.6);
     highp vec3 directionalLightColor = vec3(0.5, 0.5, 0.75);
@@ -33,10 +35,15 @@ void main(void) {
 const FragmentShader = """
 precision mediump float;
 
+uniform sampler2D uSampler;
+
 varying highp vec3 vLighting;
 
+varying vec2 vTextureCoord;
+
 void main(void) {
-    gl_FragColor = vec4(vec3(1.0, 0.0, 0.0) * vLighting, 1.0);
+    vec4 texelColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+    gl_FragColor = vec4(texelColor.rgb * vLighting, 1.0);
 }
 """;
 
@@ -47,9 +54,11 @@ class Renderer {
   gl.RenderingContext ctx;
   int vertexPositionAttribute;
   int vertexNormalAttribute;
+  int vertexTextureAttribute;
   gl.UniformLocation pMatrixUniform;
   gl.UniformLocation mvMatrixUniform;
   gl.UniformLocation uNormalMatrix;
+  gl.UniformLocation samplerUniform;
   Matrix4 pMatrix;
   Matrix4 mvMatrix;
   
@@ -80,9 +89,13 @@ class Renderer {
     vertexNormalAttribute = ctx.getAttribLocation(program, "aVertexNormal");
     ctx.enableVertexAttribArray(vertexNormalAttribute);
     
+    vertexTextureAttribute = ctx.getAttribLocation(program, "aTextureCoord");
+    ctx.enableVertexAttribArray(vertexTextureAttribute);
+    
     pMatrixUniform = ctx.getUniformLocation(program, "uPMatrix");
     mvMatrixUniform = ctx.getUniformLocation(program, "uMVMatrix");
     uNormalMatrix = ctx.getUniformLocation(program, "uNormalMatrix");
+    samplerUniform = ctx.getUniformLocation(program, "uSampler");
   }
   
   resetMatrix() {
@@ -119,11 +132,16 @@ class Mesh {
     _geometry.normalBuffer = renderer.ctx.createBuffer();
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.normalBuffer);
     renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.normals), gl.STATIC_DRAW);
+
+    _geometry.textureCoordsBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.textureCoordsBuffer);
+    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.textureCoords), gl.STATIC_DRAW);
     
     subMeshes.forEach((sub) {
       sub.faceBuffer = renderer.ctx.createBuffer();
       renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
       renderer.ctx.bufferDataTyped(gl.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(sub.faces), gl.STATIC_DRAW);
+      sub.material.load(renderer);
     });
   }
   
@@ -133,11 +151,19 @@ class Mesh {
     
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.normalBuffer);
     renderer.ctx.vertexAttribPointer(renderer.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.textureCoordsBuffer);
+    renderer.ctx.vertexAttribPointer(renderer.vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
     
     subMeshes.forEach((sub) {
-      renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
-      renderer.setMatrixUniforms();
-      renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
+      if(sub.material.ready) {
+        renderer.ctx.activeTexture(gl.TEXTURE0);
+        renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
+        renderer.ctx.uniform1i(renderer.samplerUniform, 0);
+        renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
+        renderer.setMatrixUniforms();
+        renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
+      }
     });
   }
 }
@@ -155,15 +181,46 @@ class Geometry {
   
   gl.Buffer vertexBuffer;
   gl.Buffer normalBuffer;
+  gl.Buffer textureCoordsBuffer;
 }
 
 class Material {
   String name;
-  String texture;
+  String textureSource;
   List<double> ambient;
   List<double> diffuse;
   List<double> specular;
   List<double> emissive;
+  
+  ImageElement image;
+  gl.Texture texture;
+  bool ready = false;
+  
+  load(Renderer renderer) {
+    image = new ImageElement(src: textureSource);
+    image.onLoad.listen((e) => _handleTexture(renderer));
+  }
+
+  
+  _handleTexture(Renderer renderer) {
+    texture = renderer.ctx.createTexture();
+    // 绑定纹理
+    renderer.ctx.bindTexture(gl.TEXTURE_2D, texture);
+    // 反转纹理，由于计算机图形系统 的坐标是Y轴向下，而webgl的坐标Y轴向上，所以要反转。
+    renderer.ctx.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+    // 将图片上传到显卡的纹理空间
+    // 参数分别是：图片类型，细节层次，图片通道大小，最后是图片本身
+    // 要注意图片需要是2的整数倍
+    renderer.ctx.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    // 指示纹理的缩放方式，MAG_FILTER 表示放大是怎么放大的。
+    // NEAREST 是指无论如何都只使用原始图片，此方法渲染速度最快。
+    renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    // 指示纹理缩小时如何缩小
+    renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    // 清理当前绑定的纹理。
+    renderer.ctx.bindTexture(gl.TEXTURE_2D, null);
+    ready = true;
+  }
 }
 
 /**
@@ -227,7 +284,7 @@ Mesh parseMesh(String jsonStr) {
     var material = submesh["material"];
     sub.material = new Material();
     sub.material.name = material["name"];
-    sub.material.texture = material["texture"];
+    sub.material.textureSource = material["texture"];
     
     var ambient = material["ambient"];
     sub.material.ambient = new List.generate(ambient.length, (i) {
