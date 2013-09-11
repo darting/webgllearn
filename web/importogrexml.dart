@@ -1,11 +1,12 @@
 import 'dart:html';
 import 'dart:web_gl';
-import 'dart:typed_data';
 
 import 'webglhelper.dart';
 import 'package:vector_math/vector_math.dart';
+import 'package:stats/stats.dart';
 
 
+Stats stats;
 CanvasElement canvas;
 Renderer renderer;
 
@@ -19,8 +20,12 @@ void main() {
   canvas = query('#container');
   renderer = new Renderer(canvas);
   
+  stats = new Stats();
+  document.body.children.add(stats.container);
+  
   var fileUrl = "BOSS_DRAGON.MESH.json";
   fileUrl = "NPC_HUF_TOWN_01.MESH.json";
+//  fileUrl = "BOX.MESH.json";
   HttpRequest.getString(fileUrl).then(startup);
 }
 
@@ -29,11 +34,12 @@ startup(String responseData) {
   
   mesh = makeMesh(responseData);
   mesh.init(renderer);
-  
+  renderer.ctx.enable(DEPTH_TEST);
   render();
 }
 
 void _render(num elapsed) {
+  stats.begin();
   
   _rotation += (2 * (elapsed - _lastElapsed) / 1000.0);
   _lastElapsed = elapsed;
@@ -49,6 +55,7 @@ void _render(num elapsed) {
   
   mesh.render(renderer);
   
+  stats.end();
   render();
 }
 
