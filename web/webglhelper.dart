@@ -191,30 +191,17 @@ Mesh makeMesh(String jsonStr) {
   var geometry = new Geometry();
   
   var vertices = json["geometry"]["vertices"];
-//  geometry.vertices = new List.generate(vertexCount, (index) {
-//    var offset = index * 3;
-//    return new Vector3(vertices[offset].toDouble(), vertices[offset + 1].toDouble(), vertices[offset + 2].toDouble());
-//  });
-  
-  geometry.vertices = new List.generate(vertexCount * 3, (index) {
+  geometry.vertices = new List.generate(vertices.length, (index) {
     return vertices[index].toDouble();
   });
   
   var normals = json["geometry"]["normals"];
-//  geometry.normals = new List.generate(vertexCount, (index) {
-//    var offset = index * 3;
-//    return new Vector3(normals[offset].toDouble(), normals[offset + 1].toDouble(), normals[offset + 2].toDouble());
-//  });
-  geometry.normals = new List.generate(vertexCount * 3, (index) {
+  geometry.normals = new List.generate(normals.length, (index) {
     return normals[index].toDouble();
   });
   
   var textureCoords = json["geometry"]["texturecoords"];
-//  geometry.textureCoords = new List.generate(vertexCount, (index) {
-//    var offset = index * 2;
-//    return new Vector2(textureCoords[offset].toDouble(), textureCoords[offset + 1].toDouble());
-//  });
-  geometry.textureCoords = new List.generate(vertexCount * 2, (index) {
+  geometry.textureCoords = new List.generate(textureCoords.length, (index) {
     return textureCoords[index].toDouble();
   });
   
@@ -227,14 +214,6 @@ Mesh makeMesh(String jsonStr) {
     sub.material = submesh["material"];
     
     var faces = submesh["faces"];
-//    sub.faces = new List.generate((faces.length / 3).toInt(), (i) {
-//      var offset = i * 3;
-//      var face = new Face();
-//      face.v1 = faces[offset];
-//      face.v2 = faces[offset + 1];
-//      face.v3 = faces[offset + 2];
-//      return face;
-//    });
     sub.faces = new List.generate(faces.length, (i) {
       return faces[i].toInt();
     });
