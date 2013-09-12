@@ -158,16 +158,22 @@ class Mesh {
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.textureCoordsBuffer);
     renderer.ctx.vertexAttribPointer(renderer.vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
     
+    var ready = 0;
     subMeshes.forEach((sub) {
-      if(sub.material.ready) {
-        renderer.ctx.uniform1i(renderer.samplerUniform, 0);
-        renderer.ctx.activeTexture(gl.TEXTURE0);
-        renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
-        renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
-        renderer.setMatrixUniforms();
-        renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
-      }
+      if(sub.material.ready) ready ++;
     });
+    
+    if(ready == subMeshes.length)
+      subMeshes.forEach((sub) {
+        if(sub.material.ready) {
+          renderer.ctx.uniform1i(renderer.samplerUniform, 0);
+          renderer.ctx.activeTexture(gl.TEXTURE0);
+          renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
+          renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
+          renderer.setMatrixUniforms();
+          renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
+        }
+      });
   }
 }
 
@@ -201,7 +207,7 @@ class Material {
   bool ready = false;
   
   load(Renderer renderer) {
-    if(textureSource.endsWith(".DDS"))
+    if(textureSource.toUpperCase().endsWith(".DDS"))
       _loadDDS(renderer);
     else
       _loadImage(renderer);
@@ -224,9 +230,9 @@ class Material {
             dds["format"], 
             m["width"].toInt(), m["height"].toInt(), 0, m["data"]);
         
-        print([dds["format"], m["width"].toInt(), m["height"].toInt(), 0, m["data"]]);
+        print([dds["format"], m["width"].toInt(), m["height"].toInt(), m["data"].length]);
       }
-      
+
       renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
       renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 //      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
@@ -353,13 +359,15 @@ parseDDS( buffer, loadMipmaps ) {
   var blockBytes;
 
   var fourCC = header[ off_pfFourCC ];
+  
+  print("$fourCC fourCC $FOURCC_DXT1 $FOURCC_DXT3 $FOURCC_DXT5");
 
   if( fourCC == FOURCC_DXT1 ) {
       blockBytes = 8;
       dds["format"] =  gl.CompressedTextureS3TC.COMPRESSED_RGB_S3TC_DXT1_EXT;//   RGB_S3TC_DXT1_Format;
   } else if(fourCC == FOURCC_DXT3) {
       blockBytes = 16;
-      dds["format"] = gl.CompressedTextureS3TC.COMPRESSED_RGBA_S3TC_DXT1_EXT;// RGBA_S3TC_DXT3_Format;
+      dds["format"] = gl.CompressedTextureS3TC.COMPRESSED_RGBA_S3TC_DXT3_EXT;// RGBA_S3TC_DXT3_Format;
   } else if(fourCC == FOURCC_DXT5) {
       blockBytes = 16;
       dds["format"] = gl.CompressedTextureS3TC.COMPRESSED_RGBA_S3TC_DXT5_EXT;// RGBA_S3TC_DXT5_Format;

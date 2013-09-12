@@ -49,9 +49,6 @@ startup(String responseData) {
   renderer.ctx.cullFace(BACK);
   renderer.ctx.enable(CULL_FACE);
   var ct = renderer.ctx.getExtension("WEBKIT_WEBGL_compressed_texture_s3tc");
-  print(ct);
-  
-  
   var formats = renderer.ctx.getParameter(COMPRESSED_TEXTURE_FORMATS);
   formats.forEach((f) => print(f));
   
