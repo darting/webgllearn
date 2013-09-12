@@ -48,11 +48,20 @@ startup(String responseData) {
   renderer.ctx.frontFace(CCW);
   renderer.ctx.cullFace(BACK);
   renderer.ctx.enable(CULL_FACE);
+  var ct = renderer.ctx.getExtension("WEBKIT_WEBGL_compressed_texture_s3tc");
+  print(ct);
   
-  render();
+  
+  var formats = renderer.ctx.getParameter(COMPRESSED_TEXTURE_FORMATS);
+  formats.forEach((f) => print(f));
+  
+  
+  requestRender();
 }
 
 void _render(num elapsed) {
+  requestRender();
+  
   stats.begin();
   
   _rotation += (2 * (elapsed - _lastElapsed) / 1000.0);
@@ -72,11 +81,10 @@ void _render(num elapsed) {
   mesh.render(renderer);
   
   stats.end();
-  render();
 }
 
 
-render() {
+requestRender() {
   window.requestAnimationFrame(_render);
 }
 

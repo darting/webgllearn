@@ -220,14 +220,19 @@ class Material {
       var mipmaps = dds["mipmaps"];
       for(var i = 0; i < mipmapCount; i++){
         var m = mipmaps[i];
-        renderer.ctx.compressedTexImage2D(gl.TEXTURE_2D, i, dds["format"], m["width"].toInt(), m["height"].toInt(), 0, m["data"]);
+        renderer.ctx.compressedTexImage2D(gl.TEXTURE_2D, i, 
+            dds["format"], 
+            m["width"].toInt(), m["height"].toInt(), 0, m["data"]);
+        
+        print([dds["format"], m["width"].toInt(), m["height"].toInt(), 0, m["data"]]);
       }
       
-      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
-          mipmapCount > 1 ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+//      renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, 
+//          mipmapCount > 1 ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
       
-      ready = false;
+      ready = true;
     });
     req.open("GET", textureSource);
     req.send();
@@ -245,17 +250,12 @@ class Material {
     renderer.ctx.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, _image);
     renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     renderer.ctx.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    renderer.ctx.generateMipmap(gl.TEXTURE_2D);
     renderer.ctx.bindTexture(gl.TEXTURE_2D, null);
     ready = true;
   }
 }
-
-
-// Compressed texture formats
-const int RGB_S3TC_DXT1_Format = 2001;
-const int RGBA_S3TC_DXT1_Format = 2002;
-const int RGBA_S3TC_DXT3_Format = 2003;
-const int RGBA_S3TC_DXT5_Format = 2004;
+ 
 
 parseDDS( buffer, loadMipmaps ) {
 
@@ -356,13 +356,13 @@ parseDDS( buffer, loadMipmaps ) {
 
   if( fourCC == FOURCC_DXT1 ) {
       blockBytes = 8;
-      dds["format"] = RGB_S3TC_DXT1_Format;
+      dds["format"] =  gl.CompressedTextureS3TC.COMPRESSED_RGB_S3TC_DXT1_EXT;//   RGB_S3TC_DXT1_Format;
   } else if(fourCC == FOURCC_DXT3) {
       blockBytes = 16;
-      dds["format"] = RGBA_S3TC_DXT3_Format;
+      dds["format"] = gl.CompressedTextureS3TC.COMPRESSED_RGBA_S3TC_DXT1_EXT;// RGBA_S3TC_DXT3_Format;
   } else if(fourCC == FOURCC_DXT5) {
       blockBytes = 16;
-      dds["format"] = RGBA_S3TC_DXT5_Format;
+      dds["format"] = gl.CompressedTextureS3TC.COMPRESSED_RGBA_S3TC_DXT5_EXT;// RGBA_S3TC_DXT5_Format;
   } else {
       print( "ImageUtils.parseDDS(): Unsupported FourCC code: ${int32ToFourCC( fourCC )}" );
   }
