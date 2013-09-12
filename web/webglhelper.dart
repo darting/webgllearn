@@ -61,7 +61,6 @@ class Renderer {
   gl.UniformLocation uNormalMatrix;
   gl.UniformLocation samplerUniform;
   Matrix4 pMatrix;
-  Matrix4 mvMatrix;
   
   var s3tc;
   
@@ -102,20 +101,25 @@ class Renderer {
   }
   
   resetMatrix() {
-    pMatrix = makePerspectiveMatrix(radians(45.0), canvas.width / canvas.height, 0.1, 100.0);
-    mvMatrix = new Matrix4.identity();
+    
   }
   
-  setMatrixUniforms() {
+  prepareRender() {
+    ctx.viewport(0, 0, canvas.width, canvas.height);
+    ctx.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    pMatrix = makePerspectiveMatrix(radians(45.0), canvas.width / canvas.height, 0.1, 100.0);
+  }
+  
+  setMatrixUniforms(Matrix4 modelMatrix) {
     Float32List tmp = new Float32List.fromList(new List.filled(16, 0.0));
     pMatrix.copyIntoArray(tmp);
     ctx.uniformMatrix4fv(pMatrixUniform, false, tmp);
     
-    mvMatrix.copyIntoArray(tmp);
+    modelMatrix.copyIntoArray(tmp);
     ctx.uniformMatrix4fv(mvMatrixUniform, false, tmp);
     
     var normalMatrix = new Matrix4.zero();
-    normalMatrix.copyInverse(mvMatrix);
+    normalMatrix.copyInverse(modelMatrix);
     normalMatrix.transpose();
     normalMatrix.copyIntoArray(tmp);
     ctx.uniformMatrix4fv(uNormalMatrix, false, tmp);
@@ -124,10 +128,17 @@ class Renderer {
 
 
 class Mesh {
+  double x, y, z;
+  double scaleX = 1.0, scaleY = 1.0, scaleZ = 1.0;
+  double rotationX = 0.0, rotationY = 0.0, rotationZ = 0.0;
+  Matrix4 transform;
   Geometry _geometry;
   List<SubMesh> subMeshes;
   
   init(Renderer renderer){
+    
+    transform = new Matrix4.identity();
+    
     _geometry.vertexBuffer = renderer.ctx.createBuffer();
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
     renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.vertices), gl.STATIC_DRAW);
@@ -149,6 +160,14 @@ class Mesh {
   }
   
   render(Renderer renderer) {
+    
+    transform.setIdentity();
+    transform.translate(x, y, z);
+    transform.scale(scaleX, scaleY, scaleZ);
+    transform.rotateX(rotationX);
+    transform.rotateY(rotationY);
+    transform.rotateZ(rotationZ);
+    
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
     renderer.ctx.vertexAttribPointer(renderer.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
     
@@ -158,22 +177,16 @@ class Mesh {
     renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.textureCoordsBuffer);
     renderer.ctx.vertexAttribPointer(renderer.vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
     
-    var ready = 0;
     subMeshes.forEach((sub) {
-      if(sub.material.ready) ready ++;
+      if(sub.material.ready) {
+        renderer.ctx.uniform1i(renderer.samplerUniform, 0);
+        renderer.ctx.activeTexture(gl.TEXTURE0);
+        renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
+        renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
+        renderer.setMatrixUniforms(transform);
+        renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
+      }
     });
-    
-    if(ready == subMeshes.length)
-      subMeshes.forEach((sub) {
-        if(sub.material.ready) {
-          renderer.ctx.uniform1i(renderer.samplerUniform, 0);
-          renderer.ctx.activeTexture(gl.TEXTURE0);
-          renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
-          renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
-          renderer.setMatrixUniforms();
-          renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
-        }
-      });
   }
 }
 
