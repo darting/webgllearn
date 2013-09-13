@@ -42,8 +42,9 @@ void main() {
 //  fileUrl = "NPC_HUF_TOWN_01.MESH.json";
 //  fileUrl = "BOX.MESH.json";
   
-  HttpRequest.getString("BOSS_DRAGON.MESH.json").then(addMesh);
-  HttpRequest.getString("NPC_HUF_TOWN_01.MESH.json").then(addMesh);
+//  HttpRequest.getString("BOSS_DRAGON.MESH.json").then(addMesh);
+//  HttpRequest.getString("NPC_HUF_TOWN_01.MESH.json").then(addMesh);
+  HttpRequest.getString("HUM_F.MESH.json").then(addMesh);
 }
 
 addMesh(String responseData) {
