@@ -136,26 +136,12 @@ class Mesh {
   List<SubMesh> subMeshes;
   
   init(Renderer renderer){
-    
     transform = new Matrix4.identity();
-    
-    _geometry.vertexBuffer = renderer.ctx.createBuffer();
-    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
-    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.vertices), gl.STATIC_DRAW);
-    
-    _geometry.normalBuffer = renderer.ctx.createBuffer();
-    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.normalBuffer);
-    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.normals), gl.STATIC_DRAW);
-
-    _geometry.textureCoordsBuffer = renderer.ctx.createBuffer();
-    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.textureCoordsBuffer);
-    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(_geometry.textureCoords), gl.STATIC_DRAW);
-    
+    if(_geometry != null) {
+      _geometry.init(renderer);
+    }
     subMeshes.forEach((sub) {
-      sub.faceBuffer = renderer.ctx.createBuffer();
-      renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
-      renderer.ctx.bufferDataTyped(gl.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(sub.faces), gl.STATIC_DRAW);
-      sub.material.load(renderer);
+      sub.init(renderer);
     });
   }
   
@@ -168,24 +154,12 @@ class Mesh {
     transform.rotateY(rotationY);
     transform.rotateZ(rotationZ);
     
-    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.vertexBuffer);
-    renderer.ctx.vertexAttribPointer(renderer.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
-    
-    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.normalBuffer);
-    renderer.ctx.vertexAttribPointer(renderer.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
-
-    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, _geometry.textureCoordsBuffer);
-    renderer.ctx.vertexAttribPointer(renderer.vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
+    if(_geometry != null) {
+      _geometry.uploadBuffers(renderer);
+    }
     
     subMeshes.forEach((sub) {
-      if(sub.material.ready) {
-        renderer.ctx.uniform1i(renderer.samplerUniform, 0);
-        renderer.ctx.activeTexture(gl.TEXTURE0);
-        renderer.ctx.bindTexture(gl.TEXTURE_2D, sub.material.texture);
-        renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, sub.faceBuffer);
-        renderer.setMatrixUniforms(transform);
-        renderer.ctx.drawElements(gl.TRIANGLES, sub.faces.length, gl.UNSIGNED_SHORT, 0);
-      }
+      sub.render(renderer, transform);
     });
   }
 }
@@ -194,6 +168,29 @@ class SubMesh {
   Material material;
   List<int> faces;
   gl.Buffer faceBuffer;
+  Geometry geometry;
+  bool useSharedVertices;
+  
+  init(Renderer renderer) {
+    if(!useSharedVertices) {
+      geometry.init(renderer);
+    }
+    faceBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceBuffer);
+    renderer.ctx.bufferDataTyped(gl.ELEMENT_ARRAY_BUFFER, new Uint16List.fromList(faces), gl.STATIC_DRAW);
+    material.load(renderer);
+  }
+  
+  render(Renderer renderer, Matrix4 transform) {
+    if(material.ready) {
+      renderer.ctx.uniform1i(renderer.samplerUniform, 0);
+      renderer.ctx.activeTexture(gl.TEXTURE0);
+      renderer.ctx.bindTexture(gl.TEXTURE_2D, material.texture);
+      renderer.ctx.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, faceBuffer);
+      renderer.setMatrixUniforms(transform);
+      renderer.ctx.drawElements(gl.TRIANGLES, faces.length, gl.UNSIGNED_SHORT, 0);
+    }
+  }
 }
 
 class Geometry {
@@ -204,6 +201,31 @@ class Geometry {
   gl.Buffer vertexBuffer;
   gl.Buffer normalBuffer;
   gl.Buffer textureCoordsBuffer;
+  
+  init(Renderer renderer) {
+    vertexBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(vertices), gl.STATIC_DRAW);
+    
+    normalBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(normals), gl.STATIC_DRAW);
+    
+    textureCoordsBuffer = renderer.ctx.createBuffer();
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, textureCoordsBuffer);
+    renderer.ctx.bufferDataTyped(gl.ARRAY_BUFFER, new Float32List.fromList(textureCoords), gl.STATIC_DRAW);
+  }
+  
+  uploadBuffers(Renderer renderer) {
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    renderer.ctx.vertexAttribPointer(renderer.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
+    
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+    renderer.ctx.vertexAttribPointer(renderer.vertexNormalAttribute, 3, gl.FLOAT, false, 0, 0);
+    
+    renderer.ctx.bindBuffer(gl.ARRAY_BUFFER, textureCoordsBuffer);
+    renderer.ctx.vertexAttribPointer(renderer.vertexTextureAttribute, 2, gl.FLOAT, false, 0, 0);
+  }
 }
 
 class Material {
@@ -455,31 +477,17 @@ Mesh parseMesh(String jsonStr) {
   
   var mesh = new Mesh();
   
-  var vertexCount = json["geometry"]["vertexcount"];
-  
-  var geometry = new Geometry();
-  
-  var vertices = json["geometry"]["vertices"];
-  geometry.vertices = new List.generate(vertices.length, (index) {
-    return vertices[index].toDouble();
-  });
-  
-  var normals = json["geometry"]["normals"];
-  geometry.normals = new List.generate(normals.length, (index) {
-    return normals[index].toDouble();
-  });
-  
-  var textureCoords = json["geometry"]["texturecoords"];
-  geometry.textureCoords = new List.generate(textureCoords.length, (index) {
-    return textureCoords[index].toDouble();
-  });
-  
-  mesh._geometry = geometry;
+  mesh._geometry = parseGeometry(json["sharedgeometry"]);
   
   var submeshes = json["submeshes"];
   mesh.subMeshes = new List.generate(submeshes.length, (index) {
     var submesh = submeshes[index];
     var sub =  new SubMesh();
+    
+    sub.useSharedVertices = submesh['usesharedvertices'];
+    if(!sub.useSharedVertices) {
+      sub.geometry = parseGeometry(submesh["geometry"]);
+    }
     
     var material = submesh["material"];
     sub.material = new Material();
@@ -514,6 +522,25 @@ Mesh parseMesh(String jsonStr) {
   });
   
   return mesh;
+}
+
+Geometry parseGeometry(geo_dict) {
+  if(geo_dict == null)
+    return null;
+  var geometry = new Geometry();
+  var vertices = geo_dict["vertices"];
+  geometry.vertices = new List.generate(vertices.length, (index) {
+    return vertices[index].toDouble();
+  });
+  var normals = geo_dict["normals"];
+  geometry.normals = new List.generate(normals.length, (index) {
+    return normals[index].toDouble();
+  });
+  var textureCoords = geo_dict["texturecoords"];
+  geometry.textureCoords = new List.generate(textureCoords.length, (index) {
+    return textureCoords[index].toDouble();
+  });
+  return geometry;
 }
 
 
