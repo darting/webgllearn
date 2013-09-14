@@ -45,8 +45,8 @@ void main() {
 //  HttpRequest.getString("BOSS_DRAGON.MESH.json").then(addMesh);
 //  HttpRequest.getString("NPC_HUF_TOWN_01.MESH.json").then(addMesh);
 //  HttpRequest.getString("HUM_F.MESH.json").then(addMesh);
-  HttpRequest.getString("npc_huf_town_01.json").then(addMesh);
-//  HttpRequest.getString("hum_f.json").then(addMesh);
+//  HttpRequest.getString("npc_huf_town_01.json").then(addMesh);
+  HttpRequest.getString("hum_f.json").then(addMesh);
 }
 
 addMesh(String responseData) {

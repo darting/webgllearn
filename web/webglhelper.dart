@@ -183,6 +183,7 @@ class SubMesh {
   
   render(Renderer renderer, Matrix4 transform) {
     if(material.ready) {
+      geometry.uploadBuffers(renderer);
       renderer.ctx.uniform1i(renderer.samplerUniform, 0);
       renderer.ctx.activeTexture(gl.TEXTURE0);
       renderer.ctx.bindTexture(gl.TEXTURE_2D, material.texture);
